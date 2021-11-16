@@ -61,7 +61,7 @@ class Manual:
             if msg.axes[1] > 0:
                 self.base_twist.linear.x = msg.axes[5] * 1.0
             else:
-                self.base_twist.linear.x = msg.axes[5] * 2.0
+                self.base_twist.linear.x = msg.axes[5] * 1.0
             self.base_twist.angular.z = msg.axes[2] * 0.7
 
         elif msg.buttons[4] == 1 and msg.buttons[5] == 0:
