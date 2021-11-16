@@ -1,0 +1,29 @@
+[Unit]
+Description=Run Ros RC Car launch
+
+[Service]
+Type=forking
+ExecStart=/opt/ros/melodic/bin/roslaunch /home/pi/rc_ws/src/ros_rc_bot/rc_bringup/launch/bringup.launch
+Environment=ROS_ROOT=/opt/ros/melodic/share/ros
+User=pi
+Group=pi
+Environment=ROS_PACKAGE_PATH=/home/pi/rc_ws/src:/opt/ros/melodic/share:/opt/ros/melodic/stacks
+Environment=ROSLAUNCH_SSH_UNKNOWN=1
+Environment=ROS_MASTER_URI=http://192.168.0.101:11311
+Environment=ROSLISP_PACKAGE_DIRECTORIES=/home/pi/rc_ws/devel/share/common-lisp
+Environment=ROS_DISTRO=melodic
+Environment=ROS_IP=192.168.0.101
+Environment=ROS_ETC_DIR=/opt/ros/melodic/etc/ros
+Environment=LD_LIBRARY_PATH=/home/pi/rc_ws/devel/lib:/opt/ros/melodic/lib:/opt/ros/melodic/lib/x86_64-linux-gnu
+Environment=PATH=/opt/ros/melodic/bin:/home/pi/bin:/home/pi/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+Environment=PYTHONPATH=/home/pi/rc_ws/devel/lib/python2.7/dist-packages:/opt/ros/melodic/lib/python2.7/dist-packages
+Environment=PKG_CONFIG_PATH=/home/pi/rc_ws/devel/lib/pkgconfig:/opt/ros/melodic/lib/pkgconfig
+
+
+Environment=PKG_CONFIG_PATH=/home/pi/rc_ws/devel/lib/pkgconfig:/opt/ros/melodic/lib/pkgconfig
+Environment=CMAKE_PREFIX_PATH=/home/pi/rc_ws/devel:/opt/ros/melodic
+
+Restart=on-failure
+TimeoutSec=infinity
+[Install]
+WantedBy=multi-user.target

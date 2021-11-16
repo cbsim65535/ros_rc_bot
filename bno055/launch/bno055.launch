@@ -1,0 +1,3 @@
+<launch>
+  <node type="imu_node.py" pkg="bno055" name="bno055_publisher" output="screen" />
+</launch>

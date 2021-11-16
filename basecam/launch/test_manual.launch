@@ -1,0 +1,6 @@
+<launch>
+    <node name="joy_node" pkg="joy" type="joy_node" output="screen" />
+    <include file="$(find rc_bringup)/launch/tf_publisher.launch" />
+    <include file="$(find basecam)/launch/basecam_node.launch" />
+    <node type="manual.py" pkg="driving" name="manual" output="screen" />
+</launch>

@@ -1,0 +1,8 @@
+html {
+  font-size: 5vw;
+}
+.box {
+  width: 100vw;
+  height: 100vw;
+  background: #808080;
+}
