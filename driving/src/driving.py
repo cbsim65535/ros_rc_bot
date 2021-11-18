@@ -167,10 +167,10 @@ class RcBot:
             target_speed = msg.twist.linear.x * RcBot.REVERSE_ACCEL_SIZE_PER_ONE
             if target_speed < self.__speed:
                 self.__speed -= RcBot.ACCEL_STEP 
-            if self.__speed < RcBot.PULSE_SPEED_ZERO + RcBot.REVERSE_ACCEL_SIZE_PER_ONE:
-                self.__speed = RcBot.PULSE_SPEED_ZERO + RcBot.REVERSE_ACCEL_SIZE_PER_ONE
-            if self.__speed > RcBot.PULSE_SPEED_ZERO + RcBot.ACCEL_SIZE_PER_ONE:
-                self.__speed = RcBot.PULSE_SPEED_ZERO + RcBot.ACCEL_SIZE_PER_ONE
+            if self.__speed < - RcBot.REVERSE_ACCEL_SIZE_PER_ONE:
+                self.__speed = - RcBot.REVERSE_ACCEL_SIZE_PER_ONE
+            if self.__speed > RcBot.ACCEL_SIZE_PER_ONE:
+                self.__speed = RcBot.ACCEL_SIZE_PER_ONE
         else:
             self.__speed = 0
 
