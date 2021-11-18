@@ -40,7 +40,7 @@ class RcBot:
     REVERSE_DRIVING_MIN_PULSE = 1228
 
     ACCEL_SIZE_PER_ONE = (ESC_MAX_PULSE - DRIVING_MIN_PULSE) * 0.2
-    ACCEL_STEP = 10
+    ACCEL_STEP = 50
     
     REVERSE_ACCEL_SIZE_PER_ONE = (REVERSE_DRIVING_MIN_PULSE - ESC_MIN_PULSE) * 0.6
 
@@ -160,15 +160,18 @@ class RcBot:
         self.setSteerPwm(pulse)
         
         target_speed = 0
+        accel = 0
         if msg.twist.linear.x > 0:
             target_speed = msg.twist.linear.x * RcBot.ACCEL_SIZE_PER_ONE
+            accel = RcBot.ACCEL_SIZE_PER_ONE / RcBot.ACCEL_STEP
         if msg.twist.linear.x < 0:
             target_speed = msg.twist.linear.x * RcBot.REVERSE_ACCEL_SIZE_PER_ONE
+            accel = RcBot.REVERSE_ACCEL_SIZE_PER_ONE / RcBot.ACCEL_STEP
             
         if target_speed > self.__speed:
-            self.__speed += RcBot.ACCEL_STEP
+            self.__speed += accel
         if target_speed < self.__speed:
-            self.__speed -= RcBot.ACCEL_STEP
+            self.__speed -= accel
             
         if self.__speed < - RcBot.REVERSE_ACCEL_SIZE_PER_ONE:
             self.__speed = - RcBot.REVERSE_ACCEL_SIZE_PER_ONE
