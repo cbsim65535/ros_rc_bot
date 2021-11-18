@@ -158,21 +158,22 @@ class RcBot:
 
         pulse = RcBot.STEER_CENTER_PULSE + steer
         self.setSteerPwm(pulse)
-	
+        
+        target_speed = 0
         if msg.twist.linear.x > 0:
             target_speed = msg.twist.linear.x * RcBot.ACCEL_SIZE_PER_ONE
-            if target_speed > self.__speed:
-                self.__speed += RcBot.ACCEL_STEP
-        elif msg.twist.linear.x < 0:
+        if msg.twist.linear.x < 0:
             target_speed = msg.twist.linear.x * RcBot.REVERSE_ACCEL_SIZE_PER_ONE
-            if target_speed < self.__speed:
-                self.__speed -= RcBot.ACCEL_STEP 
-            if self.__speed < - RcBot.REVERSE_ACCEL_SIZE_PER_ONE:
-                self.__speed = - RcBot.REVERSE_ACCEL_SIZE_PER_ONE
-            if self.__speed > RcBot.ACCEL_SIZE_PER_ONE:
-                self.__speed = RcBot.ACCEL_SIZE_PER_ONE
-        else:
-            self.__speed = 0
+            
+        if target_speed > self.__speed:
+            self.__speed += RcBot.ACCEL_STEP
+        if target_speed < self.__speed:
+            self.__speed -= RcBot.ACCEL_STEP
+            
+        if self.__speed < - RcBot.REVERSE_ACCEL_SIZE_PER_ONE:
+            self.__speed = - RcBot.REVERSE_ACCEL_SIZE_PER_ONE
+        if self.__speed > RcBot.ACCEL_SIZE_PER_ONE:
+            self.__speed = RcBot.ACCEL_SIZE_PER_ONE
 
         pulse = RcBot.PULSE_SPEED_ZERO + self.__speed
         self.setEscPwm(pulse)
