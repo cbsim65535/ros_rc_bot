@@ -165,7 +165,7 @@ class RcBot:
                 self.__speed += RcBot.ACCEL_STEP
         elif msg.twist.linear.x < 0:
             target_speed = msg.twist.linear.x * RcBot.REVERSE_ACCEL_SIZE_PER_ONE
-            if target_speed > self.__speed:
+            if target_speed < self.__speed:
                 self.__speed -= RcBot.ACCEL_STEP 
             if self.__speed < RcBot.PULSE_SPEED_ZERO + RcBot.REVERSE_ACCEL_SIZE_PER_ONE:
                 self.__speed = RcBot.PULSE_SPEED_ZERO + RcBot.REVERSE_ACCEL_SIZE_PER_ONE
