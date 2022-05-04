@@ -752,7 +752,7 @@ class SimpleBGC:
                     (x, y, z, w),
                     current_time,
                     "gimbal_camera_mount",
-                    "gimbal_body",
+                    "gimbal_neck",
                 )
 
             else:
