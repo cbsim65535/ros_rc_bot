@@ -55,6 +55,8 @@ class MotionControl:
             '~topic_angle', 'basecam/angles/euler'), Vector3Stamped, self.onHeadAngle)
         # rospy.Subscriber(rospy.get_param('~topic_object_markers',
                                         #  '/object_detection/markers'), MarkerArray, self.onObjectMarkers)
+        rospy.Subscriber(rospy.get_param('~topic_object_markers',
+                                         '/zed2/zed_node/obj_det/objects'), ObjectsStamped, self.onObjects)
         rospy.Service(name+"/change_mode", ChangeMotionMode, self.changeMode)
         self.setMotor = rospy.ServiceProxy(
             "/basecam/set_motor", BasecamSetMotor)
@@ -128,7 +130,7 @@ class MotionControl:
             traceback.print_exc()
             return None
 
-    def onObjectMarkers(self, msg):
+    def onObjects(self, msg):
         total_people = 0
         peoples_poses = []
         for object in msg.objects:
