@@ -161,7 +161,7 @@ class MotionControl:
                         roll = random.random() * 30 - 15
                         pitch = -math.degrees(math.atan2(
 							newPose.pose.position.z, dist_xy))
-                        yaw = math.degrees(math.atan2(
+                        yaw = -math.degrees(math.atan2(
 							newPose.pose.position.y, newPose.pose.position.x))
                         self.target_angle.yaw = (
 							self.target_angle.yaw+yaw)*0.5
