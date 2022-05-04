@@ -8,7 +8,7 @@
     <node pkg="tf2_ros" type="static_transform_publisher" name="map_joint" args="0 0 0 0 0 0 1 map base_link" />
     <node pkg="tf2_ros" type="static_transform_publisher" name="odom_joint" args="0 0 0 0 0 0 1 base_link odom" />
 	<node pkg="tf2_ros" type="static_transform_publisher" name="gimbal_joint" args="0 0.0 0 0 0 0 1 base_link gimbal_body" />
-    <node pkg="tf2_ros" type="static_transform_publisher" name="gimbal_joint" args="0 0.0 0.12 0 0 0 1 gimbal_body gimbal_neck" />
+    <node pkg="tf2_ros" type="static_transform_publisher" name="gimbal_neck_joint" args="0 0.0 0.12 0 0 0 1 gimbal_body gimbal_neck" />
     <node pkg="tf2_ros" type="static_transform_publisher" name="head_imu_joint" args="0.0 0.0 0.0 0 0 0 1 gimbal_camera_mount camera_mount_imu" />
     <node pkg="tf2_ros" type="static_transform_publisher" name="zed_joint" args="0.0 0.05 -0.02 0 0 0 1 gimbal_camera_mount zed_base_link" />
 
