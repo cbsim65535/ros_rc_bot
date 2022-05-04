@@ -23,6 +23,7 @@ from head_motion.srv import ChangeMotionMode, ChangeMotionModeResponse
 from visualization_msgs.msg import MarkerArray
 from sensor_msgs.msg import Imu
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
+from zed_interfaces.msg import ObjectsStamped
 
 
 class MotionControl:
@@ -129,50 +130,56 @@ class MotionControl:
 
     def onObjectMarkers(self, msg):
         total_people = 0
-        peoples_maker = []
-        for marker in msg.markers:
-            if marker.text == "face":
-                peoples_maker.append(marker)
-        total_people = len(peoples_maker)
-        if total_people > 0:
+        peoples_poses = []
+        for object in msg.objects:
+            posestamped = PoseStamped()
+            posestamped.header = msg.header
+            posestamped.pose.position.x = object.position[0]
+            posestamped.pose.position.y = object.position[1]
+            posestamped.pose.position.z = object.position[2]
+            peoples_poses.append(posestamped)
+        total_people = len(peoples_poses)
+        if total_people > 0 and self.enable_people_tracking_motion == True:
             # 최근 추가된 사람을 추적
-            marker = peoples_maker[total_people-1]
-            if marker.text == "face":
-                if self.enable_people_tracking_motion:
-                    try:
-                        base_frame = '/neck_link'
-                        newPose = self.transform_pose(
-                            self.tf_listener, base_frame, marker)
-                        if newPose:
-                            zero = numpy.array((0, 0, 0))
-                            tgt = numpy.array(
-                                (newPose.pose.position.x, newPose.pose.position.y, newPose.pose.position.z))
-                            dist = numpy.linalg.norm(zero-tgt)
-                            if dist > self.people_tracking_object_min_distance:
-                                dist_xy = abs(math.hypot(
-                                    newPose.pose.position.x, newPose.pose.position.y))
-                                roll = random.random() * 30 - 15
-                                pitch = -math.degrees(math.atan2(
-                                    newPose.pose.position.z-self.nect_height, dist_xy))
-                                yaw = -math.degrees(math.atan2(
-                                    newPose.pose.position.y, newPose.pose.position.x))
-                                self.target_angle.yaw = (
-                                    self.target_angle.yaw+yaw)*0.5
-                                if random.random() < 0.05:
-                                    self.target_angle.roll = roll
-                                self.target_angle.pitch = (
-                                    self.target_angle.pitch+pitch)*0.5
-                                if self.target_angle.pitch < self.tracking_min_pitch:
-                                    self.target_angle.pitch = self.tracking_min_pitch
-                                if self.target_angle.pitch > self.tracking_max_pitch:
-                                    self.target_angle.pitch = self.tracking_max_pitch
-                                if self.motion_sleep < 0:
-                                    size = (
-                                        self.PEOPLE_TRACKED_MOTION_DELAY_MAX-self.PEOPLE_TRACKED_MOTION_DELAY_MIN)
-                                    self.motion_sleep = self.PEOPLE_TRACKED_MOTION_DELAY_MIN + \
-                                        math.floor(size*random.random())
-                    except:
-                        traceback.print_exc()
+            marker = peoples_poses[total_people-1]
+            try:
+                base_frame = '/neck_link'
+                newPose = self.transform_pose(
+					self.tf_listener, base_frame, marker)
+                if newPose:
+					zero = numpy.array((0, 0, 0))
+					tgt = numpy.array(
+						(newPose.pose.position.x, newPose.pose.position.y, newPose.pose.position.z))
+					dist = numpy.linalg.norm(zero-tgt)
+					rospy.loginfo(peoples_poses)
+					rospy.loginfo(tgt)
+					rospy.loginfo(dist)
+					rospy.loginfo('-------------')
+					# if dist > self.people_tracking_object_min_distance:
+					# 	dist_xy = abs(math.hypot(
+					# 		newPose.pose.position.x, newPose.pose.position.y))
+					# 	roll = random.random() * 30 - 15
+					# 	pitch = -math.degrees(math.atan2(
+					# 		newPose.pose.position.z, dist_xy))
+					# 	yaw = -math.degrees(math.atan2(
+					# 		newPose.pose.position.y, newPose.pose.position.x))
+					# 	self.target_angle.yaw = (
+					# 		self.target_angle.yaw+yaw)*0.5
+					# 	if random.random() < 0.05:
+					# 		self.target_angle.roll = roll
+					# 	self.target_angle.pitch = (
+					# 		self.target_angle.pitch+pitch)*0.5
+					# 	if self.target_angle.pitch < self.tracking_min_pitch:
+					# 		self.target_angle.pitch = self.tracking_min_pitch
+					# 	if self.target_angle.pitch > self.tracking_max_pitch:
+					# 		self.target_angle.pitch = self.tracking_max_pitch
+					# 	if self.motion_sleep < 0:
+					# 		size = (
+					# 			self.PEOPLE_TRACKED_MOTION_DELAY_MAX-self.PEOPLE_TRACKED_MOTION_DELAY_MIN)
+					# 		self.motion_sleep = self.PEOPLE_TRACKED_MOTION_DELAY_MIN + \
+					# 			math.floor(size*random.random())
+			except:
+				traceback.print_exc()
 
     def changeMode(self, request):
         print "changeMode"
