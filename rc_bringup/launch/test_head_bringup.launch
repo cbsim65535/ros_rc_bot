@@ -20,4 +20,6 @@
     </include>
     <node name="basecam" pkg="basecam" type="basecam_node.py" output="screen" />
 	
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find rc_bringup)/rviz/$(arg camera_model).rviz" output="screen" />
+
 </launch>
