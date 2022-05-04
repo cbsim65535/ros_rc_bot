@@ -147,14 +147,14 @@ class MotionControl:
                 newPose = self.transform_pose(
 					self.tf_listener, base_frame, marker)
                 if newPose:
-					zero = numpy.array((0, 0, 0))
-					tgt = numpy.array(
+                    zero = numpy.array((0, 0, 0))
+                    tgt = numpy.array(
 						(newPose.pose.position.x, newPose.pose.position.y, newPose.pose.position.z))
-					dist = numpy.linalg.norm(zero-tgt)
-					rospy.loginfo(peoples_poses)
-					rospy.loginfo(tgt)
-					rospy.loginfo(dist)
-					rospy.loginfo('-------------')
+                    dist = numpy.linalg.norm(zero-tgt)
+                    rospy.loginfo(peoples_poses)
+                    rospy.loginfo(tgt)
+                    rospy.loginfo(dist)
+                    rospy.loginfo('-------------')
 					# if dist > self.people_tracking_object_min_distance:
 					# 	dist_xy = abs(math.hypot(
 					# 		newPose.pose.position.x, newPose.pose.position.y))
@@ -178,11 +178,11 @@ class MotionControl:
 					# 			self.PEOPLE_TRACKED_MOTION_DELAY_MAX-self.PEOPLE_TRACKED_MOTION_DELAY_MIN)
 					# 		self.motion_sleep = self.PEOPLE_TRACKED_MOTION_DELAY_MIN + \
 					# 			math.floor(size*random.random())
-			except:
-				traceback.print_exc()
-
+            except:
+                traceback.print_exc()
+                
     def changeMode(self, request):
-        print "changeMode"
+        print "changeMode";
         print request
         if request.mode_name == "random":
             pass
