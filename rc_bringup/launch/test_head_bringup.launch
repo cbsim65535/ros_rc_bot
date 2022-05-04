@@ -21,6 +21,6 @@
 	<include file="$(find head_motion)/launch/head_motion_node.launch" />
     <node name="basecam" pkg="basecam" type="basecam_node.py" output="screen" />
 	
-	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find rc_bringup)/rviz/$(arg camera_model).rviz" output="screen" />
+	<!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find rc_bringup)/rviz/$(arg camera_model).rviz" output="screen" /> -->
 
 </launch>
