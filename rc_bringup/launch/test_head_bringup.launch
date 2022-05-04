@@ -12,11 +12,11 @@
     <node pkg="tf2_ros" type="static_transform_publisher" name="zed_joint" args="0.0 10.0 -0.05 0 0 0 1 gimbal_camera_mount zed_base_link" />
 
     <!-- Launch ZED camera wrapper -->
-    <include file="$(find zed_wrapper)/launch/$(arg camera_model).launch">
+    <!-- <include file="$(find zed_wrapper)/launch/$(arg camera_model).launch">
         <arg name="camera_model"        value="$(arg camera_model)" />
         <arg name="svo_file"            value="$(arg svo_file)" />
         <arg name="stream"              value="$(arg stream)" />
-    </include>
+    </include> -->
     <node name="basecam" pkg="basecam" type="basecam_node.py" output="screen" />
 	
 </launch>
