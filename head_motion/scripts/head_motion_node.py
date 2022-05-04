@@ -153,10 +153,10 @@ class MotionControl:
                     tgt = numpy.array(
 						(newPose.pose.position.x, newPose.pose.position.y, newPose.pose.position.z))
                     dist = numpy.linalg.norm(zero-tgt)
-                    rospy.loginfo(peoples_poses)
-                    rospy.loginfo(tgt)
-                    rospy.loginfo(dist)
-                    rospy.loginfo('-------------')
+                    # rospy.loginfo(peoples_poses)
+                    # rospy.loginfo(tgt)
+                    # rospy.loginfo(dist)
+                    # rospy.loginfo('-------------')
                     if dist > self.people_tracking_object_min_distance or True:
                         dist_xy = abs(math.hypot(
 							newPose.pose.position.x, newPose.pose.position.y))
