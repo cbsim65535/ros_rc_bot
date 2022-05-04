@@ -164,7 +164,7 @@ class MotionControl:
                         yaw = -math.degrees(math.atan2(
 							newPose.pose.position.y, newPose.pose.position.x))
                         self.target_angle.yaw = (
-							self.target_angle.yaw+yaw)*0.5
+							self.target_angle.yaw+yaw)*0.2
                         if random.random() < 0.05:
                             self.target_angle.roll = roll
                         self.target_angle.pitch = (
@@ -173,6 +173,8 @@ class MotionControl:
                             self.target_angle.pitch = self.tracking_min_pitch
                         if self.target_angle.pitch > self.tracking_max_pitch:
                             self.target_angle.pitch = self.tracking_max_pitch
+                        rospy.loginfo(self.target_angle)
+                        rospy.loginfo("------------")
                         if self.motion_sleep < 0:
                             size = (
 								self.PEOPLE_TRACKED_MOTION_DELAY_MAX-self.PEOPLE_TRACKED_MOTION_DELAY_MIN)
