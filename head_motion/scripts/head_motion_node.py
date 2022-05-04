@@ -137,6 +137,7 @@ class MotionControl:
         for object in msg.objects:
             if object.label_id >= self.tracking_id:
                 self.tracking_id = object.label_id
+                rospy.loginfo("self.tracking_id = " + self.tracking_id)
                 posestamped = PoseStamped()
                 posestamped.header = msg.header
                 posestamped.pose.position.x = object.position[0]
