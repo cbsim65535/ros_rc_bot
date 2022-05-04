@@ -145,7 +145,7 @@ class MotionControl:
             # 최근 추가된 사람을 추적
             marker = peoples_poses[total_people-1]
             try:
-                base_frame = '/neck_link'
+                base_frame = '/gimbal_neck'
                 newPose = self.transform_pose(
 					self.tf_listener, base_frame, marker)
                 if newPose:
