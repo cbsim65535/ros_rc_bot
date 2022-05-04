@@ -32,6 +32,7 @@ class MotionControl:
     PEOPLE_TRACKED_MOTION_DELAY_MAX = 40
     motion_sleep = 0
     is_live = True
+    tracking_id = -1
 
     class Angle:
         roll = 0
@@ -132,31 +133,27 @@ class MotionControl:
 
     def onObjects(self, msg):
         total_people = 0
-        peoples_poses = []
+        posestamped = None
         for object in msg.objects:
-            posestamped = PoseStamped()
-            posestamped.header = msg.header
-            posestamped.pose.position.x = object.position[0]
-            posestamped.pose.position.y = object.position[1]
-            posestamped.pose.position.z = object.position[2]
-            peoples_poses.append(posestamped)
-        total_people = len(peoples_poses)
-        if total_people > 0 and self.enable_people_tracking_motion == True:
+            if object.label_id >= self.tracking_id:
+                self.tracking_id = object.label_id
+                posestamped = PoseStamped()
+                posestamped.header = msg.header
+                posestamped.pose.position.x = object.position[0]
+                posestamped.pose.position.y = object.position[1]
+                posestamped.pose.position.z = object.position[2]
+                
+        if posestamped is not None:
             # 최근 추가된 사람을 추적
-            marker = peoples_poses[total_people-1]
             try:
                 base_frame = '/gimbal_neck'
                 newPose = self.transform_pose(
-					self.tf_listener, base_frame, marker)
+					self.tf_listener, base_frame, posestamped)
                 if newPose:
                     zero = numpy.array((0, 0, 0))
                     tgt = numpy.array(
 						(newPose.pose.position.x, newPose.pose.position.y, newPose.pose.position.z))
                     dist = numpy.linalg.norm(zero-tgt)
-                    # rospy.loginfo(peoples_poses)
-                    # rospy.loginfo(tgt)
-                    # rospy.loginfo(dist)
-                    # rospy.loginfo('-------------')
                     if dist > self.people_tracking_object_min_distance or True:
                         dist_xy = abs(math.hypot(
 							newPose.pose.position.x, newPose.pose.position.y))
