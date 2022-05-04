@@ -157,29 +157,29 @@ class MotionControl:
                     rospy.loginfo(tgt)
                     rospy.loginfo(dist)
                     rospy.loginfo('-------------')
-					# if dist > self.people_tracking_object_min_distance:
-					# 	dist_xy = abs(math.hypot(
-					# 		newPose.pose.position.x, newPose.pose.position.y))
-					# 	roll = random.random() * 30 - 15
-					# 	pitch = -math.degrees(math.atan2(
-					# 		newPose.pose.position.z, dist_xy))
-					# 	yaw = -math.degrees(math.atan2(
-					# 		newPose.pose.position.y, newPose.pose.position.x))
-					# 	self.target_angle.yaw = (
-					# 		self.target_angle.yaw+yaw)*0.5
-					# 	if random.random() < 0.05:
-					# 		self.target_angle.roll = roll
-					# 	self.target_angle.pitch = (
-					# 		self.target_angle.pitch+pitch)*0.5
-					# 	if self.target_angle.pitch < self.tracking_min_pitch:
-					# 		self.target_angle.pitch = self.tracking_min_pitch
-					# 	if self.target_angle.pitch > self.tracking_max_pitch:
-					# 		self.target_angle.pitch = self.tracking_max_pitch
-					# 	if self.motion_sleep < 0:
-					# 		size = (
-					# 			self.PEOPLE_TRACKED_MOTION_DELAY_MAX-self.PEOPLE_TRACKED_MOTION_DELAY_MIN)
-					# 		self.motion_sleep = self.PEOPLE_TRACKED_MOTION_DELAY_MIN + \
-					# 			math.floor(size*random.random())
+                    if dist > self.people_tracking_object_min_distance or True:
+                        dist_xy = abs(math.hypot(
+							newPose.pose.position.x, newPose.pose.position.y))
+                        roll = random.random() * 30 - 15
+                        pitch = -math.degrees(math.atan2(
+							newPose.pose.position.z, dist_xy))
+                        yaw = -math.degrees(math.atan2(
+							newPose.pose.position.y, newPose.pose.position.x))
+                        self.target_angle.yaw = (
+							self.target_angle.yaw+yaw)*0.5
+                        if random.random() < 0.05:
+                            self.target_angle.roll = roll
+                        self.target_angle.pitch = (
+							self.target_angle.pitch+pitch)*0.5
+                        if self.target_angle.pitch < self.tracking_min_pitch:
+                            self.target_angle.pitch = self.tracking_min_pitch
+                        if self.target_angle.pitch > self.tracking_max_pitch:
+                            self.target_angle.pitch = self.tracking_max_pitch
+                        if self.motion_sleep < 0:
+                            size = (
+								self.PEOPLE_TRACKED_MOTION_DELAY_MAX-self.PEOPLE_TRACKED_MOTION_DELAY_MIN)
+                            self.motion_sleep = self.PEOPLE_TRACKED_MOTION_DELAY_MIN + \
+								math.floor(size*random.random())
             except:
                 traceback.print_exc()
                 
