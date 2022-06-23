@@ -33,11 +33,11 @@ while True:
     i = input("0 = middle, 1 = max, 2 = min")
     if i == 0:
         print(servo_mid)
-        pwm.set_pwm(0, 0, servo_mid)
+        pwm.set_pwm(1, 0, servo_mid)
     elif i == 1:
         print(servo_max)
-        pwm.set_pwm(0, 0, servo_max)
+        pwm.set_pwm(1, 0, servo_max)
     elif i == 2:
         print(servo_min)
-        pwm.set_pwm(0, 0, servo_min)
+        pwm.set_pwm(1, 0, servo_min)
     time.sleep(1)
