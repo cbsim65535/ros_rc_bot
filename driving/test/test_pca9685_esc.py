@@ -31,8 +31,8 @@ pwm.set_pwm_freq(60)
 print("Moving servo on channel 0, press Ctrl-C to quit...")
 while True:
     # Move servo on channel O between extremes.
-    i = input("400~600 ?")
-    pulse = i
+    i = input("0~1000 ?")
+    pulse = int(math.floor(float(i) / 1000 * 4096))
     print(pulse)
     pwm.set_pwm(1, 0, pulse)
     time.sleep(1)
