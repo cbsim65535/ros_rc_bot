@@ -5,7 +5,7 @@ import threading
 import traceback
 import time
 
-from ls7366r import LS7366R 
+from ls7366r import LS7366R
 
 import math
 from math import sin, cos, pi
@@ -28,13 +28,13 @@ class OdometryPublisher:
         self.y = 0.0
         self.th = 0.0
         self.last_time = rospy.Time.now()
-        
+
         self.left_encoder = LS7366R(0, 1000000, 4)
         self.right_encoder = LS7366R(1, 1000000, 4)
 
         self._count_left = 0
         self._count_right = 0
-    
+
         self.odom_pub = rospy.Publisher("/odom", Odometry, queue_size=10)
 
         self.read_encoder = threading.Thread(target=self.read_encoder, args=()).start()
@@ -48,8 +48,8 @@ class OdometryPublisher:
 
             self._count_left = -self.left_encoder.readCounter()
             self._count_right = self.right_encoder.readCounter()
-            
-            # rospy.loginfo("A %d, %d"%(self._count_left, self._count_right))
+
+            rospy.loginfo("A %d, %d" % (self._count_left, self._count_right))
             r.sleep()
 
     def _loop(self):
@@ -59,14 +59,14 @@ class OdometryPublisher:
             current_time = rospy.Time.now()
 
             velocity_left = (
-                -(self._count_left-self._prev_left)
+                -(self._count_left - self._prev_left)
                 / float(TOTAL_CODE)
                 * float(RATE)
                 * math.pi
                 * LEFT_WHEEL_DIAMETER
             )
             velocity_right = (
-                -(self._count_right-self._prev_right)
+                -(self._count_right - self._prev_right)
                 / float(TOTAL_CODE)
                 * float(RATE)
                 * math.pi
@@ -76,8 +76,8 @@ class OdometryPublisher:
             old_left = self._count_left
             old_right = self._count_right
 
-            count_left = self._count_left-self._prev_left
-            count_right = self._count_right-self._prev_right
+            count_left = self._count_left - self._prev_left
+            count_right = self._count_right - self._prev_right
 
             velocity_linear = (velocity_right + velocity_left) / 2.0
             velocity_angular = (velocity_right - velocity_left) / DISTANCE_WHEELS

@@ -20,9 +20,9 @@ pwm = Adafruit_PCA9685.PCA9685()
 # pwm = Adafruit_PCA9685.PCA9685(address=0x41, busnum=2)
 
 # Configure min and max servo pulse lengths
-servo_min = 400  # Min pulse length out of 4096
-servo_max = 600  # Max pulse length out of 4096
-servo_mid = 500  # Max pulse length out of 4096
+servo_min = 409  # Min pulse length out of 4096
+servo_max = 3686  # Max pulse length out of 4096
+servo_mid = 2048  # Max pulse length out of 4096
 
 # Set frequency to 60hz, good for servos.
 pwm.set_pwm_freq(60)
