@@ -49,10 +49,6 @@ class RcBot:
     def __init__(self):
         rospy.init_node("rc_car", anonymous=True)
 
-        rospy.loginfo(
-            "REVERSE_ACCEL_SIZE_PER_ONE %f" % RcBot.REVERSE_ACCEL_SIZE_PER_ONE
-        )
-
         # Initialise the PCA9685 using the default address (0x40).
         self.pwm = Adafruit_PCA9685.PCA9685()
 
@@ -163,8 +159,8 @@ class RcBot:
         pulse = RcBot.STEER_CENTER_PULSE + steer
         self.setSteerPwm(pulse)
 
-        target_speed = 0
-        accel = 0
+        target_speed = 0.0
+        accel = 0.0
         if msg.twist.linear.x > 0:
             target_speed = msg.twist.linear.x * RcBot.ACCEL_SIZE_PER_ONE
             accel = RcBot.ACCEL_SIZE_PER_ONE / RcBot.ACCEL_STEP
@@ -185,6 +181,7 @@ class RcBot:
             self.__speed = RcBot.ACCEL_SIZE_PER_ONE
 
         pulse = RcBot.PULSE_SPEED_ZERO + self.__speed
+        rospy.loginfo("target_speed %f" % (target_speed))
         self.setEscPwm(pulse)
 
         self.__timestemp = time.time()
