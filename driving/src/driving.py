@@ -75,11 +75,11 @@ class RcBot:
     def setEscPwm(self, pulse):
         pulse = int(pulse)
         if pulse < RcBot.PULSE_SPEED_ZERO:
-            if RcBot.REVERSE_DRIVING_MIN_PULSE < pulse:
+            if RcBot.REVERSE_DRIVING_MIN_PULSE > pulse:
                 pulse = RcBot.PULSE_SPEED_ZERO
         if pulse > RcBot.PULSE_SPEED_ZERO:
             if RcBot.DRIVING_MIN_PULSE > pulse:
-                hpulsez = RcBot.PULSE_SPEED_ZERO
+                pulse = RcBot.PULSE_SPEED_ZERO
         if RcBot.ESC_MIN_PULSE > pulse:
             pulse = RcBot.PULSE_SPEED_ZERO
         if RcBot.ESC_MAX_PULSE < pulse:
