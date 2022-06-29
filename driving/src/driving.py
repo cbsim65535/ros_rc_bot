@@ -168,18 +168,21 @@ class RcBot:
             target_speed = msg.twist.linear.x * RcBot.REVERSE_ACCEL_SIZE_PER_ONE
             accel = RcBot.REVERSE_ACCEL_SIZE_PER_ONE / RcBot.ACCEL_STEP
         else:
-            self.__speed = 0
+            self.__speed = 0.0
 
         if target_speed > self.__speed:
             self.__speed += accel
         if target_speed < self.__speed:
             self.__speed -= accel
 
+        pulse = RcBot.PULSE_SPEED_ZERO
         if self.__speed < -RcBot.REVERSE_ACCEL_SIZE_PER_ONE:
             self.__speed = -RcBot.REVERSE_ACCEL_SIZE_PER_ONE
-            pulse = RcBot.REVERSE_DRIVING_MIN_PULSE + self.__speed
         if self.__speed > RcBot.ACCEL_SIZE_PER_ONE:
             self.__speed = RcBot.ACCEL_SIZE_PER_ONE
+        if self.__speed < 0.0:
+            pulse = RcBot.REVERSE_DRIVING_MIN_PULSE + self.__speed
+        if self.__speed > 0.0:
             pulse = RcBot.DRIVING_MIN_PULSE + self.__speed
 
         rospy.loginfo("target_speed %f %f %f" % (self.__speed, accel, pulse))
