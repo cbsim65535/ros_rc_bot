@@ -39,10 +39,10 @@ class RcBot:
     DRIVING_MIN_PULSE = 2088  # 2048
     REVERSE_DRIVING_MIN_PULSE = 1843
 
-    ACCEL_SIZE_PER_ONE = (ESC_MAX_PULSE - DRIVING_MIN_PULSE) * 0.5
+    ACCEL_SIZE_PER_ONE = (ESC_MAX_PULSE - DRIVING_MIN_PULSE) * 0.3
     ACCEL_STEP = 100.0
 
-    REVERSE_ACCEL_SIZE_PER_ONE = (REVERSE_DRIVING_MIN_PULSE - ESC_MIN_PULSE) * 0.5
+    REVERSE_ACCEL_SIZE_PER_ONE = (REVERSE_DRIVING_MIN_PULSE - ESC_MIN_PULSE) * 0.3
 
     PULSE_SPEED_ZERO = 2048
 
@@ -142,7 +142,7 @@ class RcBot:
                 if self.__speed != 0:
                     rospy.loginfo("STOP")
                     self.__speed = 0
-                    pulse = RcBot.PULSE_SPEED_ZERO + self.__speed
+                    pulse = RcBot.PULSE_SPEED_ZERO
                     self.setEscPwm(pulse)
             time.sleep(0.1)
 
@@ -177,10 +177,11 @@ class RcBot:
 
         if self.__speed < -RcBot.REVERSE_ACCEL_SIZE_PER_ONE:
             self.__speed = -RcBot.REVERSE_ACCEL_SIZE_PER_ONE
+            pulse = RcBot.REVERSE_DRIVING_MIN_PULSE + self.__speed
         if self.__speed > RcBot.ACCEL_SIZE_PER_ONE:
             self.__speed = RcBot.ACCEL_SIZE_PER_ONE
+            pulse = RcBot.DRIVING_MIN_PULSE + self.__speed
 
-        pulse = RcBot.PULSE_SPEED_ZERO + self.__speed
         rospy.loginfo("target_speed %f %f %f" % (self.__speed, accel, pulse))
         self.setEscPwm(pulse)
 
