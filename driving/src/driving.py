@@ -40,7 +40,7 @@ class RcBot:
     REVERSE_DRIVING_MIN_PULSE = 1843
 
     ACCEL_SIZE_PER_ONE = (ESC_MAX_PULSE - DRIVING_MIN_PULSE) * 0.5
-    ACCEL_STEP = 100
+    ACCEL_STEP = 100.0
 
     REVERSE_ACCEL_SIZE_PER_ONE = (REVERSE_DRIVING_MIN_PULSE - ESC_MIN_PULSE) * 0.5
 
@@ -48,6 +48,8 @@ class RcBot:
 
     def __init__(self):
         rospy.init_node("rc_car", anonymous=True)
+
+        rospy.loginfo("REVERSE_ACCEL_SIZE_PER_ONE", RcBot.REVERSE_ACCEL_SIZE_PER_ONE)
 
         # Initialise the PCA9685 using the default address (0x40).
         self.pwm = Adafruit_PCA9685.PCA9685()
