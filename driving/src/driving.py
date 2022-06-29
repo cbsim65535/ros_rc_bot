@@ -85,7 +85,7 @@ class RcBot:
         if RcBot.ESC_MAX_PULSE < pulse:
             pulse = RcBot.PULSE_SPEED_ZERO
         try:
-            rospy.loginfo("setEscPwm %f" % pulse)
+            # rospy.loginfo("setEscPwm %f" % pulse)
             self.pwm.set_pwm(self.CH_ESC, 0, pulse)
         except:
             traceback.print_exc()
@@ -185,7 +185,6 @@ class RcBot:
         if self.__speed > 0.0:
             pulse = RcBot.DRIVING_MIN_PULSE + self.__speed
 
-        rospy.loginfo("target_speed %f %f %f" % (self.__speed, accel, pulse))
         self.setEscPwm(pulse)
 
         self.__timestemp = time.time()
