@@ -181,7 +181,7 @@ class RcBot:
             self.__speed = RcBot.ACCEL_SIZE_PER_ONE
 
         pulse = RcBot.PULSE_SPEED_ZERO + self.__speed
-        rospy.loginfo("target_speed %f" % (target_speed))
+        rospy.loginfo("target_speed %f %f %f" % (self.__speed, accel, target_speed))
         self.setEscPwm(pulse)
 
         self.__timestemp = time.time()
