@@ -3,7 +3,7 @@ Description=Run Ros RC Car launch
 
 [Service]
 Type=forking
-ExecStart=/opt/ros/melodic/bin/roslaunch /home/pi/rc_ws/src/ros_rc_bot/rc_bringup/launch/bringup.launch
+ExecStart=/opt/ros/melodic/bin/roslaunch /home/pi/rc_ws/src/ros_rc_bot/rc_bringup/launch/pi_bringup.launch
 Environment=ROS_ROOT=/opt/ros/melodic/share/ros
 User=pi
 Group=pi
