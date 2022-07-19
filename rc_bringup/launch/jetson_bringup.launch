@@ -1,20 +1,3 @@
 <launch>
-  <!-- Start the rc bot node -->
-  <node name="joy_node" pkg="joy" type="joy_node" output="screen" />
-  <node type="manual.py" pkg="driving" name="manual" output="screen" />
-  <node type="driving.py" pkg="driving" name="driving" output="screen" />
-  <node type="imu_node.py" pkg="bno055" name="imu_publisher" output="screen" />
-  <node type="odom.py" pkg="odom" name="odom_publisher" output="screen" />
-
-  <include file="$(find rc_bringup)/launch/tf_publisher.launch" />
-  <include file="$(find basecam)/launch/basecam_node.launch" />
-
-
-  <!-- <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"/> -->
-  <!-- Start the camera driver -->
-  <!-- <node pkg="usb_cam" type="usb_cam_node" name="usb_cam">
-        <param name="pixel_format" value="yuyv" />
-        <param name="image_width" value="160" />
-        <param name="image_height" value="120" />
-  </node> -->
+  <include file="$(find ydlidar_ros_driver)/launch/G2.launch" />
 </launch>
