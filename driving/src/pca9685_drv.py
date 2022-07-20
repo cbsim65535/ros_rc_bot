@@ -59,7 +59,7 @@ class RcBot:
                     time.time() > self.__timestamp[i]
                     and self.__value != self.__neutral[i]
                 ):
-                    self.set_pwm(0, self.__neutral[i])
+                    self.set_pwm(i, self.__neutral[i])
             time.sleep(0.1)
 
     def stop(self):
