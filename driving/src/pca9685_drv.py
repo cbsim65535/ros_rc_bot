@@ -57,7 +57,7 @@ class RcBot:
         while self.__is_loop:
             for i in range(0, self.MAX_CHANNEL):
                 if (
-                    time.time() > self.__timestamp[i]
+                    time.time() > self.__timestamp[i] + 0.3
                     and self.__value[i] != self.__neutral[i]
                 ):
                     self.set_pwm(i, self.__neutral[i])
