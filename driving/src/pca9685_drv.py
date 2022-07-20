@@ -44,7 +44,7 @@ class RcBot:
         threading.Thread(target=self.loop, args=()).start()
 
     def on_ctrl_set(self, msg):
-        self.set_pwm(0, msg.channel, msg.pulse)
+        self.set_pwm(msg.channel, msg.pulse)
 
     def set_pwm(self, channel, pulse):
         if channel == 0:
