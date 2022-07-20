@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>pwm_ctrl</name>
+  <name>pwm_msgs</name>
   <version>0.0.0</version>
   <description>The pwm_ctrl package</description>
 
