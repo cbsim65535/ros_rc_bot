@@ -25,6 +25,7 @@ class RcBot:
         self.__is_loop = True
         self.__timestamp = [0, 0, 0, 0]
         self.__value = [0, 0, 0, 0]
+        self.MAX_CHANNEL = 4
 
         rate = rospy.Rate(10)  # 10hz
 
@@ -32,7 +33,7 @@ class RcBot:
 
         self.__neutral = [369, 2048, 369, 369]
 
-        for i in range(0, 4):
+        for i in range(0, self.MAX_CHANNEL):
             self.set_pwm(i, self.__neutral[i])
 
         threading.Thread(target=self.loop, args=()).start()
@@ -53,7 +54,7 @@ class RcBot:
     def loop(self):
         while self.__is_loop:
             rospy.loginfo(time.time())
-            for i in range(0, 5):
+            for i in range(0, self.MAX_CHANNEL):
                 if (
                     time.time() > self.__timestamp[i]
                     and self.__value != self.__neutral[i]
