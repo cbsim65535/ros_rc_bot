@@ -61,7 +61,7 @@ class RcBot:
     def loop(self):
         while self.__is_loop:
             if time.time() > self.__timestemp_0 + 0.3:
-                # self.set_pwm(0, self.neutral_0)
+                self.set_pwm(0, self.neutral_0)
                 pass
             if time.time() > self.__timestemp_1 + 0.3:
                 self.set_pwm(0, self.neutral_1)
