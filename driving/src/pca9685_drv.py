@@ -5,7 +5,7 @@ import threading
 import traceback
 import time
 
-from pwm_ctrl.msg import PwmCtrl
+from pwm_msgs.msg import PwmCtrl
 
 # Import the PCA9685 module.
 import Adafruit_PCA9685
