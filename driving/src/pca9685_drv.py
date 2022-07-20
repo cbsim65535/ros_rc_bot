@@ -45,6 +45,8 @@ class RcBot:
         rospy.loginfo("=" * 20)
         rospy.loginfo(channel)
         rospy.loginfo(pulse)
+        rospy.loginfo(self.__value[channel])
+        rospy.loginfo(self.__neutral[channel])
         rospy.loginfo(self.__timestamp[channel])
         self.__timestamp[channel] = time.time()
         pulse = int(pulse)
