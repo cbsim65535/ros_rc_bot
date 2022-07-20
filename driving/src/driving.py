@@ -63,8 +63,6 @@ class RcBot:
         sec = 0
         self.set_esc_pwm(RcBot.PULSE_SPEED_ZERO)
 
-        threading.Thread(target=self.loop, args=()).start()
-
     def set_esc_pwm(self, pulse):
         pulse = int(pulse)
         if pulse < RcBot.PULSE_SPEED_ZERO:
