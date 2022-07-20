@@ -47,8 +47,8 @@ class RcBot:
         rospy.loginfo(pulse)
         rospy.loginfo(self.__timestamp[channel])
         self.__timestamp[channel] = time.time()
-        self.__value[channel] = pulse
         pulse = int(pulse)
+        self.__value[channel] = pulse
         self.pwm.set_pwm(channel, 0, pulse)
 
     def loop(self):
@@ -57,7 +57,7 @@ class RcBot:
             for i in range(0, self.MAX_CHANNEL):
                 if (
                     time.time() > self.__timestamp[i]
-                    and self.__value != self.__neutral[i]
+                    and self.__value[i] != self.__neutral[i]
                 ):
                     self.set_pwm(i, self.__neutral[i])
             time.sleep(0.1)
