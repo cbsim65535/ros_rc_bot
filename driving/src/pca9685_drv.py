@@ -23,7 +23,7 @@ class RcBot:
         self.pwm.set_pwm_freq(60)
 
         self.__is_loop = True
-        self.__timestemp = [0, 0, 0, 0]
+        self.__timestamp = [0, 0, 0, 0]
         self.__value = [0, 0, 0, 0]
 
         rate = rospy.Rate(10)  # 10hz
@@ -44,8 +44,8 @@ class RcBot:
         rospy.loginfo("=" * 20)
         rospy.loginfo(channel)
         rospy.loginfo(pulse)
-        rospy.loginfo(self.__timestemp_0)
-        self.__timestemp[channel] = time.time()
+        rospy.loginfo(self.__timestamp[channel])
+        self.__timestamp[channel] = time.time()
         self.__value[channel] = pulse
         pulse = int(pulse)
         self.pwm.set_pwm(channel, 0, pulse)
@@ -55,7 +55,7 @@ class RcBot:
             rospy.loginfo(time.time())
             for i in range(0, 5):
                 if (
-                    time.time() > self.__timestemp[i]
+                    time.time() > self.__timestamp[i]
                     and self.__value != self.__neutral[i]
                 ):
                     self.set_pwm(0, self.__neutral[i])
