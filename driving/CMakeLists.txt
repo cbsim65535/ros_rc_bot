@@ -71,7 +71,6 @@ find_package(catkin REQUIRED COMPONENTS
 generate_messages(
   DEPENDENCIES
   std_msgs  # Or other packages containing msgs
-  pwm_msgs
 )
 
 ################################################
