@@ -106,6 +106,7 @@ catkin_package(
 #  LIBRARIES rc_bot
 #  CATKIN_DEPENDS rospy
 #  DEPENDS system_lib
+  message_generation
 )
 
 ###########
