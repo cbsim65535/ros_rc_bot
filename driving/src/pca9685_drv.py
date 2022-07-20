@@ -6,11 +6,10 @@ import traceback
 import time
 import math
 
+from driving.msg import PwmCtrl
+
 # Import the PCA9685 module.
 import Adafruit_PCA9685
-
-from std_msgs.msg import Int32
-from driving.msg import PwmCtrl
 
 
 class RcBot:
