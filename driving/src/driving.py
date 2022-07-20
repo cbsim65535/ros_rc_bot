@@ -9,7 +9,7 @@ import math
 # Import the PCA9685 module.
 import Adafruit_PCA9685
 
-from std_msgs.msg import String
+from std_msgs.msg import String, Int32
 from geometry_msgs.msg import TwistStamped
 
 
@@ -64,6 +64,10 @@ class RcBot:
 
         rate = rospy.Rate(10)  # 10hz
 
+        self.pub_pwm_0_set = rospy.Publisher("/pwm_ctrl/0/set", Int32, queue_size=10)
+        self.pub_pwm_1_set = rospy.Publisher("/pwm_ctrl/1/set", Int32, queue_size=10)
+        self.pub_pwm_2_set = rospy.Publisher("/pwm_ctrl/2/set", Int32, queue_size=10)
+        self.pub_pwm_3_set = rospy.Publisher("/pwm_ctrl/3/set", Int32, queue_size=10)
         rospy.Subscriber("/cmd_vel", TwistStamped, self.onCmdVel)
         # rospy.Subscriber("/camera/focus_ctrl", TwistStamped, self.on_focus_ctrl)
 
@@ -84,6 +88,8 @@ class RcBot:
             pulse = RcBot.PULSE_SPEED_ZERO
         if RcBot.ESC_MAX_PULSE < pulse:
             pulse = RcBot.PULSE_SPEED_ZERO
+
+        self.pub_pwm_1_set.publish(Int32(pulse))
         try:
             # rospy.loginfo("setEscPwm %f" % pulse)
             self.pwm.set_pwm(self.CH_ESC, 0, pulse)
@@ -130,6 +136,7 @@ class RcBot:
 
     def setSteerPwm(self, pulse):
         pulse = int(pulse)
+        self.pub_pwm_0_set.publish(Int32(pulse))
         try:
             # rospy.loginfo("setSteerPwm %d" % pulse)
             self.pwm.set_pwm(self.CH_SERVO, 0, pulse)
