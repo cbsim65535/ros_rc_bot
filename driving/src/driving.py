@@ -6,10 +6,7 @@ import traceback
 import time
 import math
 
-# Import the PCA9685 module.
-import Adafruit_PCA9685
-
-from std_msgs.msg import String, Int32
+from pwm_msgs.msg import PwmCtrl
 from geometry_msgs.msg import TwistStamped
 
 
@@ -49,12 +46,6 @@ class RcBot:
     def __init__(self):
         rospy.init_node("rc_car", anonymous=True)
 
-        # Initialise the PCA9685 using the default address (0x40).
-        self.pwm = Adafruit_PCA9685.PCA9685()
-
-        # Set frequency to 60hz, good for servos.
-        self.pwm.set_pwm_freq(60)
-
         self.__is_loop = True
         self.__speed = 0
         self.__steer = 0
@@ -64,19 +55,17 @@ class RcBot:
 
         rate = rospy.Rate(10)  # 10hz
 
-        self.pub_pwm_0_set = rospy.Publisher("/pwm_ctrl/0/set", Int32, queue_size=10)
-        self.pub_pwm_1_set = rospy.Publisher("/pwm_ctrl/1/set", Int32, queue_size=10)
-        self.pub_pwm_2_set = rospy.Publisher("/pwm_ctrl/2/set", Int32, queue_size=10)
-        self.pub_pwm_3_set = rospy.Publisher("/pwm_ctrl/3/set", Int32, queue_size=10)
-        rospy.Subscriber("/cmd_vel", TwistStamped, self.onCmdVel)
+        self.pub_pwm_set = rospy.Publisher("/pwm_ctrl/set", PwmCtrl, queue_size=10)
+
+        rospy.Subscriber("/cmd_vel", TwistStamped, self.on_cmd_vel)
         # rospy.Subscriber("/camera/focus_ctrl", TwistStamped, self.on_focus_ctrl)
 
         sec = 0
-        self.setEscPwm(RcBot.PULSE_SPEED_ZERO)
+        self.set_esc_pwm(RcBot.PULSE_SPEED_ZERO)
 
         threading.Thread(target=self.loop, args=()).start()
 
-    def setEscPwm(self, pulse):
+    def set_esc_pwm(self, pulse):
         pulse = int(pulse)
         if pulse < RcBot.PULSE_SPEED_ZERO:
             if RcBot.REVERSE_DRIVING_MIN_PULSE < pulse:
@@ -89,12 +78,7 @@ class RcBot:
         if RcBot.ESC_MAX_PULSE < pulse:
             pulse = RcBot.PULSE_SPEED_ZERO
 
-        self.pub_pwm_1_set.publish(Int32(pulse))
-        try:
-            # rospy.loginfo("setEscPwm %f" % pulse)
-            self.pwm.set_pwm(self.CH_ESC, 0, pulse)
-        except:
-            traceback.print_exc()
+        self.pub_pwm_set.publish(PwmCtrl(self.CH_ESC, pulse))
 
     def on_focus_ctrl(self, msg):
         focus = msg.twist.angular.y * RcBot.FOCUS_SIZE_PER_ONE
@@ -120,40 +104,17 @@ class RcBot:
 
     def set_focus_pwm(self, pulse):
         pulse = int(pulse)
-        try:
-            # rospy.loginfo("set_focus_pwm %d" % pulse)
-            self.pwm.set_pwm(self.CH_FOCUS, 0, pulse)
-        except:
-            traceback.print_exc()
+        self.pub_pwm_set.publish(PwmCtrl(self.CH_FOCUS, pulse))
 
     def set_zoom_pwm(self, pulse):
         pulse = int(pulse)
-        try:
-            # rospy.loginfo("set_zoom_pwm %d" % pulse)
-            self.pwm.set_pwm(self.CH_ZOOM, 0, pulse)
-        except:
-            traceback.print_exc()
+        self.pub_pwm_set.publish(PwmCtrl(self.CH_ZOOM, pulse))
 
-    def setSteerPwm(self, pulse):
+    def set_steer_pwm(self, pulse):
         pulse = int(pulse)
-        self.pub_pwm_0_set.publish(Int32(pulse))
-        try:
-            # rospy.loginfo("setSteerPwm %d" % pulse)
-            self.pwm.set_pwm(self.CH_SERVO, 0, pulse)
-        except:
-            traceback.print_exc()
+        self.pub_pwm_set.publish(PwmCtrl(self.CH_SERVO, pulse))
 
-    def loop(self):
-        while self.__is_loop:
-            if time.time() > self.__timestemp + 0.3:
-                if self.__speed != 0:
-                    rospy.loginfo("STOP")
-                    self.__speed = 0
-                    pulse = RcBot.PULSE_SPEED_ZERO
-                    self.setEscPwm(pulse)
-            time.sleep(0.1)
-
-    def onCmdVel(self, msg):
+    def on_cmd_vel(self, msg):
         # rospy.loginfo(msg)
 
         steer = msg.twist.angular.z * RcBot.STEER_SIZE_PER_ONE
@@ -164,7 +125,7 @@ class RcBot:
         self.__steer = steer
 
         pulse = RcBot.STEER_CENTER_PULSE + steer
-        self.setSteerPwm(pulse)
+        self.set_steer_pwm(pulse)
 
         target_speed = 0.0
         accel = 0.0
@@ -192,7 +153,7 @@ class RcBot:
         if self.__speed > 0.0:
             pulse = RcBot.DRIVING_MIN_PULSE + self.__speed
 
-        self.setEscPwm(pulse)
+        self.set_esc_pwm(pulse)
 
         self.__timestemp = time.time()
 
