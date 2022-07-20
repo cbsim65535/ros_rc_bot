@@ -4,7 +4,6 @@ import rospy
 import threading
 import traceback
 import time
-import math
 
 from driving.msg import PwmCtrl
 
@@ -14,7 +13,7 @@ import Adafruit_PCA9685
 
 class RcBot:
     def __init__(self):
-        rospy.init_node("rc_car", anonymous=True)
+        rospy.init_node("pca9685_drv", anonymous=True)
 
         # Initialise the PCA9685 using the default address (0x40).
         self.pwm = Adafruit_PCA9685.PCA9685()
