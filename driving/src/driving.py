@@ -46,12 +46,8 @@ class RcBot:
     def __init__(self):
         rospy.init_node("rc_car", anonymous=True)
 
-        self.__is_loop = True
         self.__speed = 0
-        self.__steer = 0
-        self.__focus = 0
         self.__zoom = -RcBot.ZOOM_MIN_PULSE
-        self.__timestemp = time.time()
 
         rate = rospy.Rate(10)  # 10hz
 
@@ -84,7 +80,6 @@ class RcBot:
             focus = RcBot.MAX_FOCUS_PULSE_SIZE
         if focus < -RcBot.MAX_FOCUS_PULSE_SIZE:
             focus = -RcBot.MAX_FOCUS_PULSE_SIZE
-        self.__focus = focus
 
         pulse = RcBot.FOCUS_CENTER_PULSE + focus
         self.set_focus_pwm(pulse)
@@ -120,7 +115,6 @@ class RcBot:
             steer = RcBot.MAX_STEER_PULSE_SIZE
         if steer < -RcBot.MAX_STEER_PULSE_SIZE:
             steer = -RcBot.MAX_STEER_PULSE_SIZE
-        self.__steer = steer
 
         pulse = RcBot.STEER_CENTER_PULSE + steer
         self.set_steer_pwm(pulse)
@@ -152,8 +146,6 @@ class RcBot:
             pulse = RcBot.DRIVING_MIN_PULSE + self.__speed
 
         self.set_esc_pwm(pulse)
-
-        self.__timestemp = time.time()
 
     def stop(self):
         self.__is_loop = False
