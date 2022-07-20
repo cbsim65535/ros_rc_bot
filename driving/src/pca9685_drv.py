@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from turtle import pu
 import rospy
 import threading
 import traceback
@@ -22,24 +23,17 @@ class RcBot:
         self.pwm.set_pwm_freq(60)
 
         self.__is_loop = True
-        self.__timestemp_0 = time.time()
-        self.__timestemp_1 = time.time()
-        self.__timestemp_2 = time.time()
-        self.__timestemp_3 = time.time()
+        self.__timestemp = [0, 0, 0, 0]
+        self.__value = [0, 0, 0, 0]
 
         rate = rospy.Rate(10)  # 10hz
 
         rospy.Subscriber("/pwm_ctrl/set", PwmCtrl, self.on_ctrl_set)
 
-        self.neutral_0 = 369
-        self.neutral_1 = 2048
-        self.neutral_2 = 369
-        self.neutral_3 = 369
+        self.__neutral = [369, 2048, 369, 369]
 
-        self.set_pwm(0, self.neutral_0)
-        self.set_pwm(1, self.neutral_1)
-        self.set_pwm(2, self.neutral_2)
-        self.set_pwm(3, self.neutral_3)
+        for i in range(0, 4):
+            self.set_pwm(i, self.__neutral[i])
 
         threading.Thread(target=self.loop, args=()).start()
 
@@ -51,31 +45,20 @@ class RcBot:
         rospy.loginfo(channel)
         rospy.loginfo(pulse)
         rospy.loginfo(self.__timestemp_0)
-        if channel == 0:
-            self.__timestemp_0 = time.time()
-        if channel == 1:
-            self.__timestemp_1 = time.time()
-        if channel == 2:
-            self.__timestemp_2 = time.time()
-        if channel == 3:
-            self.__timestemp_3 = time.time()
+        self.__timestemp[channel] = time.time()
+        self.__value[channel] = pulse
         pulse = int(pulse)
         self.pwm.set_pwm(channel, 0, pulse)
 
     def loop(self):
         while self.__is_loop:
             rospy.loginfo(time.time())
-            if time.time() > self.__timestemp_0 + 0.3:
-                self.set_pwm(0, self.neutral_0)
-                pass
-            if time.time() > self.__timestemp_1 + 0.3:
-                self.set_pwm(0, self.neutral_1)
-            if time.time() > self.__timestemp_2 + 0.3:
-                # self.set_pwm(0, self.neutral_2)
-                pass
-            if time.time() > self.__timestemp_3 + 0.3:
-                # self.set_pwm(0, self.neutral_3)
-                pass
+            for i in range(0, 5):
+                if (
+                    time.time() > self.__timestemp[i]
+                    and self.__value != self.__neutral[i]
+                ):
+                    self.set_pwm(0, self.__neutral[i])
             time.sleep(0.1)
 
     def stop(self):
