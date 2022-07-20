@@ -42,7 +42,7 @@ class RcBot:
         self.set_pwm(msg.channel, msg.pulse)
 
     def set_pwm(self, channel, pulse):
-        rospy.loglogdebuginfo("=" * 20)
+        rospy.logdebug("=" * 20)
         rospy.logdebug(channel)
         rospy.logdebug(pulse)
         rospy.logdebug(self.__value[channel])
