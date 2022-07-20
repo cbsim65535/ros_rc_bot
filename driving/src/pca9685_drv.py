@@ -10,6 +10,7 @@ import math
 import Adafruit_PCA9685
 
 from std_msgs.msg import Int32
+from driving.msg import CtrlPwm
 
 
 class RcBot:
@@ -30,7 +31,7 @@ class RcBot:
 
         rate = rospy.Rate(10)  # 10hz
 
-        rospy.Subscriber("/pwm_ctrl/set", Int32, self.on_ctrl_set)
+        rospy.Subscriber("/pwm_ctrl/set", CtrlPwm, self.on_ctrl_set)
 
         self.neutral_0 = 369
         self.neutral_1 = 2048
