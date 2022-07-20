@@ -37,9 +37,9 @@ class RcBot:
         self.neutral_3 = 369
 
         self.set_pwm(0, self.neutral_0)
-        self.set_pwm(0, self.neutral_1)
-        self.set_pwm(0, self.neutral_2)
-        self.set_pwm(0, self.neutral_3)
+        self.set_pwm(1, self.neutral_1)
+        self.set_pwm(2, self.neutral_2)
+        self.set_pwm(3, self.neutral_3)
 
         threading.Thread(target=self.loop, args=()).start()
 
