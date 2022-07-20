@@ -49,7 +49,7 @@ class OdometryPublisher:
             self._count_left = self.left_encoder.readCounter()
             self._count_right = -self.right_encoder.readCounter()
 
-            rospy.loginfo("A %d, %d" % (self._count_left, self._count_right))
+            # rospy.loginfo("A %d, %d" % (self._count_left, self._count_right))
             r.sleep()
 
     def _loop(self):
