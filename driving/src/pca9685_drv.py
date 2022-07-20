@@ -47,6 +47,10 @@ class RcBot:
         self.set_pwm(msg.channel, msg.pulse)
 
     def set_pwm(self, channel, pulse):
+        rospy.loginfo("=" * 20)
+        rospy.loginfo(channel)
+        rospy.loginfo(pulse)
+        rospy.loginfo(self.__timestemp_0)
         if channel == 0:
             self.__timestemp_0 = time.time()
         if channel == 1:
@@ -60,6 +64,7 @@ class RcBot:
 
     def loop(self):
         while self.__is_loop:
+            rospy.loginfo(time.time())
             if time.time() > self.__timestemp_0 + 0.3:
                 self.set_pwm(0, self.neutral_0)
                 pass
