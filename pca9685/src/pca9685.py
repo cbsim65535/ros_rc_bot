@@ -14,7 +14,7 @@ import Adafruit_PCA9685
 
 class RcBot:
     def __init__(self):
-        rospy.init_node("pca9685_drv", anonymous=True)
+        rospy.init_node("pca9685", anonymous=True)
 
         # Initialise the PCA9685 using the default address (0x40).
         self.pwm = Adafruit_PCA9685.PCA9685()
