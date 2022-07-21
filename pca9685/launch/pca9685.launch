@@ -1,3 +1,0 @@
-<launch>
-  <node type="pca9685.py" pkg="pca9685" name="pca9685" output="screen" />
-</launch>
