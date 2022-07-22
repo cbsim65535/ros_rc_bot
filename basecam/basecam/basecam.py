@@ -357,32 +357,18 @@ class Basecam(Node)
 
         self.camera_tf_broadcaster = tf.TransformBroadcaster()
 
-        self.pub_angles_euler = rclpy.Publisher(
-            "/basecam/angles/euler", Vector3Stamped, queue_size=10
-        )
-        self.pub_angles_quaternion = rclpy.Publisher(
-            "/basecam/angles/quaternion", QuaternionStamped, queue_size=10
-        )
-        self.pub_camera_imu_data = rclpy.Publisher(
-            "/basecam/camera/imu/data", Imu, queue_size=10
-        )
-        self.pub_camera_imu_raw = rclpy.Publisher(
-            "/basecam/camera/imu/raw", Imu, queue_size=10
-        )
-        self.pub_camera_imu_mag = rclpy.Publisher(
-            "/basecam/camera/imu/mag", Imu, queue_size=10
-        )
-        self.pub_frame_imu_data = rclpy.Publisher(
-            "/basecam/frame/imu/data", Imu, queue_size=10
-        )
-        rclpy.Service("/basecam/change_angle", BasecamChangeAngle, self.change_angle)
-        rclpy.Service("/basecam/set_motor", BasecamSetMotor, self.set_motor)
-        rclpy.Service(
-            "/basecam/reset_follow_offset",
-            BasecamResetFollowOffset,
-            self.reset_follow_offset,
-        )
-        rclpy.Subscriber("/basecam/direct_ctrl", TwistStamped, self.on_direct_ctrl)
+        self.pub_angles_euler = self.create_publisher(Vector3Stamped, "/basecam/angles/euler", 10)
+        self.pub_angles_euler = self.create_publisher(QuaternionStamped, "/basecam/angles/quaternion", 10)
+        self.pub_angles_euler = self.create_publisher(Imu, "/basecam/camera/imu/data", 10)
+        self.pub_angles_euler = self.create_publisher(Imu, "/basecam/camera/imu/raw", 10)
+        self.pub_angles_euler = self.create_publisher(Imu,  "/basecam/camera/imu/mag", 10)
+        self.pub_angles_euler = self.create_publisher(Imu, "/basecam/frame/imu/data", 10)
+        
+        self.srv_change_angle = self.create_service(BasecamChangeAngle, '/basecam/change_angle', self.change_angle)
+        self.srv_change_angle = self.create_service(BasecamSetMotor, '/basecam/set_motor', self.set_motor)
+        self.srv_change_angle = self.create_service(BasecamResetFollowOffset, '/basecam/reset_follow_offset', self.reset_follow_offset)
+        
+        self.sub_direct_ctrl = self.create_subscription(TwistStamped, "/basecam/direct_ctrl",self.on_direct_ctrl,10)
 
         self.server = ChangeAngleServer(self)
 
