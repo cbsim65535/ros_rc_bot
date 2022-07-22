@@ -291,7 +291,7 @@ class ResponseDefine:
             l = []
             s = len(item["formats"])
             for j in item["formats"]:
-                k = j.keys()[0]
+                k = list(j.keys())[0]
                 r = r + j[k]
                 l.append(k)
             item["_fmt"] = r
