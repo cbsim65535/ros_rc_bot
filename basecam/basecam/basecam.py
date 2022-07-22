@@ -28,11 +28,7 @@ from basecam_msgs.srv import (
     BasecamSetMotor,
     BasecamResetFollowOffset,
 )
-from basecam_msgs.msg import (
-    BasecamDirectAngleAction,
-    BasecamDirectAngleFeedback,
-    BasecamDirectAngleResult,
-)
+from basecam_msgs.msg import BasecamDirectAngle
 from sensor_msgs.msg import Imu
 
 
@@ -321,24 +317,20 @@ class ResponseDefine:
 
 
 class ChangeAngleServer:
-    _feedback = BasecamDirectAngleFeedback()
-    _result = BasecamDirectAngleResult()
+    _feedback = BasecamDirectAngle.Feedback()
+    _result = BasecamDirectAngle.Result()
 
     def __init__(self, simplebgc):
         self.is_loop = False
         self.__simplebgc = simplebgc
-        self.__server = actionlib.SimpleActionServer(
-            "basecam/direct_angle",
-            BasecamDirectAngleAction,
-            execute_cb=self.execute_cb,
-            auto_start=False,
+        self.__server = ActionServer(
+            self, BasecamDirectAngle, "basecam/direct_angle", execute_cb=self.execute_cb
         )
-        self.__server.start()
 
     def execute_cb(self, goal):
         r = rclpy.Rate(2)
         rclpy.logging.get_logger().info("direct_angle %r" % (goal))
-        sbgc.cmd_control_mode_speed_angle_degree(
+        self.__simplebgc.cmd_control_mode_speed_angle_degree(
             goal.roll_speed,
             goal.roll_degree,
             goal.pitch_speed,
@@ -371,8 +363,7 @@ class ChangeAngleServer:
         self.__server.set_succeeded(self._result)
 
 
-class SimpleBGC:
-
+class Basecam(Node):
     RESP_DEF = ResponseDefine()
     ANGLE_UNIT = 0.02197265625
     ACCEL_UNIT = 0.019160156
@@ -384,8 +375,6 @@ class SimpleBGC:
     link = None
     motion_sleep = 0
 
-
-class Basecam(Node):
     def __init__(self):
         super().__init__("basecam")
         self._now_roll = 0
@@ -451,9 +440,9 @@ class Basecam(Node):
 
     def set_motor(self, req):
         if req.power == True:
-            sbgc.cmd_motors_on()
+            self.cmd_motors_on()
         else:
-            sbgc.cmd_motors_off()
+            self.cmd_motors_off()
         res = BasecamSetMotor.Response()
         res.ok = True
         if self.server:
@@ -461,13 +450,13 @@ class Basecam(Node):
         return res
 
     def reset_follow_offset(self, req):
-        sbgc.cmd_calib_offset()
+        self.cmd_calib_offset()
         res = BasecamResetFollowOffset.Response()
         return res
 
     def change_angle(self, msg):
         rclpy.logging.get_logger().info("change_angle %r" % (msg))
-        sbgc.cmd_control_mode_speed_angle_degree(
+        self.cmd_control_mode_speed_angle_degree(
             msg.roll_speed,
             msg.roll_degree,
             msg.pitch_speed,
