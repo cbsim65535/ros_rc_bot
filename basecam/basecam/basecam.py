@@ -25,11 +25,8 @@ from geometry_msgs.msg import (
 )
 from basecam.srv import (
     BasecamChangeAngle,
-    BasecamChangeAngleResponse,
     BasecamSetMotor,
-    BasecamSetMotorResponse,
     BasecamResetFollowOffset,
-    BasecamResetFollowOffsetResponse,
 )
 from basecam.msg import (
     BasecamDirectAngleAction,
@@ -457,7 +454,7 @@ class Basecam(Node):
             sbgc.cmd_motors_on()
         else:
             sbgc.cmd_motors_off()
-        res = BasecamSetMotorResponse()
+        res = BasecamSetMotor.Response()
         res.ok = True
         if self.server:
             self.server.is_loop = False
@@ -465,7 +462,7 @@ class Basecam(Node):
 
     def reset_follow_offset(self, req):
         sbgc.cmd_calib_offset()
-        res = BasecamResetFollowOffsetResponse()
+        res = BasecamResetFollowOffset.Response()
         return res
 
     def change_angle(self, msg):
@@ -478,7 +475,7 @@ class Basecam(Node):
             msg.yaw_speed,
             msg.yaw_degree,
         )
-        res = BasecamChangeAngleResponse()
+        res = BasecamChangeAngle.Response()
         res.ok = True
         return res
 
