@@ -18,6 +18,6 @@ setup(
     license="TODO: License declaration",
     tests_require=["pytest"],
     entry_points={
-        "console_scripts": ["run = basecam.basecam:main"],
+        "console_scripts": ["basecam = basecam.basecam:main"],
     },
 )
