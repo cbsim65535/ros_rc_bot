@@ -1,0 +1,16 @@
+#goal
+float32 roll_speed
+float32 pitch_speed
+float32 yaw_speed
+float32 roll_degree
+float32 pitch_degree
+float32 yaw_degree
+---
+#result
+bool ok
+uint8 error
+---
+#feedback
+float32 roll_degree
+float32 pitch_degree
+float32 yaw_degree
