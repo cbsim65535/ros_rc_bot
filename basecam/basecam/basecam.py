@@ -4,7 +4,6 @@
 import rclpy
 from rclpy.node import Node
 
-import signal
 import time
 import traceback
 import threading
@@ -261,9 +260,7 @@ class ResponseDefine:
                 r = r + j[k]
                 l.append(k)
             item["_fmt"] = r
-            # print r
             item["_keywords"] = l
-        # print self._define
 
     def getDefine(self, code):
         for i in self._define:
@@ -348,6 +345,7 @@ class SimpleBGC:
     link = None
     motion_sleep = 0
 
+
 class Basecam(Node):
     def __init__(self):
         super().__init__("basecam")
@@ -357,18 +355,40 @@ class Basecam(Node):
 
         self.camera_tf_broadcaster = tf.TransformBroadcaster()
 
-        self.pub_angles_euler = self.create_publisher(Vector3Stamped, "/basecam/angles/euler", 10)
-        self.pub_angles_euler = self.create_publisher(QuaternionStamped, "/basecam/angles/quaternion", 10)
-        self.pub_angles_euler = self.create_publisher(Imu, "/basecam/camera/imu/data", 10)
-        self.pub_angles_euler = self.create_publisher(Imu, "/basecam/camera/imu/raw", 10)
-        self.pub_angles_euler = self.create_publisher(Imu,  "/basecam/camera/imu/mag", 10)
-        self.pub_angles_euler = self.create_publisher(Imu, "/basecam/frame/imu/data", 10)
-        
-        self.srv_change_angle = self.create_service(BasecamChangeAngle, '/basecam/change_angle', self.change_angle)
-        self.srv_change_angle = self.create_service(BasecamSetMotor, '/basecam/set_motor', self.set_motor)
-        self.srv_change_angle = self.create_service(BasecamResetFollowOffset, '/basecam/reset_follow_offset', self.reset_follow_offset)
-        
-        self.sub_direct_ctrl = self.create_subscription(TwistStamped, "/basecam/direct_ctrl",self.on_direct_ctrl,10)
+        self.pub_angles_euler = self.create_publisher(
+            Vector3Stamped, "/basecam/angles/euler", 10
+        )
+        self.pub_angles_euler = self.create_publisher(
+            QuaternionStamped, "/basecam/angles/quaternion", 10
+        )
+        self.pub_angles_euler = self.create_publisher(
+            Imu, "/basecam/camera/imu/data", 10
+        )
+        self.pub_angles_euler = self.create_publisher(
+            Imu, "/basecam/camera/imu/raw", 10
+        )
+        self.pub_angles_euler = self.create_publisher(
+            Imu, "/basecam/camera/imu/mag", 10
+        )
+        self.pub_angles_euler = self.create_publisher(
+            Imu, "/basecam/frame/imu/data", 10
+        )
+
+        self.srv_change_angle = self.create_service(
+            BasecamChangeAngle, "/basecam/change_angle", self.change_angle
+        )
+        self.srv_change_angle = self.create_service(
+            BasecamSetMotor, "/basecam/set_motor", self.set_motor
+        )
+        self.srv_change_angle = self.create_service(
+            BasecamResetFollowOffset,
+            "/basecam/reset_follow_offset",
+            self.reset_follow_offset,
+        )
+
+        self.sub_direct_ctrl = self.create_subscription(
+            TwistStamped, "/basecam/direct_ctrl", self.on_direct_ctrl, 10
+        )
 
         self.server = ChangeAngleServer(self)
 
@@ -440,25 +460,15 @@ class Basecam(Node):
 
     def unpack(self, bytes):
         r = {}
-        # print self.str2Hex(bytes)
-        # print ord(bytes[1])
         if self.is_package(bytes):
             size = ord(bytes[2])
             define = self.RESP_DEF.getDefine(ord(bytes[1]))
-            # print define['code']
             try:
                 body = bytes[4 : size + 4]
                 t0 = struct.unpack(define["_fmt"], body)
                 r = dict(zip(define["_keywords"], t0))
             except Exception as e:
-                print "unpack except %d %d %d %d" % (
-                    define["code"],
-                    size,
-                    len(body),
-                    len(bytes),
-                )
-                # print self.str2Hex(bytes)
-                print e
+                traceback.print_exc()
                 return None
             return r
         else:
@@ -484,7 +494,6 @@ class Basecam(Node):
             body_size = 0
         else:
             body_size = len(body)
-        # print body_size
         header_pack = header + chr(body_size)
         result = (
             chr(0x3E)
@@ -493,7 +502,6 @@ class Basecam(Node):
             + body
             + self._checksum8bytes(body)
         )
-        # print self.str2Hex(result)
         return result
 
     """CMD_BOARD_INFO"""
@@ -507,11 +515,9 @@ class Basecam(Node):
     """CMD_USE_DEFAULTS"""
 
     def cmdUseDefaults(self):
-        print "cmdUseDefaults"
         header = chr(114)
         body = chr(0)
         values = self.pack(header, body)
-        # print sbgc.str2Hex(values)
         self.link.write(values)
 
     """CMD_RESET"""
@@ -520,7 +526,6 @@ class Basecam(Node):
         header = chr(114)
         body = struct.pack("<BH", 0, 0)[:3]
         values = self.pack(header, body)
-        # print sbgc.str2Hex(values)
         self.link.write(values)
 
     """CMD_CONTROL"""
@@ -529,11 +534,9 @@ class Basecam(Node):
         roll = round(roll / self.ANGLE_UNIT)
         pitch = round(pitch / self.ANGLE_UNIT)
         yaw = round(yaw / self.ANGLE_UNIT)
-        # print roll, pitch, yaw
         header = chr(67)
         body = struct.pack("<3B6h", 2, 2, 2, 0, roll, 0, pitch, 0, yaw)[:15]
         values = self.pack(header, body)
-        # print self.str2Hex(values)
         self.link.write(values)
 
     """CMD_CONTROL"""
@@ -547,8 +550,6 @@ class Basecam(Node):
         pitch_angle = round(pitch_angle / self.ANGLE_UNIT)
         yaw_speed = round(yaw_speed / self.SPEED_UNIT)
         yaw_angle = round(yaw_angle / self.ANGLE_UNIT)
-        # print  roll_angle, pitch_angle, yaw_angle
-        # print roll_speed, roll_angle, pitch_speed, pitch_angle, yaw_speed, yaw_angle
         header = chr(67)
         body = struct.pack(
             "<3B6h",
@@ -562,7 +563,6 @@ class Basecam(Node):
             yaw_speed,
             yaw_angle,
         )[:15]
-        # print self.str2Hex(body)
         values = self.pack(header, body)
         self.link.write(values)
 
@@ -573,7 +573,6 @@ class Basecam(Node):
     def cmd_control_mode_remote_control(self, roll, pitch, yaw):
         header = chr(67)
         body = struct.pack("<3B6h", 4, 4, 4, 0, roll, 0, pitch, 0, yaw)[:15]
-        # print self.str2Hex(body)
         values = self.pack(header, body)
         self.link.write(values)
 
@@ -583,7 +582,6 @@ class Basecam(Node):
         header = chr(79)
         body = None
         values = self.pack(header, body)
-        # print self.str2Hex(values)
         self.link.write(values)
 
     """CMD_MOTORS_ON"""
@@ -592,7 +590,6 @@ class Basecam(Node):
         header = chr(77)
         body = None
         values = self.pack(header, body)
-        # print self.str2Hex(values)
         self.link.write(values)
 
     """CMD_MOTORS_ON"""
@@ -601,7 +598,6 @@ class Basecam(Node):
         header = chr(109)
         body = None
         values = self.pack(header, body)
-        # print self.str2Hex(values)
         self.link.write(values)
 
     """CMD_GET_ANGLES"""
@@ -610,7 +606,6 @@ class Basecam(Node):
         header = chr(73)
         body = None
         values = self.pack(header, body)
-        # print self.str2Hex(values)
         self.link.write(values)
 
     """CMD_REALTIME_DATA_3"""
@@ -619,14 +614,12 @@ class Basecam(Node):
         header = chr(23)
         body = None
         values = self.pack(header, body)
-        # print self.str2Hex(values)
         self.link.write(values)
 
     def cmdHelperData(self):
         header = chr(self.RESP_DEF.getCode("CMD_HELPER_DATA"))
         body = None
         values = self.pack(header, body)
-        # print self.str2Hex(values)
         self.link.write(values)
 
     """CMD_DATA_STREAM_INTERVAL"""
@@ -635,7 +628,6 @@ class Basecam(Node):
         header = chr(85)
         body = struct.pack("<BH18s", code, ms, "")[:21]
         values = self.pack(header, body)
-        # print self.str2Hex(values)
         self.link.write(values)
 
     """CMD_WRITE_PARAMS"""
@@ -645,7 +637,6 @@ class Basecam(Node):
         body = struct.pack("<139B", "")[:139]
         body[61]
         values = self.pack(header, body)
-        # print self.str2Hex(values)
         self.link.write(values)
 
     """CMD_READ_PARAMS_3"""
@@ -654,14 +645,12 @@ class Basecam(Node):
         header = chr(21)
         body = struct.pack("<B", 0)[:1]
         values = self.pack(header, body)
-        # print self.str2Hex(values)
         self.link.write(values)
 
     def updateAngle(self):
         while self.is_live:
             self.cmdRealtimeData3()
             time.sleep(0.1)
-            # self.cmdHelperData()
             pass
 
     def byteJoin(self, b0, b1, b2):
@@ -672,10 +661,7 @@ class Basecam(Node):
             l.append(ord(i))
         for i in b2:
             l.append(ord(i))
-        # print len(l)
         b = str(l)
-        # print len(b)
-        # print self.str2Hex(b)
         return b
 
     def listen(self):
@@ -688,7 +674,6 @@ class Basecam(Node):
                 b2 = self.link.read(1 + size + 1)
                 b = self.byteJoin(b0, b1, b2)
             r = self.unpack(b)
-            # print len(b)
             if r and ord(b[1]) == self.RESP_DEF.getCode("CMD_REALTIME_DATA_3"):
                 roll = -r["IMU_ANGLE_ROLL"] * self.ANGLE_UNIT
                 pitch = -r["IMU_ANGLE_PITCH"] * self.ANGLE_UNIT
@@ -696,19 +681,16 @@ class Basecam(Node):
                 self._now_roll = roll
                 self._now_pitch = pitch
                 self._now_yaw = yaw
-                # print self.angle
                 msg = Vector3Stamped()
                 msg.header.stamp = rclpy.Time.now()
                 msg.vector = Vector3(roll, pitch, yaw)
                 self.pub_angles_euler.publish(msg)
-                # print msg.vector
                 (x, y, z, w) = quaternion_from_euler(
                     math.radians(roll), math.radians(pitch), math.radians(yaw)
                 )
                 msg = QuaternionStamped()
                 msg.header.stamp = rclpy.Time.now()
                 msg.quaternion = Quaternion(x, y, z, w)
-                # print msg
                 self.pub_angles_quaternion.publish(msg)
 
                 msg = Imu()
@@ -748,10 +730,10 @@ class Basecam(Node):
                     rclpy.logging.get_logger().debug("result code : %d" % (ord(b[1])))
                     rclpy.logging.get_logger().debug(r)
             # time.sleep(0.1)
-        
+
     def stop(self):
         self.is_live = False
-        
+
 
 def main(args=None):
     rclpy.init(args=args)
@@ -762,6 +744,7 @@ def main(args=None):
 
     basecam.stop()
     rclpy.shutdown()
+
 
 if __name__ == "__main__":
     main()
