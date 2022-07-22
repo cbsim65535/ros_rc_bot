@@ -16,15 +16,12 @@ import math
 
 from pylink import link_from_url
 
-from std_msgs.msg import String, Empty, UInt8, UInt16, Time, Header
 from geometry_msgs.msg import (
     Vector3,
     Vector3Stamped,
     QuaternionStamped,
     Quaternion,
-    PoseStamped,
     TwistStamped,
-    TransformStamped,
 )
 from basecam.srv import (
     BasecamChangeAngle,

@@ -2,7 +2,6 @@
 
 ## pip install
 pip3 install pylink
-pip3 install transforms3d
 
 ## initial usb mcu ##
 $ lsusb
