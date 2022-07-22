@@ -1,7 +1,7 @@
 #readme#
 
 ## pip install
-pip install pylink
+pip3 install pylink
 
 ## initial usb mcu ##
 $ lsusb
@@ -17,6 +17,6 @@ $ sudo vi /etc/udev/rules.d/basecam.rules
 
 SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{serial}=="0001", SYMLINK+="ttySBGC"
 
-$ sudo adduser h dialout
+$ sudo adduser pi dialout
 
 $ sudo reboot
