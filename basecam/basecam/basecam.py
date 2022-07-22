@@ -1,22 +1,22 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import os
-import sys
+import rclpy
+from rclpy.node import Node
+
 import signal
 import time
-import rospy
 import traceback
 import threading
-import serial
 import struct
-import random
 import math
+
+from pylink import link_from_url
+
 import actionlib
 import tf
 
 from tf.transformations import quaternion_from_euler
-from pylink import link_from_url
 from std_msgs.msg import String, Empty, UInt8, UInt16, Time, Header
 from geometry_msgs.msg import (
     Vector3,
@@ -300,8 +300,8 @@ class ChangeAngleServer:
         self.__server.start()
 
     def execute_cb(self, goal):
-        r = rospy.Rate(2)
-        rospy.loginfo("direct_angle %r" % (goal))
+        r = rclpy.Rate(2)
+        rclpy.logging.get_logger().info("direct_angle %r" % (goal))
         sbgc.cmd_control_mode_speed_angle_degree(
             goal.roll_speed,
             goal.roll_degree,
@@ -316,7 +316,7 @@ class ChangeAngleServer:
             feedback.roll_degree = self.__simplebgc._now_roll
             feedback.pitch_degree = self.__simplebgc._now_pitch
             feedback.yaw_degree = self.__simplebgc._now_yaw
-            rospy.loginfo(feedback)
+            rclpy.logging.get_logger().info(feedback)
             self.__server.publish_feedback(self._feedback)
             bool1 = True
             dr = abs(goal.roll_degree - self.__simplebgc._now_roll) % 360
@@ -328,7 +328,7 @@ class ChangeAngleServer:
                 bool1 = False
             if dy > 1:
                 bool1 = False
-            rospy.loginfo("(%d,%d,%d,%s)" % (dr, dp, dy, str(bool1)))
+            rclpy.logging.get_logger().info("(%d,%d,%d,%s)" % (dr, dp, dy, str(bool1)))
             if bool1:
                 break
             r.sleep()
@@ -348,44 +348,46 @@ class SimpleBGC:
     link = None
     motion_sleep = 0
 
+class Basecam(Node)
     def __init__(self):
+        super().__init__("basecam")
         self._now_roll = 0
         self._now_pitch = 0
         self._now_yaw = 0
 
         self.camera_tf_broadcaster = tf.TransformBroadcaster()
 
-        self.pub_angles_euler = rospy.Publisher(
+        self.pub_angles_euler = rclpy.Publisher(
             "/basecam/angles/euler", Vector3Stamped, queue_size=10
         )
-        self.pub_angles_quaternion = rospy.Publisher(
+        self.pub_angles_quaternion = rclpy.Publisher(
             "/basecam/angles/quaternion", QuaternionStamped, queue_size=10
         )
-        self.pub_camera_imu_data = rospy.Publisher(
+        self.pub_camera_imu_data = rclpy.Publisher(
             "/basecam/camera/imu/data", Imu, queue_size=10
         )
-        self.pub_camera_imu_raw = rospy.Publisher(
+        self.pub_camera_imu_raw = rclpy.Publisher(
             "/basecam/camera/imu/raw", Imu, queue_size=10
         )
-        self.pub_camera_imu_mag = rospy.Publisher(
+        self.pub_camera_imu_mag = rclpy.Publisher(
             "/basecam/camera/imu/mag", Imu, queue_size=10
         )
-        self.pub_frame_imu_data = rospy.Publisher(
+        self.pub_frame_imu_data = rclpy.Publisher(
             "/basecam/frame/imu/data", Imu, queue_size=10
         )
-        rospy.Service("/basecam/change_angle", BasecamChangeAngle, self.change_angle)
-        rospy.Service("/basecam/set_motor", BasecamSetMotor, self.set_motor)
-        rospy.Service(
+        rclpy.Service("/basecam/change_angle", BasecamChangeAngle, self.change_angle)
+        rclpy.Service("/basecam/set_motor", BasecamSetMotor, self.set_motor)
+        rclpy.Service(
             "/basecam/reset_follow_offset",
             BasecamResetFollowOffset,
             self.reset_follow_offset,
         )
-        rospy.Subscriber("/basecam/direct_ctrl", TwistStamped, self.on_direct_ctrl)
+        rclpy.Subscriber("/basecam/direct_ctrl", TwistStamped, self.on_direct_ctrl)
 
         self.server = ChangeAngleServer(self)
 
-        self.min_pitch = rospy.get_param("~min_pitch", -40)
-        self.max_pitch = rospy.get_param("~max_pitch", 10)
+        self.min_pitch = rclpy.get_param("~min_pitch", -40)
+        self.max_pitch = rclpy.get_param("~max_pitch", 10)
 
         self.link = link_from_url(self.PORT)
 
@@ -419,7 +421,7 @@ class SimpleBGC:
         return res
 
     def change_angle(self, msg):
-        rospy.loginfo("change_angle %r" % (msg))
+        rclpy.logging.get_logger().info("change_angle %r" % (msg))
         sbgc.cmd_control_mode_speed_angle_degree(
             msg.roll_speed,
             msg.roll_degree,
@@ -710,7 +712,7 @@ class SimpleBGC:
                 self._now_yaw = yaw
                 # print self.angle
                 msg = Vector3Stamped()
-                msg.header.stamp = rospy.Time.now()
+                msg.header.stamp = rclpy.Time.now()
                 msg.vector = Vector3(roll, pitch, yaw)
                 self.pub_angles_euler.publish(msg)
                 # print msg.vector
@@ -718,13 +720,13 @@ class SimpleBGC:
                     math.radians(roll), math.radians(pitch), math.radians(yaw)
                 )
                 msg = QuaternionStamped()
-                msg.header.stamp = rospy.Time.now()
+                msg.header.stamp = rclpy.Time.now()
                 msg.quaternion = Quaternion(x, y, z, w)
                 # print msg
                 self.pub_angles_quaternion.publish(msg)
 
                 msg = Imu()
-                msg.header.stamp = rospy.Time.now()
+                msg.header.stamp = rclpy.Time.now()
                 msg.header.frame_id = "camera_mount_imu"
                 # IMU_ANGLE_ROLL
                 msg.angular_velocity.x = (
@@ -746,7 +748,7 @@ class SimpleBGC:
                 msg.orientation_covariance[0] = -1
                 self.pub_camera_imu_raw.publish(msg)
 
-                current_time = rospy.Time.now()
+                current_time = rclpy.Time.now()
                 self.camera_tf_broadcaster.sendTransform(
                     (0.0, 0.0, 0.0),
                     (x, y, z, w),
@@ -757,30 +759,23 @@ class SimpleBGC:
 
             else:
                 if b is not None:
-                    rospy.logdebug("result code : %d" % (ord(b[1])))
-                    rospy.logdebug(r)
+                    rclpy.logging.get_logger().debug("result code : %d" % (ord(b[1])))
+                    rclpy.logging.get_logger().debug(r)
             # time.sleep(0.1)
+        
+    def stop(self):
+        self.is_live = False
+        
 
+def main(args=None):
+    rclpy.init(args=args)
 
-def signal_handler(sig, frame):
-    print ("You pressed Ctrl+C!")
-    sbgc.is_live = False
-    is_live = False
-    # sbgc.cmd_control_mode_speed_angle_degree(0, 0, 0, 60, 0, 100)
-    time.sleep(2)
-    # sbgc.cmd_motors_off()
-    exit(0)
+    basecam = Basecam()
 
+    rclpy.spin(basecam)
 
-is_live = True
+    basecam.stop()
+    rclpy.shutdown()
+
 if __name__ == "__main__":
-    signal.signal(signal.SIGINT, signal_handler)
-    rospy.init_node("basecam", anonymous=True)
-    try:
-        sbgc = SimpleBGC()
-        rospy.spin()
-    except Exception:
-        traceback.print_exc()
-    except rospy.ROSInterruptException:
-        traceback.print_exc()
-        pass
+    main()
