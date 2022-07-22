@@ -23,11 +23,7 @@ from geometry_msgs.msg import (
     Quaternion,
     TwistStamped,
 )
-from basecam.srv import (
-    BasecamChangeAngle,
-    BasecamSetMotor,
-    BasecamResetFollowOffset,
-)
+from basecam.srv import BasecamChangeAngle, BasecamSetMotor, BasecamResetFollowOffset
 from basecam.msg import (
     BasecamDirectAngleAction,
     BasecamDirectAngleFeedback,
