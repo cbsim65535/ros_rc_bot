@@ -348,7 +348,7 @@ class SimpleBGC:
     link = None
     motion_sleep = 0
 
-class Basecam(Node)
+class Basecam(Node):
     def __init__(self):
         super().__init__("basecam")
         self._now_roll = 0
