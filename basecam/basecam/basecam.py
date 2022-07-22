@@ -28,7 +28,7 @@ from basecam_msgs.srv import (
     BasecamSetMotor,
     BasecamResetFollowOffset,
 )
-from basecam_msgs.msg import BasecamDirectAngle
+from basecam_msgs.action import BasecamDirectAngle
 from sensor_msgs.msg import Imu
 
 
