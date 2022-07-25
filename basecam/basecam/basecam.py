@@ -521,7 +521,7 @@ class Basecam(Node):
             return False
         if len(bytes) < 5:
             return False
-        if bytes[0] != chr(0x3E):
+        if bytes[0] != 0x3E:
             return False
         if self.RESP_DEF.hasCode(my_ord(bytes[1])):
             r = True
