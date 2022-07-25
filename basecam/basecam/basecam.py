@@ -701,7 +701,7 @@ class Basecam(Node):
             l.append(my_ord(i))
         for i in b2:
             l.append(my_ord(i))
-        b = str(l)
+        b = bytes(l)
         return b
 
     def listen(self):
