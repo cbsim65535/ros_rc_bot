@@ -1,5 +1,0 @@
-<launch>
-    <node name="basecam" pkg="basecam" type="basecam_node.py" output="screen">
-        <param name="enable_test_random_motion" value="false" />        
-    </node>
-</launch>

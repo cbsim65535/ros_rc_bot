@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import rospy
+import rclpy
 import threading
 import traceback
 import time
@@ -8,8 +8,6 @@ import math
 
 from sensor_msgs.msg import Imu, MagneticField
 from geometry_msgs.msg import Quaternion
-from tf.transformations import *
-import tf
 
 from bno055 import BNO055
 

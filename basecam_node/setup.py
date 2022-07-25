@@ -1,6 +1,6 @@
 from setuptools import setup
 
-package_name = "basecam"
+package_name = "basecam_node"
 
 setup(
     name=package_name,
@@ -18,6 +18,6 @@ setup(
     license="TODO: License declaration",
     tests_require=["pytest"],
     entry_points={
-        "console_scripts": ["basecam = basecam.basecam:main"],
+        "console_scripts": ["basecam_node = basecam_node.basecam_node:main"],
     },
 )

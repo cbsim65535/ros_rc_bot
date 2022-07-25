@@ -8,10 +8,10 @@ def generate_launch_description():
     return LaunchDescription(
         [
             Node(
-                package="basecam",
-                node_namespace="basecam",
-                node_executable="basecam",
-                node_name="basecam",
+                package="basecam_node",
+                node_namespace="basecam_node",
+                node_executable="basecam_node",
+                node_name="basecam_node",
             )
         ]
     )
