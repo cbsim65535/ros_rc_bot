@@ -685,9 +685,6 @@ class Basecam(Node):
             pass
 
     def byteJoin(self, b0, b1, b2):
-        print(type(b0))
-        print(type(b1))
-        print(type(b2))
         if isinstance(b0, str):
             bb0 = bytes(b0, "ascii")
         else:
@@ -700,9 +697,6 @@ class Basecam(Node):
             bb2 = bytes(b2, "ascii")
         else:
             bb2 = b2
-        print(type(bb0))
-        print(type(bb1))
-        print(type(bb2))
         return bb0 + bb1 + bb2
 
     def listen(self):
