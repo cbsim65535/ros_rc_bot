@@ -715,7 +715,7 @@ class Basecam(Node):
             r = self.unpack(b)
             print(r)
             print(b[1] == self.RESP_DEF.getCode("CMD_REALTIME_DATA_3"))
-            if r and ord(b[1]) == self.RESP_DEF.getCode("CMD_REALTIME_DATA_3"):
+            if r and b[1] == self.RESP_DEF.getCode("CMD_REALTIME_DATA_3"):
                 roll = -r["IMU_ANGLE_ROLL"] * self.ANGLE_UNIT
                 pitch = -r["IMU_ANGLE_PITCH"] * self.ANGLE_UNIT
                 yaw = -r["IMU_ANGLE_YAW"] * self.ANGLE_UNIT
