@@ -396,19 +396,19 @@ class Basecam(Node):
         self.pub_angles_euler = self.create_publisher(
             Vector3Stamped, "/basecam/angles/euler", 10
         )
-        self.pub_angles_euler = self.create_publisher(
+        self.pub_angles_quaternion = self.create_publisher(
             QuaternionStamped, "/basecam/angles/quaternion", 10
         )
-        self.pub_angles_euler = self.create_publisher(
+        self.pub_camera_imu_data = self.create_publisher(
             Imu, "/basecam/camera/imu/data", 10
         )
-        self.pub_angles_euler = self.create_publisher(
+        self.pub_camera_imu_raw = self.create_publisher(
             Imu, "/basecam/camera/imu/raw", 10
         )
-        self.pub_angles_euler = self.create_publisher(
+        self.pub_camera_imu_mag = self.create_publisher(
             Imu, "/basecam/camera/imu/mag", 10
         )
-        self.pub_angles_euler = self.create_publisher(
+        self.pub_frame_imu_data = self.create_publisher(
             Imu, "/basecam/frame/imu/data", 10
         )
 
