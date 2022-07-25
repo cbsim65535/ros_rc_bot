@@ -768,14 +768,18 @@ class Basecam(Node):
                 msg.orientation_covariance[0] = -1
                 self.pub_camera_imu_raw.publish(msg)
 
-                current_time = self.get_clock().now().to_msg()
-                self.camera_tf_broadcaster.sendTransform(
-                    (0.0, 0.0, 0.0),
-                    (x, y, z, w),
-                    current_time,
-                    "gimbal_camera_mount",
-                    "gimbal_neck",
-                )
+                t = TransformStamped()
+                t.header.stamp = self.get_clock().now().to_msg()
+                t.header.frame_id = "gimbal_camera_mount"
+                t.header.child_frame_id = "gimbal_camera_mount"
+                t.transform.translation.x = 0.0
+                t.transform.translation.y = 0.0
+                t.transform.translation.z = 0.0
+                t.transform.rotation.x = x
+                t.transform.rotation.y = y
+                t.transform.rotation.z = z
+                t.transform.rotation.w = w
+                self.camera_tf_broadcaster.sendTransform(t)
 
             else:
                 if b is not None:
