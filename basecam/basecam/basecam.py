@@ -381,6 +381,8 @@ class Basecam(Node):
         self._now_pitch = 0
         self._now_yaw = 0
 
+        self.rate = self.create_rate(10)
+
         self.camera_tf_broadcaster = TransformBroadcaster(self)
 
         self.pub_angles_euler = self.create_publisher(
@@ -703,6 +705,7 @@ class Basecam(Node):
         while self.is_live:
             b = None
             b0 = self.link.read(1)
+            print(b0)
             if b0 == chr(0x3E):
                 b1 = self.link.read(2)
                 size = ord(b1[1])
@@ -764,7 +767,7 @@ class Basecam(Node):
                 if b is not None:
                     self.get_logger().debug("result code : %d" % (b[1]))
                     self.get_logger().debug(r)
-            # time.sleep(0.1)
+            self.rate.sleep()
 
     def stop(self):
         self.is_live = False
