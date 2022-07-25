@@ -1,6 +1,6 @@
 from setuptools import setup
 
-package_name = "driving"
+package_name = "driving_node"
 
 setup(
     name=package_name,
