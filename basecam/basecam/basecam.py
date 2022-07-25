@@ -478,7 +478,7 @@ class Basecam(Node):
         checksum = 0
         # for each char in the string
         for ch in string:
-            c = bytes(ch)
+            c = bytes(ch, "ascii")
             checksum = (checksum + c) & 0xFF
         return chr(checksum)
 
