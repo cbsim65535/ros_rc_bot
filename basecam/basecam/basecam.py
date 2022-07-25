@@ -480,7 +480,6 @@ class Basecam(Node):
         for ch in string:
             print("=" * 20)
             print(ch)
-            print(len)
             if isinstance(ch, str):
                 c = ord(ch)
             else:
@@ -707,7 +706,11 @@ class Basecam(Node):
             b0 = self.link.read(1)
             if b0 == chr(0x3E):
                 b1 = self.link.read(2)
-                size = ord(chr((b1[1])))
+                print(" > %s " % type(b1[1]))
+                if isinstance(b1[1], str):
+                    size = ord(chr(b1[1]))
+                else:
+                    size = b1[1]
                 b2 = self.link.read(1 + size + 1)
                 b = self.byteJoin(b0, b1, b2)
             r = self.unpack(b)
