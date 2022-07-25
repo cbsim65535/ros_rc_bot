@@ -694,11 +694,6 @@ class Basecam(Node):
             pass
 
     def byteJoin(self, b0, b1, b2):
-        print(b0)
-        print(bytes(b0, "ascii"))
-        print(b1)
-        print(bytes(b1, "ascii"))
-        print(b2)
         b = bytes(b0, "ascii") + bytes(b1, "ascii") + b2
         return b
 
@@ -712,13 +707,7 @@ class Basecam(Node):
                 b2 = self.link.read(1 + size + 1)
                 b = self.byteJoin(b0, b1, b2)
             r = self.unpack(b)
-            print("=" * 20)
-            print(b)
-            print(r)
-            print(my_ord(b[1]))
-            print(self.RESP_DEF.getCode("CMD_REALTIME_DATA_3"))
             if r and my_ord(b[1]) == self.RESP_DEF.getCode("CMD_REALTIME_DATA_3"):
-                print("CMD_REALTIME_DATA_3")
                 roll = -r["IMU_ANGLE_ROLL"] * self.ANGLE_UNIT
                 pitch = -r["IMU_ANGLE_PITCH"] * self.ANGLE_UNIT
                 yaw = -r["IMU_ANGLE_YAW"] * self.ANGLE_UNIT
