@@ -685,13 +685,9 @@ class Basecam(Node):
             pass
 
     def byteJoin(self, b0, b1, b2):
-        l = bytearray()
-        for i in bytes(b0):
-            l.append(i)
-        for i in bytes(b1):
-            l.append(i)
-        for i in bytes(b2):
-            l.append(i)
+        t = []
+        t.append(b0, b1, b2)
+        l = bytearray(t)
         b = str(l)
         return b
 
