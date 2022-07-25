@@ -705,6 +705,7 @@ class Basecam(Node):
         while self.is_live:
             b = None
             b0 = self.link.read(1)
+            print(type(b0))
             print(b0)
             if b0 == chr(0x3E):
                 b1 = self.link.read(2)
