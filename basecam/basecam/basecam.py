@@ -478,7 +478,7 @@ class Basecam(Node):
         checksum = 0
         # for each char in the string
         for ch in string:
-            c = ch
+            c = bytes(ch)
             checksum = (checksum + c) & 0xFF
         return chr(checksum)
 
@@ -680,7 +680,7 @@ class Basecam(Node):
     def updateAngle(self):
         while self.is_live:
             self.cmdRealtimeData3()
-            time.sleep(0.1)
+            self.rate.sleep()
             pass
 
     def byteJoin(self, b0, b1, b2):
