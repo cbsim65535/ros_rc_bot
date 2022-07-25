@@ -21,6 +21,7 @@ from geometry_msgs.msg import (
     Vector3Stamped,
     QuaternionStamped,
     TwistStamped,
+    TransformStamped,
 )
 from basecam_msgs.srv import (
     BasecamChangeAngle,
