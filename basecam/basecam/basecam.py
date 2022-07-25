@@ -708,9 +708,9 @@ class Basecam(Node):
                 b1 = self.link.read(2)
                 print(" > %s " % type(b1[1]))
                 if isinstance(b1[1], str):
-                    size = ord(chr(b1[1]))
+                    size = ord(b1[1])
                 else:
-                    size = b1[1]
+                    size = ord(chr(b1[1]))
                 b2 = self.link.read(1 + size + 1)
                 b = self.byteJoin(b0, b1, b2)
             r = self.unpack(b)
