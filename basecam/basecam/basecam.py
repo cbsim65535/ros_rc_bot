@@ -768,7 +768,7 @@ class Basecam(Node):
 
             else:
                 if b is not None:
-                    self.get_logger().debug("result code : %d" % (ord(b[1])))
+                    self.get_logger().debug("result code : %d" % (b[1]))
                     self.get_logger().debug(r)
             # time.sleep(0.1)
 
