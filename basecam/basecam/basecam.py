@@ -18,10 +18,8 @@ import math
 from pylink import link_from_url
 
 from geometry_msgs.msg import (
-    Vector3,
     Vector3Stamped,
     QuaternionStamped,
-    Quaternion,
     TwistStamped,
 )
 from basecam_msgs.srv import (
@@ -737,7 +735,10 @@ class Basecam(Node):
                 )
                 msg = QuaternionStamped()
                 msg.header.stamp = self.get_clock().now().to_msg()
-                msg.quaternion = Quaternion(x, y, z, w)
+                msg.quaternion.x = x
+                msg.quaternion.y = y
+                msg.quaternion.z = z
+                msg.quaternion.w = w
                 self.pub_angles_quaternion.publish(msg)
 
                 msg = Imu()
@@ -757,7 +758,11 @@ class Basecam(Node):
                 msg.linear_acceleration.y = r["ACC_DATA_Y"] * self.ACCEL_UNIT
                 msg.linear_acceleration.z = r["ACC_DATA_Z"] * self.ACCEL_UNIT
                 # msg.linear_acceleration.x = 9.81
-                msg.orientation = Quaternion(x, y, z, w)
+                msg.orientation.x = x
+                msg.orientation.y = y
+                msg.orientation.z = z
+                msg.orientation.w = w
+
                 msg.linear_acceleration_covariance[0] = -1
                 msg.angular_velocity_covariance[0] = -1
                 msg.orientation_covariance[0] = -1
