@@ -478,7 +478,9 @@ class Basecam(Node):
         checksum = 0
         # for each char in the string
         for ch in string:
+            print("=" * 20)
             print(ch)
+            print(len)
             if isinstance(ch, str):
                 c = ord(ch)
             else:
