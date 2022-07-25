@@ -507,7 +507,6 @@ class Basecam(Node):
             print(size)
             print(define)
             print("-" * 20)
-
             try:
                 body = bytes[4 : size + 4]
                 t0 = struct.unpack(define["_fmt"], body)
@@ -699,6 +698,9 @@ class Basecam(Node):
             pass
 
     def byteJoin(self, b0, b1, b2):
+        print(b0)
+        print(b1)
+        print(b2)
         r = b""
         if isinstance(b0, str):
             r += bytes(b0, "ascii")
