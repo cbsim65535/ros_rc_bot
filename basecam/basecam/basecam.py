@@ -4,6 +4,7 @@
 import rclpy
 from rclpy.node import Node
 from rclpy.action import ActionServer
+from rclpy.clock import Clock
 
 from tf2_ros import TransformBroadcaster
 
@@ -726,19 +727,19 @@ class Basecam(Node):
                 self._now_pitch = pitch
                 self._now_yaw = yaw
                 msg = Vector3Stamped()
-                msg.header.stamp = self.get_clock().now()
+                msg.header.stamp = self.get_clock().now().to_msg()
                 msg.vector = Vector3(roll, pitch, yaw)
                 self.pub_angles_euler.publish(msg)
                 (x, y, z, w) = quaternion_from_euler(
                     math.radians(roll), math.radians(pitch), math.radians(yaw)
                 )
                 msg = QuaternionStamped()
-                msg.header.stamp = self.get_clock().now()
+                msg.header.stamp = self.get_clock().now().to_msg()
                 msg.quaternion = Quaternion(x, y, z, w)
                 self.pub_angles_quaternion.publish(msg)
 
                 msg = Imu()
-                msg.header.stamp = self.get_clock().now()
+                msg.header.stamp = self.get_clock().now().to_msg()
                 msg.header.frame_id = "camera_mount_imu"
                 # IMU_ANGLE_ROLL
                 msg.angular_velocity.x = (
@@ -760,7 +761,7 @@ class Basecam(Node):
                 msg.orientation_covariance[0] = -1
                 self.pub_camera_imu_raw.publish(msg)
 
-                current_time = self.get_clock().now()
+                current_time = self.get_clock().now().to_msg()
                 self.camera_tf_broadcaster.sendTransform(
                     (0.0, 0.0, 0.0),
                     (x, y, z, w),
