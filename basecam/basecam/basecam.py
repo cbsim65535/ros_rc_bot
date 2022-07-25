@@ -695,15 +695,15 @@ class Basecam(Node):
 
     def byteJoin(self, b0, b1, b2):
         r = b""
-        if isinstance(b0, "str"):
+        if isinstance(b0, str):
             r += bytes(b0, "ascii")
         else:
             r += b0
-        if isinstance(b1, "str"):
+        if isinstance(b1, str):
             r += bytes(b1, "ascii")
         else:
             r += b1
-        if isinstance(b2, "str"):
+        if isinstance(b2, str):
             r += bytes(b2, "ascii")
         else:
             r += b2
