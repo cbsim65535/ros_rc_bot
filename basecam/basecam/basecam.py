@@ -329,7 +329,7 @@ class ChangeAngleServer:
 
     def execute_cb(self, goal):
         r = rclpy.Rate(2)
-        rclpy.logging.get_logger().info("direct_angle %r" % (goal))
+        self.get_logger().info("direct_angle %r" % (goal))
         self.__simplebgc.cmd_control_mode_speed_angle_degree(
             goal.roll_speed,
             goal.roll_degree,
@@ -344,7 +344,7 @@ class ChangeAngleServer:
             feedback.roll_degree = self.__simplebgc._now_roll
             feedback.pitch_degree = self.__simplebgc._now_pitch
             feedback.yaw_degree = self.__simplebgc._now_yaw
-            rclpy.logging.get_logger().info(feedback)
+            self.get_logger().info(feedback)
             self.__server.publish_feedback(self._feedback)
             bool1 = True
             dr = abs(goal.roll_degree - self.__simplebgc._now_roll) % 360
@@ -356,7 +356,7 @@ class ChangeAngleServer:
                 bool1 = False
             if dy > 1:
                 bool1 = False
-            rclpy.logging.get_logger().info("(%d,%d,%d,%s)" % (dr, dp, dy, str(bool1)))
+            self.get_logger().info("(%d,%d,%d,%s)" % (dr, dp, dy, str(bool1)))
             if bool1:
                 break
             r.sleep()
@@ -458,7 +458,7 @@ class Basecam(Node):
         return res
 
     def change_angle(self, msg):
-        rclpy.logging.get_logger().info("change_angle %r" % (msg))
+        self.get_logger().info("change_angle %r" % (msg))
         self.cmd_control_mode_speed_angle_degree(
             msg.roll_speed,
             msg.roll_degree,
@@ -768,8 +768,8 @@ class Basecam(Node):
 
             else:
                 if b is not None:
-                    rclpy.logging.get_logger().debug("result code : %d" % (b[1]))
-                    rclpy.logging.get_logger().debug(r)
+                    self.get_logger().debug("result code : %d" % (b[1]))
+                    self.get_logger().debug(r)
             # time.sleep(0.1)
 
     def stop(self):
