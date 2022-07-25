@@ -423,8 +423,8 @@ class Basecam(Node):
         self.declare_parameter("min_pitch", -40)
         self.declare_parameter("max_pitch", 10)
 
-        self.min_pitch = rclpy.get_parameter("min_pitch")
-        self.max_pitch = rclpy.get_parameter("max_pitch")
+        self.min_pitch = self.get_parameter("min_pitch")
+        self.max_pitch = self.get_parameter("max_pitch")
 
         self.link = link_from_url(self.PORT)
 
