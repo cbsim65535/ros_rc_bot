@@ -324,7 +324,7 @@ class ChangeAngleServer:
         self.is_loop = False
         self.__simplebgc = simplebgc
         self.__server = ActionServer(
-            self, BasecamDirectAngle, "basecam/direct_angle", execute_cb=self.execute_cb
+            self, BasecamDirectAngle, "basecam/direct_angle", self.execute_cb
         )
 
     def execute_cb(self, goal):
