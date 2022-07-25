@@ -693,7 +693,7 @@ class Basecam(Node):
         # for i in b2:
         #     l.append(bytes(i))
         # b = str(l)
-        b = b"".join([b0, b1, b2])
+        b = bytes(b0) + bytes(b1) + bytes(b2)
         return b
 
     def listen(self):
