@@ -478,10 +478,7 @@ class Basecam(Node):
         checksum = 0
         # for each char in the string
         for ch in string:
-            try:
-                c = ord(ch)
-            except:
-                c = ch
+            c = ch
             checksum = (checksum + c) & 0xFF
         return chr(checksum)
 
@@ -494,8 +491,8 @@ class Basecam(Node):
     def unpack(self, bytes):
         r = {}
         if self.is_package(bytes):
-            size = ord(bytes[2])
-            define = self.RESP_DEF.getDefine(ord(bytes[1]))
+            size = bytes[2]
+            define = self.RESP_DEF.getDefine(bytes[1])
             try:
                 body = bytes[4 : size + 4]
                 t0 = struct.unpack(define["_fmt"], body)
@@ -516,7 +513,7 @@ class Basecam(Node):
             return False
         if bytes[0] != chr(0x3E):
             return False
-        if self.RESP_DEF.hasCode(ord(bytes[1])):
+        if self.RESP_DEF.hasCode(bytes[1]):
             r = True
         return r
 
@@ -709,7 +706,7 @@ class Basecam(Node):
             print(b0 == chr(0x3E))
             if b0 == chr(0x3E):
                 b1 = self.link.read(2)
-                size = ord(b1[1])
+                size = b1[1]
                 b2 = self.link.read(1 + size + 1)
                 b = self.byteJoin(b0, b1, b2)
             r = self.unpack(b)
