@@ -479,7 +479,11 @@ class Basecam(Node):
         # for each char in the string
         for ch in string:
             print(ch)
-            c = ord(chr(ch))
+            if isinstance(ch, str):
+                c = ord(ch)
+            else:
+                c = ord(chr(ch))
+            print(c)
             checksum = (checksum + c) & 0xFF
         return chr(checksum)
 
