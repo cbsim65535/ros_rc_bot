@@ -717,7 +717,7 @@ class Basecam(Node):
             print("=" * 20)
             print(b)
             print(r)
-            print(b[1])
+            print(my_orb(b[1]))
             if r and my_ord(b[1]) == self.RESP_DEF.getCode("CMD_REALTIME_DATA_3"):
                 print("CMD_REALTIME_DATA_3")
                 roll = -r["IMU_ANGLE_ROLL"] * self.ANGLE_UNIT
