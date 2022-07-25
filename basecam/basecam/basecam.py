@@ -700,7 +700,7 @@ class Basecam(Node):
             bb2 = bytes(b2, "ascii")
         else:
             bb2 = b2
-		print(type(bb0))
+        print(type(bb0))
         print(type(bb1))
         print(type(bb2))
         return bb0 + bb1 + bb2
