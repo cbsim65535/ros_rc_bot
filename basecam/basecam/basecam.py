@@ -706,7 +706,8 @@ class Basecam(Node):
             b = None
             b0 = self.link.read(1)
             print(type(b0))
-            print(b0)
+            print(b0 == chr(0x3E))
+            print(ord(b[1]) == self.RESP_DEF.getCode("CMD_REALTIME_DATA_3"))
             if b0 == chr(0x3E):
                 b1 = self.link.read(2)
                 size = ord(b1[1])
