@@ -715,6 +715,8 @@ class Basecam(Node):
                 b = self.byteJoin(b0, b1, b2)
             r = self.unpack(b)
             print("=" * 20)
+            print(b)
+            print(r)
             print(b[1])
             if r and my_ord(b[1]) == self.RESP_DEF.getCode("CMD_REALTIME_DATA_3"):
                 print("CMD_REALTIME_DATA_3")
