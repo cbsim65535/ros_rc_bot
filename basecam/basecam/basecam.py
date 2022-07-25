@@ -692,11 +692,20 @@ class Basecam(Node):
     def byteJoin(self, b0, b1, b2):
         l = bytearray()
         for i in b0:
-            l.append(ord(chr(i)))
+            if isinstance(i, str):
+                l.append(ord(i))
+            else:
+                l.append(ord(chr(i)))
         for i in b1:
-            l.append(ord(chr(i)))
+            if isinstance(i, str):
+                l.append(ord(i))
+            else:
+                l.append(ord(chr(i)))
         for i in b2:
-            l.append(ord(chr(i)))
+            if isinstance(i, str):
+                l.append(ord(i))
+            else:
+                l.append(ord(chr(i)))
         b = str(l)
         return b
 
