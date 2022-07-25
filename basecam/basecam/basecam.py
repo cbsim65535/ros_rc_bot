@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import rclpy
@@ -685,15 +685,7 @@ class Basecam(Node):
             pass
 
     def byteJoin(self, b0, b1, b2):
-        l = bytearray()
-        for i in b0:
-            l.append(i)
-        for i in b1:
-            l.append(i)
-        for i in b2:
-            l.append(i)
-        b = str(l)
-        return b
+        return b0 + b1 + b2
 
     def listen(self):
         while self.is_live:
