@@ -728,9 +728,9 @@ class Basecam(Node):
                 self._now_yaw = yaw
                 msg = Vector3Stamped()
                 msg.header.stamp = self.get_clock().now().to_msg()
-                msg.vectro.x = roll
-                msg.vectro.y = pitch
-                msg.vectro.z = yaw
+                msg.vector.x = roll
+                msg.vector.y = pitch
+                msg.vector.z = yaw
                 self.pub_angles_euler.publish(msg)
                 (x, y, z, w) = quaternion_from_euler(
                     math.radians(roll), math.radians(pitch), math.radians(yaw)
