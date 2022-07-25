@@ -420,8 +420,11 @@ class Basecam(Node):
 
         self.server = ChangeAngleServer(self)
 
-        self.min_pitch = rclpy.get_param("~min_pitch", -40)
-        self.max_pitch = rclpy.get_param("~max_pitch", 10)
+        self.declare_parameter("min_pitch", -40)
+        self.declare_parameter("max_pitch", 10)
+
+        self.min_pitch = rclpy.get_parameter_value("min_pitch")
+        self.max_pitch = rclpy.get_parameter_value("max_pitch")
 
         self.link = link_from_url(self.PORT)
 
