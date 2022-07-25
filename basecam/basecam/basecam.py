@@ -478,10 +478,7 @@ class Basecam(Node):
         checksum = 0
         # for each char in the string
         for ch in string:
-            try:
-                c = ord(chr(ch))
-            except:
-                c = ch
+            c = ord(chr(ch))
             checksum = (checksum + c) & 0xFF
         return chr(checksum)
 
