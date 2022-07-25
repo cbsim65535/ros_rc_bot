@@ -1,27 +1,31 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import rclpy
-import threading
-import traceback
-import time
-import math
+from rclpy.node import Node
 
+import threading
+import time
+
+from tf2_ros import TransformBroadcaster
 from sensor_msgs.msg import Imu, MagneticField
-from geometry_msgs.msg import Quaternion
+from geometry_msgs.msg import TransformStamped
 
 from bno055 import BNO055
 
 SENSORS_GRAVITY_EARTH = 9.80665
 
 
-class Manual:
+class Manual(Node):
     def __init__(self):
-        rospy.init_node("imu_publisher", anonymous=True)
-        self.imu_tf_broadcaster = tf.TransformBroadcaster()
-        self.pub_data = rospy.Publisher("/mobile/imu/data", Imu, queue_size=1)
-        self.pub_raw = rospy.Publisher("/mobile/imu/raw", Imu, queue_size=1)
-        self.pub_mag = rospy.Publisher("/mobile/imu/mag", MagneticField, queue_size=1)
+        super().__init__("bno055")
+
+        self.imu_tf_broadcaster = TransformBroadcaster(self)
+        self.pub_data = self.create_publisher(Imu, "/mobile/imu/data", 1)
+        self.pub_raw = self.create_publisher(Imu, "/mobile/imu/raw", 1)
+        self.pub_mag = self.create_publisher(MagneticField, "/mobile/imu/mag", 1)
+
         self.is_loop = True
+
         self.bno = BNO055(address=BNO055.BNO055_ADDRESS_B)
         threading.Thread(
             target=self.loop,
@@ -45,7 +49,8 @@ class Manual:
             exit()
         time.sleep(1)
         self.bno.setExternalCrystalUse(True)
-        r = rospy.Rate(100)
+        r = self.create_rate(100)
+
         while self.is_loop:
             accelerometer = self.bno.getVector(BNO055.VECTOR_ACCELEROMETER)
             magnetometer = self.bno.getVector(BNO055.VECTOR_MAGNETOMETER)
@@ -101,19 +106,17 @@ class Manual:
             mag_msg.magnetic_field.z = magnetometer[2] / mag_fact
             self.pub_mag.publish(mag_msg)
 
-            current_time = rospy.Time.now()
-            self.imu_tf_broadcaster.sendTransform(
-                (0.0, 0.0, 0.0),
-                (
-                    imu_data.orientation.x,
-                    imu_data.orientation.y,
-                    imu_data.orientation.z,
-                    imu_data.orientation.w,
-                ),
-                current_time,
-                "mobile_imu_state",
-                "mobile_imu_base",
-            )
+            t = TransformStamped()
+            t.header.stamp = self.get_clock().now().to_msg()
+            t.header.frame_id = "mobile_imu_state"
+            t.child_frame_id = "mobile_imu_base"
+            t.transform.translation.x = 0.0
+            t.transform.translation.y = 0.0
+            t.transform.translation.z = 0.0
+            t.transform.rotation.x = imu_data.orientation.x
+            t.transform.rotation.y = imu_data.orientation.y
+            t.transform.rotation.z = imu_data.orientation.z
+            t.transform.rotation.w = imu_data.orientation.w
 
             seq += 1
 
@@ -123,12 +126,19 @@ class Manual:
         self.is_loop = False
 
 
+def main(args=None):
+    rclpy.init(args=args)
+
+    manual = Manual()
+
+    rclpy.spin(manual)
+
+    # Destroy the node explicitly
+    # (optional - otherwise it will be done automatically
+    # when the garbage collector destroys the node object)
+    manual.stop()
+    rclpy.shutdown()
+
+
 if __name__ == "__main__":
-    try:
-        manual = Manual()
-        rospy.spin()
-    except rospy.ROSInterruptException:
-        traceback.print_exc()
-    finally:
-        traceback.print_exc()
-        manual.stop()
+    main()

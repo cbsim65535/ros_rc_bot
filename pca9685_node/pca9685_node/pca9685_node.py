@@ -3,12 +3,10 @@
 
 import rclpy
 from rclpy.node import Node
+from pwm_msgs.msg import PwmCtrl
 
-import threading
 import traceback
 import time
-
-from pwm_msgs.msg import PwmCtrl
 
 # Import the PCA9685 module.
 import Adafruit_PCA9685
