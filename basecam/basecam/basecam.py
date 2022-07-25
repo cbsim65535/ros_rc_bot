@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 import rclpy
@@ -329,7 +329,7 @@ class ChangeAngleServer:
 
     def execute_cb(self, goal):
         r = rclpy.Rate(2)
-        self.get_logger().info("direct_angle %r" % (goal))
+        rclpy.logging.get_logger().info("direct_angle %r" % (goal))
         self.__simplebgc.cmd_control_mode_speed_angle_degree(
             goal.roll_speed,
             goal.roll_degree,
@@ -344,7 +344,7 @@ class ChangeAngleServer:
             feedback.roll_degree = self.__simplebgc._now_roll
             feedback.pitch_degree = self.__simplebgc._now_pitch
             feedback.yaw_degree = self.__simplebgc._now_yaw
-            self.get_logger().info(feedback)
+            rclpy.logging.get_logger().info(feedback)
             self.__server.publish_feedback(self._feedback)
             bool1 = True
             dr = abs(goal.roll_degree - self.__simplebgc._now_roll) % 360
@@ -356,7 +356,7 @@ class ChangeAngleServer:
                 bool1 = False
             if dy > 1:
                 bool1 = False
-            self.get_logger().info("(%d,%d,%d,%s)" % (dr, dp, dy, str(bool1)))
+            rclpy.logging.get_logger().info("(%d,%d,%d,%s)" % (dr, dp, dy, str(bool1)))
             if bool1:
                 break
             r.sleep()
@@ -460,7 +460,7 @@ class Basecam(Node):
         return res
 
     def change_angle(self, msg):
-        self.get_logger().info("change_angle %r" % (msg))
+        rclpy.logging.get_logger().info("change_angle %r" % (msg))
         self.cmd_control_mode_speed_angle_degree(
             msg.roll_speed,
             msg.roll_degree,
@@ -478,7 +478,10 @@ class Basecam(Node):
         checksum = 0
         # for each char in the string
         for ch in string:
-            c = bytes(ch, "ascii")
+            try:
+                c = ord(chr(ch))
+            except:
+                c = ch
             checksum = (checksum + c) & 0xFF
         return chr(checksum)
 
@@ -491,8 +494,8 @@ class Basecam(Node):
     def unpack(self, bytes):
         r = {}
         if self.is_package(bytes):
-            size = bytes[2]
-            define = self.RESP_DEF.getDefine(bytes[1])
+            size = ord(chr(bytes[2]))
+            define = self.RESP_DEF.getDefine(ord(chr(bytes[1])))
             try:
                 body = bytes[4 : size + 4]
                 t0 = struct.unpack(define["_fmt"], body)
@@ -513,7 +516,7 @@ class Basecam(Node):
             return False
         if bytes[0] != chr(0x3E):
             return False
-        if self.RESP_DEF.hasCode(bytes[1]):
+        if self.RESP_DEF.hasCode(ord(chr(bytes[1]))):
             r = True
         return r
 
@@ -684,35 +687,28 @@ class Basecam(Node):
             pass
 
     def byteJoin(self, b0, b1, b2):
-        if isinstance(b0, str):
-            bb0 = bytes(b0, "ascii")
-        else:
-            bb0 = b0
-        if isinstance(b1, str):
-            bb1 = bytes(b1, "ascii")
-        else:
-            bb1 = b1
-        if isinstance(b2, str):
-            bb2 = bytes(b2, "ascii")
-        else:
-            bb2 = b2
-        return bb0 + bb1 + bb2
+        l = bytearray()
+        for i in b0:
+            l.append(ord(chr(i)))
+        for i in b1:
+            l.append(ord(chr(i)))
+        for i in b2:
+            l.append(ord(chr(i)))
+        b = str(l)
+        return b
 
     def listen(self):
         while self.is_live:
             b = None
             b0 = self.link.read(1)
-            print(type(b0))
-            print(b0 == chr(0x3E))
             if b0 == chr(0x3E):
                 b1 = self.link.read(2)
-                size = b1[1]
+                size = ord(chr((b1[1]))
                 b2 = self.link.read(1 + size + 1)
                 b = self.byteJoin(b0, b1, b2)
             r = self.unpack(b)
-            print(r)
-            print(b[1] == self.RESP_DEF.getCode("CMD_REALTIME_DATA_3"))
-            if r and b[1] == self.RESP_DEF.getCode("CMD_REALTIME_DATA_3"):
+            if r and ord(chr(b[1])) == self.RESP_DEF.getCode("CMD_REALTIME_DATA_3"):
+                print("CMD_REALTIME_DATA_3")
                 roll = -r["IMU_ANGLE_ROLL"] * self.ANGLE_UNIT
                 pitch = -r["IMU_ANGLE_PITCH"] * self.ANGLE_UNIT
                 yaw = -r["IMU_ANGLE_YAW"] * self.ANGLE_UNIT
@@ -765,9 +761,9 @@ class Basecam(Node):
 
             else:
                 if b is not None:
-                    self.get_logger().debug("result code : %d" % (b[1]))
-                    self.get_logger().debug(r)
-            self.rate.sleep()
+                    rclpy.logging.get_logger().debug("result code : %d" % (ord(chr(b[1]))))
+                    rclpy.logging.get_logger().debug(r)
+            # self.rate.sleep()
 
     def stop(self):
         self.is_live = False
