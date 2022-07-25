@@ -688,15 +688,15 @@ class Basecam(Node):
         print(type(b0))
         print(type(b1))
         print(type(b2))
-        if type(b0) == "str":
+        if isinstance(b0, str):
             bb0 = bytes(b0, "ascii")
         else:
             bb0 = b0
-        if type(b1) == "str":
+        if isinstance(b1, str):
             bb1 = bytes(b1, "ascii")
         else:
             bb1 = b1
-        if type(b2) == "str":
+        if isinstance(b2, str):
             bb2 = bytes(b2, "ascii")
         else:
             bb2 = b2
