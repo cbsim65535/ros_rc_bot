@@ -381,7 +381,7 @@ class Basecam(Node):
         self._now_pitch = 0
         self._now_yaw = 0
 
-        self.camera_tf_broadcaster = TransformBroadcaster()
+        self.camera_tf_broadcaster = TransformBroadcaster(self)
 
         self.pub_angles_euler = self.create_publisher(
             Vector3Stamped, "/basecam/angles/euler", 10
