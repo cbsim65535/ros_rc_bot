@@ -503,6 +503,11 @@ class Basecam(Node):
         if self.is_package(bytes):
             size = my_ord(bytes[2])
             define = self.RESP_DEF.getDefine(my_ord(bytes[1]))
+            print("-" * 20)
+            print(size)
+            print(define)
+            print("-" * 20)
+
             try:
                 body = bytes[4 : size + 4]
                 t0 = struct.unpack(define["_fmt"], body)
