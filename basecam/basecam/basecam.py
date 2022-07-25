@@ -77,6 +77,13 @@ def euler_from_quaternion(x, y, z, w):
     return roll_x, pitch_y, yaw_z  # in radians
 
 
+def my_ord(ch):
+    if isinstance(ch, str):
+        return ord(ch)
+    else:
+        return ord(chr(ch))
+
+
 class ResponseDefine:
 
     _define = {
@@ -478,13 +485,10 @@ class Basecam(Node):
         checksum = 0
         # for each char in the string
         for ch in string:
-            print("=" * 20)
-            print(ch)
-            if isinstance(ch, str):
+            try:
                 c = ord(ch)
-            else:
-                c = ord(chr(ch))
-            print(c)
+            except:
+                c = ch
             checksum = (checksum + c) & 0xFF
         return chr(checksum)
 
@@ -497,8 +501,8 @@ class Basecam(Node):
     def unpack(self, bytes):
         r = {}
         if self.is_package(bytes):
-            size = ord(chr(bytes[2]))
-            define = self.RESP_DEF.getDefine(ord(chr(bytes[1])))
+            size = ord(bytes[2])
+            define = self.RESP_DEF.getDefine(ord(bytes[1]))
             try:
                 body = bytes[4 : size + 4]
                 t0 = struct.unpack(define["_fmt"], body)
@@ -519,7 +523,7 @@ class Basecam(Node):
             return False
         if bytes[0] != chr(0x3E):
             return False
-        if self.RESP_DEF.hasCode(ord(chr(bytes[1]))):
+        if self.RESP_DEF.hasCode(ord(bytes[1])):
             r = True
         return r
 
@@ -692,20 +696,11 @@ class Basecam(Node):
     def byteJoin(self, b0, b1, b2):
         l = bytearray()
         for i in b0:
-            if isinstance(i, str):
-                l.append(ord(i))
-            else:
-                l.append(ord(chr(i)))
+            l.append(ord(i))
         for i in b1:
-            if isinstance(i, str):
-                l.append(ord(i))
-            else:
-                l.append(ord(chr(i)))
+            l.append(ord(i))
         for i in b2:
-            if isinstance(i, str):
-                l.append(ord(i))
-            else:
-                l.append(ord(chr(i)))
+            l.append(ord(i))
         b = str(l)
         return b
 
@@ -715,16 +710,11 @@ class Basecam(Node):
             b0 = self.link.read(1)
             if b0 == chr(0x3E):
                 b1 = self.link.read(2)
-                print(" > %s " % type(b1[1]))
-                if isinstance(b1[1], str):
-                    size = ord(b1[1])
-                else:
-                    size = ord(chr(b1[1]))
+                size = ord(b1[1])
                 b2 = self.link.read(1 + size + 1)
                 b = self.byteJoin(b0, b1, b2)
             r = self.unpack(b)
-            if r and ord(chr(b[1])) == self.RESP_DEF.getCode("CMD_REALTIME_DATA_3"):
-                print("CMD_REALTIME_DATA_3")
+            if r and ord(b[1]) == self.RESP_DEF.getCode("CMD_REALTIME_DATA_3"):
                 roll = -r["IMU_ANGLE_ROLL"] * self.ANGLE_UNIT
                 pitch = -r["IMU_ANGLE_PITCH"] * self.ANGLE_UNIT
                 yaw = -r["IMU_ANGLE_YAW"] * self.ANGLE_UNIT
@@ -777,9 +767,7 @@ class Basecam(Node):
 
             else:
                 if b is not None:
-                    rclpy.logging.get_logger().debug(
-                        "result code : %d" % (ord(chr(b[1])))
-                    )
+                    rclpy.logging.get_logger().debug("result code : %d" % (ord(b[1])))
                     rclpy.logging.get_logger().debug(r)
             # self.rate.sleep()
 
