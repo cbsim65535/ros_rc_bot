@@ -503,10 +503,6 @@ class Basecam(Node):
         if self.is_package(bytes):
             size = my_ord(bytes[2])
             define = self.RESP_DEF.getDefine(my_ord(bytes[1]))
-            print("-" * 20)
-            print(size)
-            print(define)
-            print("-" * 20)
             try:
                 body = bytes[4 : size + 4]
                 t0 = struct.unpack(define["_fmt"], body)
@@ -698,23 +694,13 @@ class Basecam(Node):
             pass
 
     def byteJoin(self, b0, b1, b2):
-        print(b0)
-        print(b1)
-        print(b2)
-        r = b""
-        if isinstance(b0, str):
-            r += bytes(b0, "ascii")
-        else:
-            r += b0
-        if isinstance(b1, str):
-            r += bytes(b1, "ascii")
-        else:
-            r += b1
-        if isinstance(b2, str):
-            r += bytes(b2, "ascii")
-        else:
-            r += b2
-        return r
+        l = bytearray()
+        l.append(my_ord(b0))
+        l.append(my_ord(b1))
+        for i in b2:
+            l.append(my_ord(i))
+        b = str(l)
+        return b
 
     def listen(self):
         while self.is_live:
