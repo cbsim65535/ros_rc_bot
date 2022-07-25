@@ -1,6 +1,6 @@
 from setuptools import setup
 
-package_name = "pca9685"
+package_name = "pca9685_node"
 
 setup(
     name=package_name,
@@ -18,6 +18,6 @@ setup(
     license="TODO: License declaration",
     tests_require=["pytest"],
     entry_points={
-        "console_scripts": ["run = pca9685.pca9685:main"],
+        "console_scripts": ["run = pca9685_node.pca9685_node:main"],
     },
 )
