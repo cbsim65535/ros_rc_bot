@@ -703,7 +703,7 @@ class Basecam(Node):
             b0 = self.link.read(1)
             if b0 == chr(0x3E):
                 b1 = self.link.read(2)
-                size = ord(chr((b1[1]))
+                size = ord(chr((b1[1])))
                 b2 = self.link.read(1 + size + 1)
                 b = self.byteJoin(b0, b1, b2)
             r = self.unpack(b)
@@ -761,7 +761,9 @@ class Basecam(Node):
 
             else:
                 if b is not None:
-                    rclpy.logging.get_logger().debug("result code : %d" % (ord(chr(b[1]))))
+                    rclpy.logging.get_logger().debug(
+                        "result code : %d" % (ord(chr(b[1])))
+                    )
                     rclpy.logging.get_logger().debug(r)
             # self.rate.sleep()
 
