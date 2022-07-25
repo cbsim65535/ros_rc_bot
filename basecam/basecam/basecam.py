@@ -486,7 +486,7 @@ class Basecam(Node):
         # for each char in the string
         for ch in string:
             try:
-                c = ord(ch)
+                c = my_ord(ch)
             except:
                 c = ch
             checksum = (checksum + c) & 0xFF
@@ -501,8 +501,8 @@ class Basecam(Node):
     def unpack(self, bytes):
         r = {}
         if self.is_package(bytes):
-            size = ord(bytes[2])
-            define = self.RESP_DEF.getDefine(ord(bytes[1]))
+            size = my_ord(bytes[2])
+            define = self.RESP_DEF.getDefine(my_ord(bytes[1]))
             try:
                 body = bytes[4 : size + 4]
                 t0 = struct.unpack(define["_fmt"], body)
@@ -523,7 +523,7 @@ class Basecam(Node):
             return False
         if bytes[0] != chr(0x3E):
             return False
-        if self.RESP_DEF.hasCode(ord(bytes[1])):
+        if self.RESP_DEF.hasCode(my_ord(bytes[1])):
             r = True
         return r
 
@@ -696,11 +696,11 @@ class Basecam(Node):
     def byteJoin(self, b0, b1, b2):
         l = bytearray()
         for i in b0:
-            l.append(ord(i))
+            l.append(my_ord(i))
         for i in b1:
-            l.append(ord(i))
+            l.append(my_ord(i))
         for i in b2:
-            l.append(ord(i))
+            l.append(my_ord(i))
         b = str(l)
         return b
 
@@ -710,11 +710,11 @@ class Basecam(Node):
             b0 = self.link.read(1)
             if b0 == chr(0x3E):
                 b1 = self.link.read(2)
-                size = ord(b1[1])
+                size = my_ord(b1[1])
                 b2 = self.link.read(1 + size + 1)
                 b = self.byteJoin(b0, b1, b2)
             r = self.unpack(b)
-            if r and ord(b[1]) == self.RESP_DEF.getCode("CMD_REALTIME_DATA_3"):
+            if r and my_ord(b[1]) == self.RESP_DEF.getCode("CMD_REALTIME_DATA_3"):
                 roll = -r["IMU_ANGLE_ROLL"] * self.ANGLE_UNIT
                 pitch = -r["IMU_ANGLE_PITCH"] * self.ANGLE_UNIT
                 yaw = -r["IMU_ANGLE_YAW"] * self.ANGLE_UNIT
@@ -767,7 +767,9 @@ class Basecam(Node):
 
             else:
                 if b is not None:
-                    rclpy.logging.get_logger().debug("result code : %d" % (ord(b[1])))
+                    rclpy.logging.get_logger().debug(
+                        "result code : %d" % (my_ord(b[1]))
+                    )
                     rclpy.logging.get_logger().debug(r)
             # self.rate.sleep()
 
