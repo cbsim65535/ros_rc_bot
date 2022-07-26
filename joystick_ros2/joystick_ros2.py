@@ -224,7 +224,8 @@ class JoystickRos2(Node):
             # detected joystick is not keymapped yet
             if gamepad.name not in JOYSTICK_CODE_VALUE_MAP:
                 print(
-                    "Sorry, joystick type not supported yet! Please plug in supported joystick"
+                    "Sorry, joystick type not supported yet! Please plug in supported joystick %s"
+                    % (gamepad.name)
                 )
                 time.sleep(1)
                 device_manager.find_devices()
