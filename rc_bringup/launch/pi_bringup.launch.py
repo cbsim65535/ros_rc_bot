@@ -27,5 +27,10 @@ def generate_launch_description():
                 executable="driving_node",
                 output="screen",
             ),
+            Node(
+                package="joy",
+                executable="joy_node",
+                output="screen",
+            ),
         ]
     )
