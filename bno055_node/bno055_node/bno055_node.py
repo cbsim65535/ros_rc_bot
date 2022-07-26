@@ -76,7 +76,7 @@ class Bno055Node(Node):
             self.pub_raw.publish(imu_raw)
 
             # Publish filtered data
-            imu_data.header.stamp = rospy.Time.now()
+            imu_data.header.stamp = self.get_clock().now().to_msg()
             imu_data.header.frame_id = frame_id
             imu_data.orientation.w = orientation[0]
             imu_data.orientation.x = orientation[1]
@@ -95,7 +95,7 @@ class Bno055Node(Node):
             self.pub_data.publish(imu_data)
 
             # Publish magnetometer data
-            mag_msg.header.stamp = rospy.Time.now()
+            mag_msg.header.stamp = self.get_clock().now().to_msg()
             mag_msg.header.frame_id = frame_id
             mag_msg.magnetic_field.x = magnetometer[0] / mag_fact
             mag_msg.magnetic_field.y = magnetometer[1] / mag_fact
