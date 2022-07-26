@@ -16,7 +16,7 @@ from adafruit_pca9685 import PCA9685
 
 class PCA9685Node(Node):
     def __init__(self):
-        super().__init__("pca9685")
+        super().__init__("pca9685_node")
 
         # Initialise the PCA9685 using the default address (0x40).
         i2c_bus = busio.I2C(SCL, SDA)
