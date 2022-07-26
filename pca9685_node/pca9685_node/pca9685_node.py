@@ -62,7 +62,7 @@ class PCA9685Node(Node):
         pulse = int(pulse)
         self.__value[channel] = pulse
         print(pulse)
-        self.pwm.channels[0].duty_cycle = pulse * 2  # 12bit -> 16bit
+        self.pwm.channels[channel].duty_cycle = pulse * 2  # 12bit -> 16bit
 
 
 def main(args=None):
