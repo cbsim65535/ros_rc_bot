@@ -10,7 +10,7 @@ from tf2_ros import TransformBroadcaster
 from sensor_msgs.msg import Imu, MagneticField
 from geometry_msgs.msg import TransformStamped
 
-from .bno055 import BNO055
+from .submodules.bno055 import BNO055
 
 SENSORS_GRAVITY_EARTH = 9.80665
 
