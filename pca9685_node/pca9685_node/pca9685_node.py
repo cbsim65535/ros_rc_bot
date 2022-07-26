@@ -60,7 +60,7 @@ class PCA9685Node(Node):
         self.__timestamp[channel] = time.time()
         pulse = int(pulse)
         self.__value[channel] = pulse
-        self.pwm.channels[0].duty_cycle = pulse * 4  # 12bit -> 16bit
+        self.pwm.channels[0].duty_cycle = pulse  # 12bit -> 16bit
 
 
 def main(args=None):
