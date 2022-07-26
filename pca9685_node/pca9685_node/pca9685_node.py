@@ -39,8 +39,12 @@ class PCA9685Node(Node):
         for i in range(0, self.MAX_CHANNEL):
             self.set_pwm(i, self.__neutral[i])
 
-        rate = self.create_rate(10)
+        self.rate = self.create_rate(10)
 
+        t0 = threading.Thread(target=self.loop, args=())
+        t0.start()
+
+    def loop(self):
         try:
             while rclpy.ok():
                 for i in range(0, self.MAX_CHANNEL):
@@ -49,7 +53,7 @@ class PCA9685Node(Node):
                         and self.__value[i] != self.__neutral[i]
                     ):
                         self.set_pwm(i, self.__neutral[i])
-                rate.sleep()
+                self.rate.sleep()
         except KeyboardInterrupt:
             traceback.print_exc()
 
@@ -69,6 +73,7 @@ def main(args=None):
     rclpy.init(args=args)
     pca9685 = PCA9685Node()
     rclpy.spin(pca9685)
+    pca9685.destroy_node()
     rclpy.shutdown()
 
 
