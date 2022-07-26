@@ -9,9 +9,8 @@ def generate_launch_description():
         [
             Node(
                 package="pca9685_node",
-                node_namespace="pca9685_node",
                 node_executable="pca9685_node",
-                node_name="pca9685_node",
+                output="screen",
             ),
         ]
     )
