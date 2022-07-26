@@ -18,6 +18,6 @@ setup(
     license="TODO: License declaration",
     tests_require=["pytest"],
     entry_points={
-        "console_scripts": ["run = pca9685_node.pca9685_node:main"],
+        "console_scripts": ["pca9685_node = pca9685_node.pca9685_node:main"],
     },
 )

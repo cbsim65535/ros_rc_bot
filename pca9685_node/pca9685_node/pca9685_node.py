@@ -9,7 +9,9 @@ import traceback
 import time
 
 # Import the PCA9685 module.
-import Adafruit_PCA9685
+from board import SCL, SDA
+import busio
+from adafruit_pca9685 import PCA9685
 
 
 class PCA9685Node(Node):
@@ -17,10 +19,11 @@ class PCA9685Node(Node):
         super().__init__("pca9685")
 
         # Initialise the PCA9685 using the default address (0x40).
-        self.pwm = Adafruit_PCA9685.PCA9685()
+        i2c_bus = busio.I2C(SCL, SDA)
+        self.pwm = PCA9685(i2c_bus)
 
         # Set frequency to 60hz, good for servos.
-        self.pwm.set_pwm_freq(60)
+        self.pwm.frequency = 60
 
         self.__timestamp = [0, 0, 0, 0]
         self.__value = [0, 0, 0, 0]
@@ -58,6 +61,7 @@ class PCA9685Node(Node):
         pulse = int(pulse)
         self.__value[channel] = pulse
         self.pwm.set_pwm(channel, 0, pulse)
+        self.pwm.channels[0] = pulse
 
 
 def main(args=None):
