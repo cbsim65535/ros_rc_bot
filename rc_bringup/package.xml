@@ -7,5 +7,9 @@
   <maintainer email="cbsim@zigbang.com">pi</maintainer>
   <license>TODO: License declaration</license>
 
-  <exec_depend>ros2launch</exec_depend>
+  <exec_depend>pca9685_node</exec_depend>
+  <exec_depend>bno055_node</exec_depend>
+  <exec_depend>basecam_node</exec_depend>
+  <exec_depend>driving_node</exec_depend>
+  
 </package>
