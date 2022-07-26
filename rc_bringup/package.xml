@@ -11,5 +11,9 @@
   <exec_depend>bno055_node</exec_depend>
   <exec_depend>basecam_node</exec_depend>
   <exec_depend>driving_node</exec_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
   
 </package>
