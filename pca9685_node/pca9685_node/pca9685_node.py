@@ -54,6 +54,7 @@ class PCA9685Node(Node):
             traceback.print_exc()
 
     def on_ctrl_set(self, msg):
+        print(msg)
         self.set_pwm(msg.channel, msg.pulse)
 
     def set_pwm(self, channel, pulse):
