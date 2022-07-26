@@ -9,27 +9,23 @@ def generate_launch_description():
         [
             Node(
                 package="basecam_node",
-                node_namespace="basecam_node",
-                node_executable="basecam_node",
-                node_name="basecam_node",
+                executable="basecam_node",
+                output="screen",
             ),
             Node(
                 package="bno055_node",
-                node_namespace="bno055_node",
-                node_executable="bno055_node",
-                node_name="bno055_node",
+                executable="bno055_node",
+                output="screen",
             ),
             Node(
                 package="pca9685_node",
-                node_namespace="pca9685_node",
-                node_executable="pca9685_node",
-                node_name="pca9685_node",
+                executable="pca9685_node",
+                output="screen",
             ),
             Node(
                 package="driving_node",
-                node_namespace="driving_node",
-                node_executable="driving_node",
-                node_name="driving_node",
+                executable="driving_node",
+                output="screen",
             ),
         ]
     )
