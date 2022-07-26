@@ -15,7 +15,7 @@ from bno055 import BNO055
 SENSORS_GRAVITY_EARTH = 9.80665
 
 
-class Manual(Node):
+class Bno055Node(Node):
     def __init__(self):
         super().__init__("bno055")
 
@@ -129,14 +129,14 @@ class Manual(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    manual = Manual()
+    bno = Bno055Node()
 
-    rclpy.spin(manual)
+    rclpy.spin(bno)
 
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
     # when the garbage collector destroys the node object)
-    manual.stop()
+    bno.stop()
     rclpy.shutdown()
 
 
