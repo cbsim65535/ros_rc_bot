@@ -2,7 +2,7 @@ from setuptools import setup
 import os
 from glob import glob
 
-package_name = "pca9685_node"
+package_name = "rc_bringup"
 
 setup(
     name=package_name,
