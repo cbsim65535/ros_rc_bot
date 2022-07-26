@@ -1,7 +1,7 @@
 from setuptools import setup
 
 package_name = "bno055_node"
-submodules = ["bno055"]
+submodules = "bno055"
 
 setup(
     name=package_name,
