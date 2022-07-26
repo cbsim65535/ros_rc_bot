@@ -59,14 +59,12 @@ class PCA9685Node(Node):
             traceback.print_exc()
 
     def on_ctrl_set(self, msg):
-        print(msg)
         self.set_pwm(msg.channel, msg.pulse)
 
     def set_pwm(self, channel, pulse):
         self.__timestamp[channel] = time.time()
         pulse = int(pulse)
         self.__value[channel] = pulse
-        print(pulse)
         self.pwm.channels[channel].duty_cycle = pulse * 16  # 12bit -> 16bit
 
 
