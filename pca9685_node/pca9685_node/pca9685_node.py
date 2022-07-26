@@ -12,7 +12,7 @@ import time
 import Adafruit_PCA9685
 
 
-class RcBot(Node):
+class PCA9685Node(Node):
     def __init__(self):
         super().__init__("pca9685")
 
@@ -62,15 +62,8 @@ class RcBot(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-
-    rcbot = RcBot()
-
-    rclpy.spin(rcbot)
-
-    # Destroy the node explicitly
-    # (optional - otherwise it will be done automatically
-    # when the garbage collector destroys the node object)
-    rcbot.stop()
+    pca9685 = PCA9685Node()
+    rclpy.spin(pca9685)
     rclpy.shutdown()
 
 
