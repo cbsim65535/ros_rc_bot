@@ -37,7 +37,6 @@ class Bno055Node(Node):
         acc_fact = 100.0
         mag_fact = 16.0
         gyr_fact = 900.0
-        seq = 0
         frame_id = "mobile_imu_base"
 
         imu_data = Imu()  # Filtered data
@@ -64,7 +63,6 @@ class Bno055Node(Node):
 
             imu_raw.header.stamp = self.get_clock().now().to_msg()
             imu_raw.header.frame_id = frame_id
-            imu_raw.header.seq = seq
 
             imu_raw.orientation_covariance[0] = -1
             imu_raw.linear_acceleration.x = accelerometer[0] / acc_fact
@@ -80,7 +78,6 @@ class Bno055Node(Node):
             # Publish filtered data
             imu_data.header.stamp = rospy.Time.now()
             imu_data.header.frame_id = frame_id
-            imu_data.header.seq = seq
             imu_data.orientation.w = orientation[0]
             imu_data.orientation.x = orientation[1]
             imu_data.orientation.y = orientation[2]
@@ -100,7 +97,6 @@ class Bno055Node(Node):
             # Publish magnetometer data
             mag_msg.header.stamp = rospy.Time.now()
             mag_msg.header.frame_id = frame_id
-            mag_msg.header.seq = seq
             mag_msg.magnetic_field.x = magnetometer[0] / mag_fact
             mag_msg.magnetic_field.y = magnetometer[1] / mag_fact
             mag_msg.magnetic_field.z = magnetometer[2] / mag_fact
@@ -117,8 +113,6 @@ class Bno055Node(Node):
             t.transform.rotation.y = imu_data.orientation.y
             t.transform.rotation.z = imu_data.orientation.z
             t.transform.rotation.w = imu_data.orientation.w
-
-            seq += 1
 
             r.sleep()
 
