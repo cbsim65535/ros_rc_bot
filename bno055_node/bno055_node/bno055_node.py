@@ -62,7 +62,7 @@ class Bno055Node(Node):
 
             imu_raw = Imu()
 
-            imu_raw.header.stamp = rospy.Time.now()
+            imu_raw.header.stamp = self.get_clock().now().to_msg()
             imu_raw.header.frame_id = frame_id
             imu_raw.header.seq = seq
 
