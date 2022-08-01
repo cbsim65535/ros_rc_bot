@@ -483,11 +483,7 @@ class Basecam(Node):
         checksum = 0
         # for each char in the string
         for ch in bytes_body:
-            try:
-                c = my_ord(ch)
-            except:
-                c = ch
-            checksum = (checksum + c) & 0xFF
+            checksum = (checksum + ch) & 0xFF
         return bytes([checksum])
 
     def str2Hex(self, string):
