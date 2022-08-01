@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 
-import rospy
+import rclpy
 import threading
 import traceback
 import time
+
+from rclpy.node import Node
 from std_msgs.msg import String, Header
 from geometry_msgs.msg import Twist, TwistStamped
 from sensor_msgs.msg import Joy
@@ -16,8 +18,9 @@ from basecam.srv import (
 )
 
 
-class Manual:
+class ManualNode(Node):
     def __init__(self):
+        super().__init__("manual_node")
         self.is_loop = True
 
         self.is_send_base = False
@@ -28,22 +31,21 @@ class Manual:
         self.camera_twist = Twist()
         self.focus_twist = Twist()
 
-        rospy.init_node("manual_control", anonymous=True)
-        rospy.Subscriber("/joy", Joy, self.on_joy)
+        self.sub_joy = self.create_subscription(Joy, "/joy", self.on_cmd_vel, 10)
 
-        self.pub_cmd_vel = rospy.Publisher("/cmd_vel", TwistStamped, queue_size=10)
-        self.pub_camera_ctrl = rospy.Publisher(
-            "/basecam/direct_ctrl", TwistStamped, queue_size=10
+        self.pub_cmd_vel = self.create_publisher(TwistStamped, "/cmd_vel", 10)
+        self.pub_camera_ctrl = self.create_publisher(
+            TwistStamped, "/basecam/direct_ctrl", 10
         )
-        self.pub_focus_ctrl = rospy.Publisher(
-            "/camera/focus_ctrl", TwistStamped, queue_size=10
+        self.pub_focus_ctrl = self.create_publisher(
+            TwistStamped, "/camera/focus_ctrl", 10
         )
 
-        self.basecam_set_moter_proxy = rospy.ServiceProxy(
-            "/basecam/set_motor", BasecamSetMotor
+        self.basecam_set_moter_client = self.create_client(
+            BasecamSetMotor, "/basecam/set_motor"
         )
-        self.basecam_reset_follow_offset_proxy = rospy.ServiceProxy(
-            "/basecam/reset_follow_offset", BasecamResetFollowOffset
+        self.basecam_reset_follow_offset_client = self.create_client(
+            BasecamResetFollowOffset, "/basecam/reset_follow_offset"
         )
 
         threading.Thread(
@@ -89,7 +91,7 @@ class Manual:
     def loop(self):
         while self.is_loop:
             header = Header()
-            header.stamp = rospy.Time.now()
+            header.stamp = self.get_clock().now().to_msg()
 
             if self.is_send_base:
                 twist_stapmed = TwistStamped(header=header, twist=self.base_twist)
@@ -118,12 +120,13 @@ class Manual:
         self.is_loop = False
 
 
+def main(args=None):
+    rclpy.init(args=args)
+    manual = ManualNode()
+    rclpy.spin(manual)
+    manual.destroy_node()
+    rclpy.shutdown()
+
+
 if __name__ == "__main__":
-    try:
-        manual = Manual()
-        rospy.spin()
-    except rospy.ROSInterruptException:
-        traceback.print_exc()
-    finally:
-        traceback.print_exc()
-        manual.stop()
+    main()
