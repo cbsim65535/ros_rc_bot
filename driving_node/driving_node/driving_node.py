@@ -69,8 +69,10 @@ class DrivingNode(Node):
             pulse = DrivingNode.PULSE_SPEED_ZERO
         if DrivingNode.ESC_MAX_PULSE < pulse:
             pulse = DrivingNode.PULSE_SPEED_ZERO
-
-        self.pub_pwm_set.publish(PwmCtrl(self.CH_ESC, pulse))
+        msg = PwmCtrl()
+        msg.channel = self.CH_ESC
+        msg.pulse = pulse
+        self.pub_pwm_set.publish(msg)
 
     def on_focus_ctrl(self, msg):
         focus = msg.twist.angular.y * DrivingNode.FOCUS_SIZE_PER_ONE
@@ -95,15 +97,24 @@ class DrivingNode(Node):
 
     def set_focus_pwm(self, pulse):
         pulse = int(pulse)
-        self.pub_pwm_set.publish(PwmCtrl(self.CH_FOCUS, pulse))
+        msg = PwmCtrl()
+        msg.channel = self.CH_FOCUS
+        msg.pulse = pulse
+        self.pub_pwm_set.publish(msg)
 
     def set_zoom_pwm(self, pulse):
         pulse = int(pulse)
-        self.pub_pwm_set.publish(PwmCtrl(self.CH_ZOOM, pulse))
+        msg = PwmCtrl()
+        msg.channel = self.CH_ZOOM
+        msg.pulse = pulse
+        self.pub_pwm_set.publish(msg)
 
     def set_steer_pwm(self, pulse):
         pulse = int(pulse)
-        self.pub_pwm_set.publish(PwmCtrl(self.CH_SERVO, pulse))
+        msg = PwmCtrl()
+        msg.channel = self.CH_SERVO
+        msg.pulse = pulse
+        self.pub_pwm_set.publish(msg)
 
     def on_cmd_vel(self, msg):
         # rospy.loginfo(msg)
