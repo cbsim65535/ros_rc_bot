@@ -478,11 +478,11 @@ class Basecam(Node):
         res.ok = True
         return res
 
-    def _checksum8bytes(self, string):
+    def _checksum8bytes(self, bytes_body):
         """Returns checksum  value from string."""
         checksum = 0
         # for each char in the string
-        for ch in string:
+        for ch in bytes_body:
             try:
                 c = my_ord(ch)
             except:
@@ -543,7 +543,7 @@ class Basecam(Node):
             type(self._checksum8bytes(body)),
         )
         result = (
-            chr(0x3E)
+            bytes([0x3E])
             + header_pack
             + self._checksum8bytes(header_pack)
             + body
