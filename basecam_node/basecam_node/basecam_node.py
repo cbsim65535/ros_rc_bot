@@ -694,7 +694,7 @@ class Basecam(Node):
             pass
 
     def byteJoin(self, b0, b1, b2):
-        print(type(b0), type(b1), type(b2))
+        # print(type(b0), type(b1), type(b2))
         if isinstance(b0, str):
             bb0 = bytes(b0, "ascii")
         else:
