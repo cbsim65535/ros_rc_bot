@@ -28,6 +28,11 @@ def generate_launch_description():
                 output="screen",
             ),
             Node(
+                package="driving_node",
+                executable="manual_node",
+                output="screen",
+            ),
+            Node(
                 package="joystick_ros2",
                 executable="joystick_ros2",
                 output="screen",
