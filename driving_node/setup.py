@@ -18,6 +18,9 @@ setup(
     license="TODO: License declaration",
     tests_require=["pytest"],
     entry_points={
-        "console_scripts": ["driving_node = driving_node.driving_node:main"],
+        "console_scripts": [
+            "driving_node = driving_node.driving_node:main",
+            "manual_node = driving_node.manual_node:main",
+        ],
     },
 )
