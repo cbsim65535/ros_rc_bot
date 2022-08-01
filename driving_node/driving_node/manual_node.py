@@ -69,14 +69,14 @@ class ManualNode(Node):
             if msg.buttons[2]:
                 req = BasecamSetMotor.Request()
                 req.power = True
-                self.basecam_set_moter_proxy(req)
+                self.basecam_set_moter_client.call_async(req)
             if msg.buttons[3]:
                 req = BasecamSetMotor.Request()
                 req.power = False
-                self.basecam_set_moter_proxy(req)
+                self.basecam_set_moter_client.call_async(req)
             if msg.buttons[0]:
                 req = BasecamResetFollowOffset.Request()
-                self.basecam_reset_follow_offset_proxy(req)
+                self.basecam_reset_follow_offset_client.call_async(req)
             self.camera_twist.angular.x = msg.axes[3] * 1.0
             self.camera_twist.angular.z = msg.axes[0] * 1.0
             self.camera_twist.angular.y = msg.axes[1] * 1.0
