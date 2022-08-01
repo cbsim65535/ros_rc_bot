@@ -62,11 +62,11 @@ class ManualNode(Node):
                 self.base_twist.linear.x = msg.axes[1] * 1.0
             else:
                 self.base_twist.linear.x = msg.axes[1] * 1.0
-            self.base_twist.angular.z = msg.axes[2] * 0.7
+            self.base_twist.angular.z = msg.axes[3] * 0.7
 
         elif msg.buttons[4] == 1 and msg.buttons[5] == 0:
             self.is_send_camera = True
-            if msg.buttons[0]:
+            if msg.buttons[2]:
                 req = BasecamSetMotor.Request()
                 req.power = True
                 self.basecam_set_moter_proxy(req)
@@ -74,12 +74,12 @@ class ManualNode(Node):
                 req = BasecamSetMotor.Request()
                 req.power = False
                 self.basecam_set_moter_proxy(req)
-            if msg.buttons[8]:
+            if msg.buttons[0]:
                 req = BasecamResetFollowOffset.Request()
                 self.basecam_reset_follow_offset_proxy(req)
-            self.camera_twist.angular.x = msg.axes[1] * 1.0
+            self.camera_twist.angular.x = msg.axes[3] * 1.0
             self.camera_twist.angular.z = msg.axes[0] * 1.0
-            self.camera_twist.angular.y = msg.axes[2] * 1.0
+            self.camera_twist.angular.y = msg.axes[1] * 1.0
 
         # elif msg.buttons[4] == 0 and msg.buttons[5] == 0:
         #     self.is_send_focus = True
