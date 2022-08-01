@@ -29,7 +29,7 @@ class ManualNode(Node):
         self.camera_twist = Twist()
         self.focus_twist = Twist()
 
-        self.sub_joy = self.create_subscription(Joy, "/joy", self.on_cmd_vel, 10)
+        self.sub_joy = self.create_subscription(Joy, "/joy", self.on_joy, 10)
 
         self.pub_cmd_vel = self.create_publisher(TwistStamped, "/cmd_vel", 10)
         self.pub_camera_ctrl = self.create_publisher(
