@@ -530,6 +530,9 @@ class Basecam(Node):
         if body is None:
             body = ""
             body_size = 0
+        elif isinstance(body, bytes):
+            body = str(body)
+            body_size = len(body)
         else:
             body_size = len(body)
         header_pack = header + chr(body_size)
@@ -618,7 +621,7 @@ class Basecam(Node):
 
     def cmd_control_mode_remote_control(self, roll, pitch, yaw):
         header = chr(67)
-        body = str(struct.pack("<3B6h", 4, 4, 4, 0, roll, 0, pitch, 0, yaw)[:15])
+        body = struct.pack("<3B6h", 4, 4, 4, 0, roll, 0, pitch, 0, yaw)[:15]
         values = self.pack(header, body)
         self.link.write(values)
 
