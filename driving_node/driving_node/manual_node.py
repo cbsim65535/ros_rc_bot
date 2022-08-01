@@ -77,9 +77,9 @@ class ManualNode(Node):
             if msg.buttons[0]:
                 req = BasecamResetFollowOffset.Request()
                 self.basecam_reset_follow_offset_client.call_async(req)
-            self.camera_twist.angular.x = msg.axes[3] * 1.0
+            self.camera_twist.angular.x = msg.axes[1] * 1.0
             self.camera_twist.angular.z = msg.axes[0] * 1.0
-            self.camera_twist.angular.y = msg.axes[1] * 1.0
+            self.camera_twist.angular.y = msg.axes[3] * 1.0
 
         # elif msg.buttons[4] == 0 and msg.buttons[5] == 0:
         #     self.is_send_focus = True
