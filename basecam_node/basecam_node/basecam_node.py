@@ -621,7 +621,9 @@ class Basecam(Node):
 
     def cmd_control_mode_remote_control(self, roll, pitch, yaw):
         header = chr(67)
-        body = struct.pack("<3B6h", 4, 4, 4, 0, roll, 0, pitch, 0, yaw)[:15]
+        body = struct.pack("<3B6h", 4, 4, 4, 0, int(roll), 0, int(pitch), 0, int(yaw))[
+            :15
+        ]
         values = self.pack(header, body)
         self.link.write(values)
 
