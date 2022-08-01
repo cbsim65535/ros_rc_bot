@@ -12,9 +12,7 @@ from sensor_msgs.msg import Joy
 
 from basecam_msgs.srv import (
     BasecamSetMotor,
-    BasecamSetMotorRequest,
     BasecamResetFollowOffset,
-    BasecamResetFollowOffsetRequest,
 )
 
 
@@ -69,15 +67,15 @@ class ManualNode(Node):
         elif msg.buttons[4] == 1 and msg.buttons[5] == 0:
             self.is_send_camera = True
             if msg.buttons[0]:
-                req = BasecamSetMotorRequest()
+                req = BasecamSetMotor.Request()
                 req.power = True
                 self.basecam_set_moter_proxy(req)
             if msg.buttons[3]:
-                req = BasecamSetMotorRequest()
+                req = BasecamSetMotor.Request()
                 req.power = False
                 self.basecam_set_moter_proxy(req)
             if msg.buttons[8]:
-                req = BasecamResetFollowOffsetRequest()
+                req = BasecamResetFollowOffset.Request()
                 self.basecam_reset_follow_offset_proxy(req)
             self.camera_twist.angular.x = msg.axes[1] * 1.0
             self.camera_twist.angular.z = msg.axes[0] * 1.0
