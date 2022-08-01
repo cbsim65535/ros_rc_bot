@@ -488,7 +488,7 @@ class Basecam(Node):
             except:
                 c = ch
             checksum = (checksum + c) & 0xFF
-        return chr(checksum)
+        return bytes([checksum])
 
     def str2Hex(self, string):
         if string is not None:
@@ -528,13 +528,12 @@ class Basecam(Node):
     def pack(self, header, body):
         body_size = 0
         if body is None:
-            body = ""
+            body = bytes()
             body_size = 0
-        elif isinstance(body, bytes):
-            body = str(body)
-            body_size = len(body)
         else:
             body_size = len(body)
+        if isinstance(header, str):
+            header = bytes(header, "ascii")
         header_pack = header + chr(body_size)
         print(
             type(chr(0x3E)),
@@ -620,7 +619,7 @@ class Basecam(Node):
     """
 
     def cmd_control_mode_remote_control(self, roll, pitch, yaw):
-        print("/basecam/direct_ctrl %d %d %d" % (roll, pitch, yaw))
+        # print("/basecam/direct_ctrl %d %d %d" % (roll, pitch, yaw))
         header = chr(67)
         body = struct.pack("<3B6h", 4, 4, 4, 0, int(roll), 0, int(pitch), 0, int(yaw))[
             :15
