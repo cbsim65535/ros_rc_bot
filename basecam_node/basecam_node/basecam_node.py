@@ -376,7 +376,7 @@ class Basecam(Node):
     ACCEL_UNIT = 0.019160156
     GYRO_UNIT = 0.06103701895
     SPEED_UNIT = 0.1220740379
-    PORT = "serial:/dev/ttyUSB0:115200:8N1"
+    PORT = "serial:/dev/ttySBGC:115200:8N1"
 
     is_live = True
     link = None
