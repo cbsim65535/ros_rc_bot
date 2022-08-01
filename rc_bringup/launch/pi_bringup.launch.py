@@ -28,8 +28,8 @@ def generate_launch_description():
                 output="screen",
             ),
             Node(
-                package="joy",
-                executable="joy_node",
+                package="joystick_ros2",
+                executable="joystick_ros2",
                 output="screen",
             ),
         ]
