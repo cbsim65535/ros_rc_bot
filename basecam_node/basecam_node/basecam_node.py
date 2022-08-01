@@ -534,7 +534,7 @@ class Basecam(Node):
             body_size = len(body)
         header_pack = header + chr(body_size)
         result = (
-            chr(0x3E)
+            bytes([0x3E])
             + header_pack
             + self._checksum8bytes(header_pack)
             + body
