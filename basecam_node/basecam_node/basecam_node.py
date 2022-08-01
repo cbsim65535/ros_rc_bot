@@ -488,7 +488,7 @@ class Basecam(Node):
             except:
                 c = ch
             checksum = (checksum + c) & 0xFF
-        return bytes([checksum])
+        return chr(checksum)
 
     def str2Hex(self, string):
         if string is not None:
@@ -532,20 +532,28 @@ class Basecam(Node):
             body_size = 0
         else:
             body_size = len(body)
-        header_pack = header + bytes([body_size])
+        header_pack = header + chr(body_size)
+        print(
+            type(chr(0x3E)),
+            type(header_pack),
+            type(self._checksum8bytes(header_pack)),
+            type(body),
+            type(self._checksum8bytes(body)),
+        )
         result = (
-            bytes(chr(0x3E), "ascii")
+            chr(0x3E)
             + header_pack
             + self._checksum8bytes(header_pack)
             + body
             + self._checksum8bytes(body)
         )
+
         return result
 
     """CMD_BOARD_INFO"""
 
     def cmdBoradInfo(self):
-        header = bytes([86])
+        header = chr(86)
         body = None
         values = self.pack(header, body)
         self.link.write(values)
@@ -553,15 +561,15 @@ class Basecam(Node):
     """CMD_USE_DEFAULTS"""
 
     def cmdUseDefaults(self):
-        header = bytes([114])
-        body = bytes([0])
+        header = chr(114)
+        body = chr(0)
         values = self.pack(header, body)
         self.link.write(values)
 
     """CMD_RESET"""
 
     def cmdReset(self):
-        header = bytes([114])
+        header = chr(114)
         body = struct.pack("<BH", 0, 0)[:3]
         values = self.pack(header, body)
         self.link.write(values)
@@ -572,7 +580,7 @@ class Basecam(Node):
         roll = round(roll / self.ANGLE_UNIT)
         pitch = round(pitch / self.ANGLE_UNIT)
         yaw = round(yaw / self.ANGLE_UNIT)
-        header = bytes([67])
+        header = chr(67)
         body = struct.pack("<3B6h", 2, 2, 2, 0, roll, 0, pitch, 0, yaw)[:15]
         values = self.pack(header, body)
         self.link.write(values)
@@ -588,7 +596,7 @@ class Basecam(Node):
         pitch_angle = round(pitch_angle / self.ANGLE_UNIT)
         yaw_speed = round(yaw_speed / self.SPEED_UNIT)
         yaw_angle = round(yaw_angle / self.ANGLE_UNIT)
-        header = bytes([67])
+        header = chr(67)
         body = struct.pack(
             "<3B6h",
             2,
@@ -609,7 +617,7 @@ class Basecam(Node):
     """
 
     def cmd_control_mode_remote_control(self, roll, pitch, yaw):
-        header = bytes([67])
+        header = chr(67)
         body = struct.pack("<3B6h", 4, 4, 4, 0, int(roll), 0, int(pitch), 0, int(yaw))[
             :15
         ]
@@ -619,7 +627,7 @@ class Basecam(Node):
     """CMD_CALIB_OFFSET"""
 
     def cmd_calib_offset(self):
-        header = bytes([79])
+        header = chr(79)
         body = None
         values = self.pack(header, body)
         self.link.write(values)
@@ -627,7 +635,7 @@ class Basecam(Node):
     """CMD_MOTORS_ON"""
 
     def cmd_motors_on(self):
-        header = bytes([77])
+        header = chr(77)
         body = None
         values = self.pack(header, body)
         self.link.write(values)
@@ -635,7 +643,7 @@ class Basecam(Node):
     """CMD_MOTORS_ON"""
 
     def cmd_motors_off(self):
-        header = bytes([109])
+        header = chr(109)
         body = None
         values = self.pack(header, body)
         self.link.write(values)
@@ -643,7 +651,7 @@ class Basecam(Node):
     """CMD_GET_ANGLES"""
 
     def cmdGetAngles(self):
-        header = bytes([73])
+        header = chr(73)
         body = None
         values = self.pack(header, body)
         self.link.write(values)
@@ -651,13 +659,13 @@ class Basecam(Node):
     """CMD_REALTIME_DATA_3"""
 
     def cmdRealtimeData3(self):
-        header = bytes([23])
+        header = chr(23)
         body = None
         values = self.pack(header, body)
         self.link.write(values)
 
     def cmdHelperData(self):
-        header = bytes([self.RESP_DEF.getCode("CMD_HELPER_DATA")])
+        header = chr(self.RESP_DEF.getCode("CMD_HELPER_DATA"))
         body = None
         values = self.pack(header, body)
         self.link.write(values)
@@ -665,7 +673,7 @@ class Basecam(Node):
     """CMD_DATA_STREAM_INTERVAL"""
 
     def cmdDataStreamInterval(self, code, ms):
-        header = bytes([85])
+        header = chr(85)
         body = struct.pack("<BH18s", code, ms, "")[:21]
         values = self.pack(header, body)
         self.link.write(values)
@@ -673,7 +681,7 @@ class Basecam(Node):
     """CMD_WRITE_PARAMS"""
 
     def cmdWriteParams3(self):
-        header = bytes([22])
+        header = chr(22)
         body = struct.pack("<139B", "")[:139]
         body[61]
         values = self.pack(header, body)
@@ -682,7 +690,7 @@ class Basecam(Node):
     """CMD_READ_PARAMS_3"""
 
     def cmdReadParams3(self):
-        header = bytes([21])
+        header = chr(21)
         body = struct.pack("<B", 0)[:1]
         values = self.pack(header, body)
         self.link.write(values)
