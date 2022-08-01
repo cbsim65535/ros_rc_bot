@@ -445,8 +445,8 @@ class Basecam(Node):
 
     def on_direct_ctrl(self, msg):
         self.cmd_control_mode_remote_control(
-            msg.twist.angular.x * 500,
-            -msg.twist.angular.y * 500,
+            msg.twist.angular.y * 500,
+            -msg.twist.angular.x * 500,
             -msg.twist.angular.z * 500,
         )
         return
