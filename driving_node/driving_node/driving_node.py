@@ -52,7 +52,7 @@ class DrivingNode(Node):
 
         self.pub_pwm_set = self.create_publisher(PwmCtrl, "/pwm_ctrl/set", 10)
         self.sub_cmd_vel = self.create_subscription(
-            TwistStamped, "/cmd_vel", self.on_cmd_vel
+            TwistStamped, "/cmd_vel", self.on_cmd_vel, 10
         )
         self.sub_cmd_vel  # prevent unused variable warning
         self.set_esc_pwm(DrivingNode.PULSE_SPEED_ZERO)
