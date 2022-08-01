@@ -7,11 +7,11 @@ from launch_ros.actions import Node
 def generate_launch_description():
     return LaunchDescription(
         [
-            Node(
-                package="basecam_node",
-                executable="basecam_node",
-                output="screen",
-            ),
+            # Node(
+            #     package="basecam_node",
+            #     executable="basecam_node",
+            #     output="screen",
+            # ),
             Node(
                 package="bno055_node",
                 executable="bno055_node",
