@@ -534,7 +534,7 @@ class Basecam(Node):
             body_size = len(body)
         if isinstance(header, str):
             header = bytes(header, "ascii")
-        header_pack = header + chr(body_size)
+        header_pack = header + bytes([body_size])
         print(
             type(chr(0x3E)),
             type(header_pack),
