@@ -450,23 +450,21 @@ class Basecam(Node):
         )
         return
 
-    def set_motor(self, req):
+    def set_motor(self, req, res):
         if req.power == True:
             self.cmd_motors_on()
         else:
             self.cmd_motors_off()
-        res = BasecamSetMotor.Response()
         res.ok = True
         if self.server:
             self.server.is_loop = False
         return res
 
-    def reset_follow_offset(self, req):
+    def reset_follow_offset(self, req, res):
         self.cmd_calib_offset()
-        res = BasecamResetFollowOffset.Response()
         return res
 
-    def change_angle(self, msg):
+    def change_angle(self, req, res):
         self.get_logger().info("change_angle %r" % (msg))
         self.cmd_control_mode_speed_angle_degree(
             msg.roll_speed,
@@ -476,7 +474,6 @@ class Basecam(Node):
             msg.yaw_speed,
             msg.yaw_degree,
         )
-        res = BasecamChangeAngle.Response()
         res.ok = True
         return res
 
