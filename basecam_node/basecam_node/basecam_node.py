@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+from numpy import isin
 import rclpy
 from rclpy.node import Node
 from rclpy.action import ActionServer
@@ -694,8 +695,19 @@ class Basecam(Node):
 
     def byteJoin(self, b0, b1, b2):
         print(type(b0), type(b1), type(b2))
-        b = bytes(b0, "ascii") + bytes(b1, "ascii") + b2
-        return b
+        if isinstance(b0, str):
+            bb0 = bytes(b0, "ascii")
+        else:
+            bb0 = b0
+        if isinstance(b1, str):
+            bb1 = bytes(b1, "ascii")
+        else:
+            bb1 = b1
+        if isinstance(b2, str):
+            bb2 = bytes(b2, "ascii")
+        else:
+            bb2 = b2
+        return bb0 + bb1 + bb2
 
     def listen(self):
         while self.is_live:
