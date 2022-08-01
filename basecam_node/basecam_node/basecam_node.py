@@ -533,13 +533,21 @@ class Basecam(Node):
         else:
             body_size = len(body)
         header_pack = header + bytes([body_size])
-        result = (
-            bytes([0x3E])
-            + header_pack
-            + self._checksum8bytes(header_pack)
-            + body
-            + self._checksum8bytes(body)
-        )
+        if body == None:
+            result = (
+                bytes([0x3E])
+                + header_pack
+                + self._checksum8bytes(header_pack)
+                + self._checksum8bytes(body)
+            )
+        else:
+            result = (
+                bytes([0x3E])
+                + header_pack
+                + self._checksum8bytes(header_pack)
+                + body
+                + self._checksum8bytes(body)
+            )
         return result
 
     """CMD_BOARD_INFO"""
