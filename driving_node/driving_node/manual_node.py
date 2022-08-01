@@ -10,7 +10,7 @@ from std_msgs.msg import String, Header
 from geometry_msgs.msg import Twist, TwistStamped
 from sensor_msgs.msg import Joy
 
-from basecam.srv import (
+from basecam_msgs.srv import (
     BasecamSetMotor,
     BasecamSetMotorRequest,
     BasecamResetFollowOffset,
