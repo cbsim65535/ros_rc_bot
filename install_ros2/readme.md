@@ -13,3 +13,5 @@ pip3 install netifaces
 # wifi unblcok rpi
 connmanctl enable wifi
 
+# ros_domain_id
+export ROS_DOMAIN_ID=5

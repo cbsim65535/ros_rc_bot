@@ -5,7 +5,7 @@ import threading
 import traceback
 
 from rclpy.node import Node
-from pwm_msgs.msg import PwmCtrl
+from std_msgs.msg import Int32
 from geometry_msgs.msg import TwistStamped
 
 
@@ -50,7 +50,11 @@ class DrivingNode(Node):
 
         self.rate = self.create_rate(10)
 
-        self.pub_pwm_set = self.create_publisher(PwmCtrl, "/pwm_ctrl/set", 10)
+        self.pub_pwm_set_0 = self.create_publisher(Int32, "/pwm_ctrl/set/0", 10)
+        self.pub_pwm_set_1 = self.create_publisher(Int32, "/pwm_ctrl/set/1", 10)
+        self.pub_pwm_set_2 = self.create_publisher(Int32, "/pwm_ctrl/set/2", 10)
+        self.pub_pwm_set_3 = self.create_publisher(Int32, "/pwm_ctrl/set/3", 10)
+
         self.sub_cmd_vel = self.create_subscription(
             TwistStamped, "/cmd_vel", self.on_cmd_vel, 10
         )
@@ -69,10 +73,10 @@ class DrivingNode(Node):
             pulse = DrivingNode.PULSE_SPEED_ZERO
         if DrivingNode.ESC_MAX_PULSE < pulse:
             pulse = DrivingNode.PULSE_SPEED_ZERO
-        msg = PwmCtrl()
-        msg.channel = self.CH_ESC
-        msg.pulse = pulse
-        self.pub_pwm_set.publish(msg)
+
+        msg = Int32()
+        msg.data = pulse
+        self.pub_pwm_set_1.publish(msg)
 
     def on_focus_ctrl(self, msg):
         focus = msg.twist.angular.y * DrivingNode.FOCUS_SIZE_PER_ONE
@@ -97,24 +101,21 @@ class DrivingNode(Node):
 
     def set_focus_pwm(self, pulse):
         pulse = int(pulse)
-        msg = PwmCtrl()
-        msg.channel = self.CH_FOCUS
-        msg.pulse = pulse
-        self.pub_pwm_set.publish(msg)
+        msg = Int32()
+        msg.data = pulse
+        self.pub_pwm_set_2.publish(msg)
 
     def set_zoom_pwm(self, pulse):
         pulse = int(pulse)
-        msg = PwmCtrl()
-        msg.channel = self.CH_ZOOM
-        msg.pulse = pulse
-        self.pub_pwm_set.publish(msg)
+        msg = Int32()
+        msg.data = pulse
+        self.pub_pwm_set_3.publish(msg)
 
     def set_steer_pwm(self, pulse):
         pulse = int(pulse)
-        msg = PwmCtrl()
-        msg.channel = self.CH_SERVO
-        msg.pulse = pulse
-        self.pub_pwm_set.publish(msg)
+        msg = Int32()
+        msg.data = pulse
+        self.pub_pwm_set_0.publish(msg)
 
     def on_cmd_vel(self, msg):
         # rospy.loginfo(msg)

@@ -3,7 +3,7 @@
 
 import rclpy
 from rclpy.node import Node
-from pwm_msgs.msg import PwmCtrl
+from std_msgs.msg import Int32
 
 import traceback
 import threading
@@ -30,10 +30,15 @@ class PCA9685Node(Node):
         self.__value = [0, 0, 0, 0]
         self.MAX_CHANNEL = 4
 
-        self.subscription_pwm_ctrl_set = self.create_subscription(
-            PwmCtrl, "/pwm_ctrl/set", self.on_ctrl_set, 10
+        self.subscription_pwm_ctrl_0 = self.create_subscription(
+            Int32, "/pwm_ctrl/set/0", self.on_ctrl_0, 10
         )
-        self.subscription_pwm_ctrl_set  # prevent unused variable warning
+        self.subscription_pwm_ctrl_0
+
+        self.subscription_pwm_ctrl_1 = self.create_subscription(
+            Int32, "/pwm_ctrl/set/1", self.on_ctrl_1, 10
+        )
+        self.subscription_pwm_ctrl_1
 
         self.__neutral = [369, 2048, 369, 369]
 
@@ -58,8 +63,11 @@ class PCA9685Node(Node):
         except KeyboardInterrupt:
             traceback.print_exc()
 
-    def on_ctrl_set(self, msg):
-        self.set_pwm(msg.channel, msg.pulse)
+    def on_ctrl_0(self, msg):
+        self.set_pwm(0, msg.data)
+
+    def on_ctrl_1(self, msg):
+        self.set_pwm(1, msg.data)
 
     def set_pwm(self, channel, pulse):
         self.__timestamp[channel] = time.time()
