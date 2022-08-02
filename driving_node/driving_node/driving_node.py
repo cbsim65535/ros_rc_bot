@@ -50,10 +50,10 @@ class DrivingNode(Node):
 
         self.rate = self.create_rate(10)
 
-        self.pub_pwm_set_0 = self.create_publisher(Int32, "/pwm_ctrl/set/0", 10)
-        self.pub_pwm_set_1 = self.create_publisher(Int32, "/pwm_ctrl/set/1", 10)
-        self.pub_pwm_set_2 = self.create_publisher(Int32, "/pwm_ctrl/set/2", 10)
-        self.pub_pwm_set_3 = self.create_publisher(Int32, "/pwm_ctrl/set/3", 10)
+        self.pub_pwm_set_0 = self.create_publisher(Int32, "/pwm_ctrl/set/a", 10)
+        self.pub_pwm_set_1 = self.create_publisher(Int32, "/pwm_ctrl/set/b", 10)
+        self.pub_pwm_set_2 = self.create_publisher(Int32, "/pwm_ctrl/set/c", 10)
+        self.pub_pwm_set_3 = self.create_publisher(Int32, "/pwm_ctrl/set/d", 10)
 
         self.sub_cmd_vel = self.create_subscription(
             TwistStamped, "/cmd_vel", self.on_cmd_vel, 10

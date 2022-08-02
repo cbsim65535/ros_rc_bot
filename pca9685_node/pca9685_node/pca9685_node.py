@@ -31,12 +31,12 @@ class PCA9685Node(Node):
         self.MAX_CHANNEL = 4
 
         self.subscription_pwm_ctrl_0 = self.create_subscription(
-            Int32, "/pwm_ctrl/set/0", self.on_ctrl_0, 10
+            Int32, "/pwm_ctrl/set/a", self.on_ctrl_0, 10
         )
         self.subscription_pwm_ctrl_0
 
         self.subscription_pwm_ctrl_1 = self.create_subscription(
-            Int32, "/pwm_ctrl/set/1", self.on_ctrl_1, 10
+            Int32, "/pwm_ctrl/set/b", self.on_ctrl_1, 10
         )
         self.subscription_pwm_ctrl_1
 
