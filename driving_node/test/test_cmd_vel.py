@@ -44,6 +44,8 @@ class TestCamera(Node):
                 dz = 1
             y += 0.1 * dy
             z += 0.1 * dz
+            self.pub_camera_ctrl.publish(twist_stapmed)
+            self.rate.sleep()
 
 
 def main(args=None):
