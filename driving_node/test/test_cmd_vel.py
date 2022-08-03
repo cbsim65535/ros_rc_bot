@@ -40,7 +40,7 @@ class TestCamera(Node):
         self.is_loop = False
 
     def loop(self):
-        if self.is_loop:
+        while self.is_loop:
             if self.y >= 0.5:
                 self.dy = -1
             if self.y <= 0.5:
