@@ -20,7 +20,7 @@ class TestCamera(Node):
     def __init__(self):
         super().__init__("test_camera_node")
 
-        self.rate = self.create_rate(10)
+        self.rate = self.create_rate(1)
         self.pub_camera_ctrl = self.create_publisher(
             TwistStamped, "/basecam/direct_ctrl", 10
         )
