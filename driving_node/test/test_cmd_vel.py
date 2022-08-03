@@ -49,8 +49,8 @@ class TestCamera(Node):
                 self.dz = -1
             if self.z <= -1:
                 self.dz = 1
-            self.y += 0.05 * self.dy
-            self.z += 0.05 * self.dz
+            self.y += 0.02 * self.dy
+            self.z += 0.02 * self.dz
             print("%f,%f" % (self.y, self.z))
             twist_stapmed = TwistStamped()
             twist_stapmed.header.stamp = self.get_clock().now().to_msg()
