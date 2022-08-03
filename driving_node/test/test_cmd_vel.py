@@ -54,10 +54,10 @@ class TestCamera(Node):
             print("%f,%f" % (self.y, self.z))
             twist_stapmed = TwistStamped()
             twist_stapmed.header.stamp = self.get_clock().now().to_msg()
-            if self.y > 0:
-                twist_stapmed.twist.angular.y = 0.5
-            else:
-                twist_stapmed.twist.angular.y = -0.5
+            # if self.y > 0:
+            #     twist_stapmed.twist.angular.y = 0.5
+            # else:
+            #     twist_stapmed.twist.angular.y = -0.5
             if self.z > 0:
                 twist_stapmed.twist.angular.z = 0.5
             else:
