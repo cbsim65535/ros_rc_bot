@@ -29,13 +29,18 @@ class TestCamera(Node):
         self.z = 0.0
         self.dz = 1.0
 
+        self.is_loop = True
+
         threading.Thread(
             target=self.loop,
             args=(),
         ).start()
 
+    def stop(self):
+        self.is_loop = False
+
     def loop(self):
-        if rclpy.ok():
+        if self.is_loop:
             if self.y >= 0.5:
                 self.dy = -1
             if self.y <= 0.5:
@@ -60,6 +65,7 @@ def main(args=None):
     rclpy.init(args=args)
     manual = TestCamera()
     rclpy.spin(manual)
+    manual.stop()
     manual.destroy_node()
     rclpy.shutdown()
     print("shutdown")
