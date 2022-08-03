@@ -20,31 +20,31 @@ class TestCamera(Node):
     def __init__(self):
         super().__init__("test_camera_node")
 
-        self.rate = self.create_rate(1)
+        self.rate = self.create_rate(10)
         self.pub_camera_ctrl = self.create_publisher(
             TwistStamped, "/basecam/direct_ctrl", 10
         )
-        y = 0.0
-        dy = 1.0
-        z = 0.0
-        dz = 1.0
+        self.y = 0.0
+        self.dy = 1.0
+        self.z = 0.0
+        self.dz = 1.0
 
-        while rclpy.ok():
+        def node_callback(self):
+            if self.y >= 0.5:
+                self.dy = -1
+            if self.y <= 0.5:
+                self.dy = 1
+            if self.z >= 0.5:
+                self.dz = -1
+            if self.z <= 0.5:
+                self.dz = 1
+            self.y += 0.1 * self.dy
+            self.z += 0.1 * self.dz
+            print("%f,%f" % (self.y, self.z))
             twist_stapmed = TwistStamped()
             twist_stapmed.header.stamp = self.get_clock().now().to_msg()
-            twist_stapmed.twist.angular.y = y
-            twist_stapmed.twist.angular.z = z
-            if y >= 0.5:
-                dy = -1
-            if y <= 0.5:
-                dy = 1
-            if z >= 0.5:
-                dz = -1
-            if z <= 0.5:
-                dz = 1
-            y += 0.1 * dy
-            z += 0.1 * dz
-            print("%f,%f" % (y, z))
+            twist_stapmed.twist.angular.y = self.y
+            twist_stapmed.twist.angular.z = self.z
             self.pub_camera_ctrl.publish(twist_stapmed)
             self.rate.sleep()
 
