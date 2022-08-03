@@ -50,11 +50,13 @@ class TestCamera(Node):
 
 
 def main(args=None):
+    print("init")
     rclpy.init(args=args)
     manual = TestCamera()
     rclpy.spin(manual)
     manual.destroy_node()
     rclpy.shutdown()
+    print("shutdown")
 
 
 if __name__ == "__main__":
