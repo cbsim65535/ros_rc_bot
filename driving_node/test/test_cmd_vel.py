@@ -43,11 +43,11 @@ class TestCamera(Node):
         while self.is_loop:
             if self.y >= 0.5:
                 self.dy = -1
-            if self.y <= 0.5:
+            if self.y <= -0.5:
                 self.dy = 1
             if self.z >= 0.5:
                 self.dz = -1
-            if self.z <= 0.5:
+            if self.z <= -0.5:
                 self.dz = 1
             self.y += 0.1 * self.dy
             self.z += 0.1 * self.dz
