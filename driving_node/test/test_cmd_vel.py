@@ -24,10 +24,10 @@ class TestCamera(Node):
         self.pub_camera_ctrl = self.create_publisher(
             TwistStamped, "/basecam/direct_ctrl", 10
         )
-        y = 0
-        dy = 1
-        z = 0
-        dz = 1
+        y = 0.0
+        dy = 1.0
+        z = 0.0
+        dz = 1.0
 
         while rclpy.ok():
             twist_stapmed = TwistStamped()
@@ -44,6 +44,7 @@ class TestCamera(Node):
                 dz = 1
             y += 0.1 * dy
             z += 0.1 * dz
+            print("%f,%f" % (y, z))
             self.pub_camera_ctrl.publish(twist_stapmed)
             self.rate.sleep()
 
