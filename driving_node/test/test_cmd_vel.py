@@ -29,24 +29,24 @@ class TestCamera(Node):
         self.z = 0.0
         self.dz = 1.0
 
-        def node_callback(self):
-            if self.y >= 0.5:
-                self.dy = -1
-            if self.y <= 0.5:
-                self.dy = 1
-            if self.z >= 0.5:
-                self.dz = -1
-            if self.z <= 0.5:
-                self.dz = 1
-            self.y += 0.1 * self.dy
-            self.z += 0.1 * self.dz
-            print("%f,%f" % (self.y, self.z))
-            twist_stapmed = TwistStamped()
-            twist_stapmed.header.stamp = self.get_clock().now().to_msg()
-            twist_stapmed.twist.angular.y = self.y
-            twist_stapmed.twist.angular.z = self.z
-            self.pub_camera_ctrl.publish(twist_stapmed)
-            self.rate.sleep()
+    def node_callback(self):
+        if self.y >= 0.5:
+            self.dy = -1
+        if self.y <= 0.5:
+            self.dy = 1
+        if self.z >= 0.5:
+            self.dz = -1
+        if self.z <= 0.5:
+            self.dz = 1
+        self.y += 0.1 * self.dy
+        self.z += 0.1 * self.dz
+        print("%f,%f" % (self.y, self.z))
+        twist_stapmed = TwistStamped()
+        twist_stapmed.header.stamp = self.get_clock().now().to_msg()
+        twist_stapmed.twist.angular.y = self.y
+        twist_stapmed.twist.angular.z = self.z
+        self.pub_camera_ctrl.publish(twist_stapmed)
+        self.rate.sleep()
 
 
 def main(args=None):
