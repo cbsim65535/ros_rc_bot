@@ -30,11 +30,11 @@ def generate_launch_description():
         [
             DeclareLaunchArgument(
                 "params_file0",
-                default_value=os.path.join(share_dir, "params", "ydlidar0.yaml"),
+                default_value=os.path.join(share_dir, "config", "ydlidar0.yaml"),
             ),
             DeclareLaunchArgument(
                 "params_file1",
-                default_value=os.path.join(share_dir, "params", "ydlidar1.yaml"),
+                default_value=os.path.join(share_dir, "config", "ydlidar1.yaml"),
             ),
             Node(
                 package="ydlidar",

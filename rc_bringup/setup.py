@@ -10,6 +10,7 @@ setup(
     packages=[],
     data_files=[
         ("share/" + package_name, ["package.xml"]),
+        (os.path.join("share", package_name, "config"), glob("config/*.yaml")),
         (os.path.join("share", package_name), glob("launch/*.launch.py")),
     ],
     install_requires=["setuptools"],
