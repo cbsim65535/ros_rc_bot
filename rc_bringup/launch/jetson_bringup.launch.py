@@ -28,6 +28,7 @@ import os
 def generate_launch_description():
     share_dir = get_package_share_directory("rc_bringup")
     parameter_file = LaunchConfiguration("params_file")
+    node_name = "ydlidar_ros2_driver_node"
 
     params_declare1 = DeclareLaunchArgument(
         "params_file",
@@ -36,19 +37,19 @@ def generate_launch_description():
     )
 
     driver_node1 = LifecycleNode(
-        package="ydlidar",
-        executable="ydlidar_node",
-        name="ydlidar_node1",
+        package="ydlidar_ros2_driver",
+        executable="ydlidar_ros2_driver_node",
+        name="ydlidar_ros2_driver_node1",
         output="screen",
         emulate_tty=True,
         parameters=[parameter_file],
-        namespace="/ydlidar1",
+        namespace="/",
     )
     tf2_node1 = Node(
         package="tf2_ros",
         executable="static_transform_publisher",
         name="static_tf_pub_laser1",
-        arguments=["0", "0", "0.02", "0", "0", "0", "1", "base_link", "laser_frame1"],
+        arguments=["0", "0", "0.02", "0", "0", "0", "1", "base_link", "laser_frame"],
     )
 
     return LaunchDescription(
