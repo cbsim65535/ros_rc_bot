@@ -42,7 +42,7 @@ def generate_launch_description():
         output="screen",
         emulate_tty=True,
         parameters=[parameter_file],
-        node_namespace="/",
+        node_namespace="/ydlidar1",
     )
     tf2_node1 = Node(
         package="tf2_ros",
