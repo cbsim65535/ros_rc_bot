@@ -65,7 +65,7 @@ def generate_launch_description():
                     "0",
                     "1",
                     "base_link",
-                    "laser_frame",
+                    "laser_frame0",
                 ],
             ),
             Node(
@@ -81,7 +81,7 @@ def generate_launch_description():
                     "0",
                     "1",
                     "base_link",
-                    "laser_frame",
+                    "laser_frame1",
                 ],
             ),
         ]
