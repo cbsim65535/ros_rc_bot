@@ -27,7 +27,6 @@ import os
 
 def generate_launch_description():
     share_dir = get_package_share_directory("rc_bringup")
-    parameter_file = LaunchConfiguration("params_file1")
     return LaunchDescription(
         [
             DeclareLaunchArgument(
@@ -41,7 +40,7 @@ def generate_launch_description():
                 name="ydlidar_ros2_driver_node1",
                 output="screen",
                 emulate_tty=True,
-                parameters=[parameter_file],
+                parameters=[LaunchConfiguration("params_file1")],
                 namespace="/",
             ),
             Node(
