@@ -29,13 +29,13 @@ def generate_launch_description():
     share_dir = get_package_share_directory("rc_bringup")
     parameter_file = LaunchConfiguration("params_file")
 
-    params_declare = DeclareLaunchArgument(
+    params_declare1 = DeclareLaunchArgument(
         "params_file",
         default_value=os.path.join(share_dir, "config", "ydlidar1.yaml"),
         description="FPath to the ROS2 parameters file to use.",
     )
 
-    driver_node = LifecycleNode(
+    driver_node1 = LifecycleNode(
         package="ydlidar",
         node_executable="ydlidar_node",
         node_name="ydlidar_node1",
@@ -53,8 +53,8 @@ def generate_launch_description():
 
     return LaunchDescription(
         [
-            params_declare,
-            driver_node,
-            tf2_node,
+            params_declare1,
+            driver_node1,
+            tf2_node1,
         ]
     )
