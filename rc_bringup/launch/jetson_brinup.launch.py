@@ -29,13 +29,13 @@ def generate_launch_description():
     return LaunchDescription(
         [
             DeclareLaunchArgument(
-                "ydlidar_params_file0",
-                default_value=os.path.join(share_dir, "config", "ydlidar0.yaml"),
-            ),
-            DeclareLaunchArgument(
-                "ydlidar_params_file1",
+                "params_file",
                 default_value=os.path.join(share_dir, "config", "ydlidar1.yaml"),
             ),
+            # DeclareLaunchArgument(
+            #     "ydlidar_params_file1",
+            #     default_value=os.path.join(share_dir, "config", "ydlidar1.yaml"),
+            # ),
             # Node(
             #     package="ydlidar",
             #     executable="ydlidar_node",
@@ -50,7 +50,7 @@ def generate_launch_description():
                 name="ydlidar_node1",
                 output="screen",
                 emulate_tty=True,
-                parameters=[LaunchConfiguration("ydlidar_params_file1")],
+                parameters=[LaunchConfiguration("params_file")],
             ),
             Node(
                 package="tf2_ros",
