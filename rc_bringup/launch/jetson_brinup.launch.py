@@ -37,12 +37,12 @@ def generate_launch_description():
 
     driver_node1 = LifecycleNode(
         package="ydlidar",
-        node_executable="ydlidar_node",
-        node_name="ydlidar_node1",
+        executable="ydlidar_node",
+        name="ydlidar_node1",
         output="screen",
         emulate_tty=True,
         parameters=[parameter_file],
-        node_namespace="/ydlidar1",
+        namespace="/ydlidar1",
     )
     tf2_node1 = Node(
         package="tf2_ros",
