@@ -36,14 +36,14 @@ def generate_launch_description():
                 "ydlidar_params_file1",
                 default_value=os.path.join(share_dir, "config", "ydlidar1.yaml"),
             ),
-            Node(
-                package="ydlidar",
-                executable="ydlidar_node",
-                name="ydlidar_node0",
-                output="screen",
-                emulate_tty=True,
-                parameters=[LaunchConfiguration("ydlidar_params_file0")],
-            ),
+            # Node(
+            #     package="ydlidar",
+            #     executable="ydlidar_node",
+            #     name="ydlidar_node0",
+            #     output="screen",
+            #     emulate_tty=True,
+            #     parameters=[LaunchConfiguration("ydlidar_params_file0")],
+            # ),
             Node(
                 package="ydlidar",
                 executable="ydlidar_node",
