@@ -1,3 +1,0 @@
-<launch>
-  <include file="$(find ydlidar_ros_driver)/launch/G2.launch" />
-</launch>
