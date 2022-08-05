@@ -1,4 +1,4 @@
-ydlidar_node:
+ydlidar_node0:
   ros__parameters:
     port: /dev/ttyUSB0
     frame_id: laser_frame0
