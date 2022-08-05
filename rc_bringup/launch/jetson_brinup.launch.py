@@ -55,7 +55,7 @@ def generate_launch_description():
             Node(
                 package="tf2_ros",
                 executable="static_transform_publisher",
-                node_name="static_tf_pub_laser0",
+                name="static_tf_pub_laser0",
                 arguments=[
                     "0",
                     "0",
@@ -71,7 +71,7 @@ def generate_launch_description():
             Node(
                 package="tf2_ros",
                 node_executable="static_transform_publisher",
-                node_name="static_tf_pub_laser0",
+                name="static_tf_pub_laser1",
                 arguments=[
                     "0",
                     "0",
