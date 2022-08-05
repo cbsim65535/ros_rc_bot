@@ -29,11 +29,11 @@ def generate_launch_description():
     return LaunchDescription(
         [
             DeclareLaunchArgument(
-                "params_file0",
+                "ydlidar_params_file0",
                 default_value=os.path.join(share_dir, "config", "ydlidar0.yaml"),
             ),
             DeclareLaunchArgument(
-                "params_file1",
+                "ydlidar_params_file1",
                 default_value=os.path.join(share_dir, "config", "ydlidar1.yaml"),
             ),
             Node(
@@ -42,7 +42,7 @@ def generate_launch_description():
                 name="ydlidar_node0",
                 output="screen",
                 emulate_tty=True,
-                parameters=[LaunchConfiguration("params_file0")],
+                parameters=[LaunchConfiguration("ydlidar_params_file0")],
             ),
             Node(
                 package="ydlidar",
@@ -50,7 +50,7 @@ def generate_launch_description():
                 name="ydlidar_node1",
                 output="screen",
                 emulate_tty=True,
-                parameters=[LaunchConfiguration("params_file1")],
+                parameters=[LaunchConfiguration("ydlidar_params_file1")],
             ),
             Node(
                 package="tf2_ros",
@@ -70,7 +70,7 @@ def generate_launch_description():
             ),
             Node(
                 package="tf2_ros",
-                node_executable="static_transform_publisher",
+                executable="static_transform_publisher",
                 name="static_tf_pub_laser1",
                 arguments=[
                     "0",
