@@ -25,7 +25,7 @@ import os
 
 
 def generate_launch_description():
-    share_dir = get_package_share_directory("ydlidar")
+    share_dir = get_package_share_directory("rc_bringup")
     return LaunchDescription(
         [
             DeclareLaunchArgument(
