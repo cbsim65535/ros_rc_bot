@@ -21,63 +21,68 @@ from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
 from launch.actions import LogInfo
 
-import lifecycle_msgs.msg
 import os
 
 
 def generate_launch_description():
     share_dir = get_package_share_directory("ydlidar")
-
-    params_declare0 = DeclareLaunchArgument(
-        "params_file0",
-        default_value=os.path.join(share_dir, "params", "ydlidar0.yaml"),
-        description="FPath to the ROS2 parameters file to use.",
-    )
-
-    params_declare1 = DeclareLaunchArgument(
-        "params_file1",
-        default_value=os.path.join(share_dir, "params", "ydlidar1.yaml"),
-        description="FPath to the ROS2 parameters file to use.",
-    )
-
-    driver_node0 = LifecycleNode(
-        package="ydlidar",
-        node_executable="ydlidar_node",
-        node_name="ydlidar_node0",
-        output="screen",
-        emulate_tty=True,
-        parameters=[LaunchConfiguration("params_file0")],
-        node_namespace="/",
-    )
-    driver_node1 = LifecycleNode(
-        package="ydlidar",
-        node_executable="ydlidar_node",
-        node_name="ydlidar_node1",
-        output="screen",
-        emulate_tty=True,
-        parameters=[LaunchConfiguration("params_file1")],
-        node_namespace="/",
-    )
-    tf2_node0 = Node(
-        package="tf2_ros",
-        executable="static_transform_publisher",
-        node_name="static_tf_pub_laser0",
-        arguments=["0", "0", "0.02", "0", "0", "0", "1", "base_link", "laser_frame"],
-    )
-    tf2_node1 = Node(
-        package="tf2_ros",
-        node_executable="static_transform_publisher",
-        node_name="static_tf_pub_laser0",
-        arguments=["0", "0", "0.02", "0", "0", "0", "1", "base_link", "laser_frame"],
-    )
-
     return LaunchDescription(
         [
-            params_declare0,
-            params_declare1,
-            driver_node0,
-            driver_node1,
-            tf2_node0,
-            tf2_node1,
+            DeclareLaunchArgument(
+                "params_file0",
+                default_value=os.path.join(share_dir, "params", "ydlidar0.yaml"),
+            ),
+            DeclareLaunchArgument(
+                "params_file1",
+                default_value=os.path.join(share_dir, "params", "ydlidar1.yaml"),
+            ),
+            Node(
+                package="ydlidar",
+                executable="ydlidar_node",
+                name="ydlidar_node0",
+                output="screen",
+                emulate_tty=True,
+                parameters=[LaunchConfiguration("params_file0")],
+            ),
+            Node(
+                package="ydlidar",
+                executable="ydlidar_node",
+                name="ydlidar_node1",
+                output="screen",
+                emulate_tty=True,
+                parameters=[LaunchConfiguration("params_file1")],
+            ),
+            Node(
+                package="tf2_ros",
+                executable="static_transform_publisher",
+                node_name="static_tf_pub_laser0",
+                arguments=[
+                    "0",
+                    "0",
+                    "0.02",
+                    "0",
+                    "0",
+                    "0",
+                    "1",
+                    "base_link",
+                    "laser_frame",
+                ],
+            ),
+            Node(
+                package="tf2_ros",
+                node_executable="static_transform_publisher",
+                node_name="static_tf_pub_laser0",
+                arguments=[
+                    "0",
+                    "0",
+                    "0.02",
+                    "0",
+                    "0",
+                    "0",
+                    "1",
+                    "base_link",
+                    "laser_frame",
+                ],
+            ),
         ]
     )
