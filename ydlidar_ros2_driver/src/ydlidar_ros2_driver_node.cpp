@@ -154,11 +154,8 @@ int main(int argc, char *argv[]) {
   node->get_parameter("auto_turn_on", auto_turn_on);
 
   bool ret = laser.initialize();
-  if (ret) {
-	if(auto_turn_on)
-    {
-		ret = laser.turnOn();
-	}
+  if (ret && auto_turn_on) {
+	ret = laser.turnOn();
   } else {
     RCLCPP_ERROR(node->get_logger(), "%s\n", laser.DescribeError());
   }
