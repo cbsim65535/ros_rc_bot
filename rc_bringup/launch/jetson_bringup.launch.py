@@ -41,7 +41,10 @@ def generate_launch_description():
                 output="screen",
                 emulate_tty=True,
                 parameters=[LaunchConfiguration("params_file0")],
-                namespace="/ydlidar_ros2_driver_node0",
+                remappings=[
+                    ("/start_scan", "/ydlidar_ros2_driver_node0/start_scan"),
+                    ("/stop_scan", "/ydlidar_ros2_driver_node0/stop_scan"),
+                ],
             ),
             Node(
                 package="tf2_ros",
@@ -71,7 +74,10 @@ def generate_launch_description():
                 output="screen",
                 emulate_tty=True,
                 parameters=[LaunchConfiguration("params_file1")],
-                namespace="/ydlidar_ros2_driver_node1",
+                remappings=[
+                    ("/start_scan", "/ydlidar_ros2_driver_node1/start_scan"),
+                    ("/stop_scan", "/ydlidar_ros2_driver_node1/stop_scan"),
+                ],
             ),
             Node(
                 package="tf2_ros",
