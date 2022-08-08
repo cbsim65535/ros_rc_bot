@@ -157,7 +157,6 @@ int main(int argc, char *argv[]) {
   if (ret && auto_turn_on) {
 	ret = laser.turnOn();
   } else {
-	ret = false
     RCLCPP_ERROR(node->get_logger(), "%s\n", laser.DescribeError());
   }
   
