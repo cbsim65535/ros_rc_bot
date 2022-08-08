@@ -41,7 +41,7 @@ def generate_launch_description():
                 output="screen",
                 emulate_tty=True,
                 parameters=[LaunchConfiguration("params_file0")],
-                namespace="/",
+                namespace="/ydlidar_ros2_driver_node0",
             ),
             Node(
                 package="tf2_ros",
@@ -71,7 +71,7 @@ def generate_launch_description():
                 output="screen",
                 emulate_tty=True,
                 parameters=[LaunchConfiguration("params_file1")],
-                namespace="/",
+                namespace="/ydlidar_ros2_driver_node1",
             ),
             Node(
                 package="tf2_ros",
