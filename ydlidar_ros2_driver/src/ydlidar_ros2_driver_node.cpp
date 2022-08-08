@@ -157,6 +157,7 @@ int main(int argc, char *argv[]) {
   if (ret && auto_turn_on) {
 	ret = laser.turnOn();
   } else {
+	ret = false
     RCLCPP_ERROR(node->get_logger(), "%s\n", laser.DescribeError());
   }
   
@@ -218,7 +219,7 @@ int main(int argc, char *argv[]) {
 
 
     } else {
-      RCLCPP_ERROR(node->get_logger(), "Failed to get scan");
+      RCLCPP_ERROR_ONCE(node->get_logger(), "Failed to get scan");
     }
     if(!rclcpp::ok()) {
       break;
