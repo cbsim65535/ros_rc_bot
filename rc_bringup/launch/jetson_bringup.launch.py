@@ -34,18 +34,18 @@ def generate_launch_description():
                 default_value=os.path.join(share_dir, "config", "ydlidar0.yaml"),
                 description="FPath to the ROS2 parameters file to use.",
             ),
-            # LifecycleNode(
-            #     package="ydlidar_ros2_driver",
-            #     executable="ydlidar_ros2_driver_node",
-            #     name="ydlidar_ros2_driver_node0",
-            #     output="screen",
-            #     emulate_tty=True,
-            #     parameters=[LaunchConfiguration("params_file0")],
-            #     remappings=[
-            #         ("/start_scan", "/ydlidar_ros2_driver_node0/start_scan"),
-            #         ("/stop_scan", "/ydlidar_ros2_driver_node0/stop_scan"),
-            #     ],
-            # ),
+            LifecycleNode(
+                package="ydlidar_ros2_driver",
+                executable="ydlidar_ros2_driver_node",
+                name="ydlidar_ros2_driver_node0",
+                output="screen",
+                emulate_tty=True,
+                parameters=[LaunchConfiguration("params_file0")],
+                remappings=[
+                    ("/start_scan", "/ydlidar_ros2_driver_node0/start_scan"),
+                    ("/stop_scan", "/ydlidar_ros2_driver_node0/stop_scan"),
+                ],
+            ),
             Node(
                 package="tf2_ros",
                 executable="static_transform_publisher",
@@ -67,18 +67,18 @@ def generate_launch_description():
                 default_value=os.path.join(share_dir, "config", "ydlidar1.yaml"),
                 description="FPath to the ROS2 parameters file to use.",
             ),
-            LifecycleNode(
-                package="ydlidar_ros2_driver",
-                executable="ydlidar_ros2_driver_node",
-                name="ydlidar_ros2_driver_node1",
-                output="screen",
-                emulate_tty=True,
-                parameters=[LaunchConfiguration("params_file1")],
-                remappings=[
-                    ("/start_scan", "/ydlidar_ros2_driver_node1/start_scan"),
-                    ("/stop_scan", "/ydlidar_ros2_driver_node1/stop_scan"),
-                ],
-            ),
+            # LifecycleNode(
+            #     package="ydlidar_ros2_driver",
+            #     executable="ydlidar_ros2_driver_node",
+            #     name="ydlidar_ros2_driver_node1",
+            #     output="screen",
+            #     emulate_tty=True,
+            #     parameters=[LaunchConfiguration("params_file1")],
+            #     remappings=[
+            #         ("/start_scan", "/ydlidar_ros2_driver_node1/start_scan"),
+            #         ("/stop_scan", "/ydlidar_ros2_driver_node1/stop_scan"),
+            #     ],
+            # ),
             Node(
                 package="tf2_ros",
                 executable="static_transform_publisher",
