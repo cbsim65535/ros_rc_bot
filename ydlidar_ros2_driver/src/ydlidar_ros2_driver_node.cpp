@@ -148,11 +148,17 @@ int main(int argc, char *argv[]) {
   bool invalid_range_is_inf = false;
   node->declare_parameter("invalid_range_is_inf");
   node->get_parameter("invalid_range_is_inf", invalid_range_is_inf);
-
+  
+  bool auto_turn_on = true;
+  node->declare_parameter("auto_turn_on");
+  node->get_parameter("auto_turn_on", auto_turn_on);
 
   bool ret = laser.initialize();
   if (ret) {
-    ret = laser.turnOn();
+	if(auto_turn_on)
+    {
+		ret = laser.turnOn();
+	}
   } else {
     RCLCPP_ERROR(node->get_logger(), "%s\n", laser.DescribeError());
   }
