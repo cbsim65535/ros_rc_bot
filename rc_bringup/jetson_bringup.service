@@ -5,7 +5,7 @@ Description=Run Ros RC Car Jetson launch
 User=cbsim
 Group=cbsim
 Environment=ROS_DOMAIN_ID=100
-ExecStart=/bin/bash -c 'source /opt/ros/foxy/setup.bash; source home/$USER/rc_ws/install/setup.bash; ros2 launch rc_brinup jetson_bringup.launch.py; sleep 60'
+ExecStart=/bin/bash -c 'source /opt/ros/foxy/setup.bash; source home/cbsim/rc_ws/install/setup.bash; ros2 launch rc_brinup jetson_bringup.launch.py; sleep 60'
 RemainAfterExit=no
 Restart=on-failure
 RestartSec=2s
