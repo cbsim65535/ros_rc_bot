@@ -56,7 +56,7 @@ def generate_launch_description():
                     "0",
                     "1",
                     "base_link",
-                    "laser_frame",
+                    "laser_fram0",
                 ],
             ),
             DeclareLaunchArgument(
@@ -86,7 +86,7 @@ def generate_launch_description():
                     "0",
                     "1",
                     "base_link",
-                    "laser_frame",
+                    "laser_frame1",
                 ],
             ),
         ]
