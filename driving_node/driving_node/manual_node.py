@@ -151,6 +151,7 @@ class ManualNode(Node):
 def main(args=None):
     rclpy.init(args=args)
     manual = ManualNode()
+    manual.get_logger().info("init manual_node")
     rclpy.spin(manual)
     manual.destroy_node()
     rclpy.shutdown()
