@@ -45,7 +45,7 @@ class ManualNode(Node):
         self.basecam_reset_follow_offset_client = self.create_client(
             BasecamResetFollowOffset, "/basecam/reset_follow_offset"
         )
-
+        print("1-1")
         self.cli_ydlidar0_start_scan = self.create_client(
             Empty, "/ydlidar_ros2_driver_node0/start_scan"
         )
@@ -58,6 +58,7 @@ class ManualNode(Node):
         self.cli_ydlidar1_stop_scan = self.create_client(
             Empty, "/ydlidar_ros2_driver_node1/stop_scan"
         )
+        print("1-2")
         while not self.cli_ydlidar0_start_scan.wait_for_service(timeout_sec=1.0):
             self.get_logger().info("service not available, waiting again...")
         while not self.cli_ydlidar1_start_scan.wait_for_service(timeout_sec=1.0):
