@@ -68,6 +68,8 @@ class ManualNode(Node):
         while not self.cli_ydlidar1_stop_scan.wait_for_service(timeout_sec=1.0):
             self.get_logger().info("service not available, waiting again...")
 
+        self.rate = self.create_rate(10)
+
         threading.Thread(
             target=self.loop,
             args=(),
@@ -143,7 +145,7 @@ class ManualNode(Node):
                 twist_stapmed = TwistStamped(header=header, twist=Twist())
                 self.pub_focus_ctrl.publish(twist_stapmed)
 
-            time.sleep(0.1)
+            self.rate.sleep()
 
     def stop(self):
         self.is_loop = False
