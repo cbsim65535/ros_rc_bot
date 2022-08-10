@@ -158,6 +158,7 @@ def main(args=None):
     print("2")
     manual.get_logger().info("init manual_node")
     rclpy.spin(manual)
+    manual.stop()
     manual.destroy_node()
     rclpy.shutdown()
 
