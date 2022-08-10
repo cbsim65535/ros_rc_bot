@@ -6,7 +6,7 @@ import traceback
 import time
 
 from rclpy.node import Node
-from std_msgs.msg import String, Header
+from std_msgs.msg import Header, Empty
 from geometry_msgs.msg import Twist, TwistStamped
 from sensor_msgs.msg import Joy
 
@@ -46,6 +46,27 @@ class ManualNode(Node):
             BasecamResetFollowOffset, "/basecam/reset_follow_offset"
         )
 
+        self.cli_ydlidar0_start_scan = self.create_client(
+            Empty, "/ydlidar_ros2_driver_node0/start_scan"
+        )
+        self.cli_ydlidar1_start_scan = self.create_client(
+            Empty, "/ydlidar_ros2_driver_node1/start_scan"
+        )
+        self.cli_ydlidar0_stop_scan = self.create_client(
+            Empty, "/ydlidar_ros2_driver_node0/stop_scan"
+        )
+        self.cli_ydlidar1_stop_scan = self.create_client(
+            Empty, "/ydlidar_ros2_driver_node1/stop_scan"
+        )
+        while not self.cli_ydlidar0_start_scan.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info("service not available, waiting again...")
+        while not self.cli_ydlidar1_start_scan.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info("service not available, waiting again...")
+        while not self.cli_ydlidar0_stop_scan.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info("service not available, waiting again...")
+        while not self.cli_ydlidar1_stop_scan.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info("service not available, waiting again...")
+
         threading.Thread(
             target=self.loop,
             args=(),
@@ -63,6 +84,15 @@ class ManualNode(Node):
             else:
                 self.base_twist.linear.x = msg.axes[1] * 1.0
             self.base_twist.angular.z = msg.axes[3] * 0.7
+
+            if msg.buttons[2]:
+                req = Empty.Request()
+                self.cli_ydlidar0_start_scan.call_async(req)
+                self.cli_ydlidar1_start_scan.call_async(req)
+            if msg.buttons[3]:
+                req = Empty.Request()
+                self.cli_ydlidar0_stop_scan.call_async(req)
+                self.cli_ydlidar1_stop_scan.call_async(req)
 
         elif msg.buttons[4] == 1 and msg.buttons[5] == 0:
             self.is_send_camera = True
