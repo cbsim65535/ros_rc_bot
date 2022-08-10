@@ -63,7 +63,7 @@ def generate_launch_description():
                     "0.35",
                     "0",
                     "0",
-                    "1",
+                    "3",
                     "1",
                     "base_link",
                     "laser_frame0",
