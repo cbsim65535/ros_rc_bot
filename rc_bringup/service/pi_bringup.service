@@ -1,0 +1,14 @@
+[Unit]
+Description=Run Ros RC Car Pi launch
+
+[Service]
+User=pi
+Group=pi
+Environment=ROS_DOMAIN_ID=100
+ExecStart=/bin/bash -c 'source /home/pi/ros2_foxy/install/setup.bash; source /home/pi/rc_ws/install/setup.bash; ros2 launch rc_bringup pi_bringup.launch.py; sleep 60'
+RemainAfterExit=no
+Restart=on-failure
+RestartSec=2s
+
+[Install]
+WantedBy=multi-user.target
