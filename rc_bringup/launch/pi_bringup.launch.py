@@ -59,7 +59,7 @@ def generate_launch_description():
                 name="static_tf_pub_laser0",
                 arguments=[
                     "0.16",
-                    "-0.08",
+                    "0.08",
                     "0.35",
                     "0",
                     "0",
@@ -75,7 +75,7 @@ def generate_launch_description():
                 name="static_tf_pub_laser1",
                 arguments=[
                     "-0.165",
-                    "0.08",
+                    "-0.08",
                     "0.35",
                     "0",
                     "0",
@@ -107,7 +107,7 @@ def generate_launch_description():
                 name="camera_joint",
                 arguments=[
                     "0.04",
-                    "0.013",
+                    "-0.013",
                     "0.0",
                     "0",
                     "0",
