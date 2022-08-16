@@ -29,7 +29,7 @@ class OdometryPublisherNode(Node):
         self.x = 0.0
         self.y = 0.0
         self.th = 0.0
-        self.last_time = rospy.Time.now()
+        self.last_time = self.get_clock().now().to_msg()
 
         self.left_encoder = LS7366R(0, 1000000, 4)
         self.right_encoder = LS7366R(1, 1000000, 4)
@@ -37,13 +37,14 @@ class OdometryPublisherNode(Node):
         self._count_left = 0
         self._count_right = 0
 
-        self.odom_pub = rospy.Publisher("/odom", Odometry, queue_size=10)
+        self.odom_pub = self.create_publisher(Odometry, "/odom", 10)
 
         self.read_encoder = threading.Thread(target=self.read_encoder, args=()).start()
         self.loop = threading.Thread(target=self._loop, args=()).start()
 
     def read_encoder(self):
-        r = rospy.Rate(3000)
+        RATE = 3000
+        r = self.create_rate(RATE)
         while True:
             self._prev_left = self._count_left
             self._prev_right = self._count_right
@@ -55,9 +56,9 @@ class OdometryPublisherNode(Node):
 
     def _loop(self):
         RATE = 10
-        r = rospy.Rate(RATE)
+        r = self.create_rate(RATE)
         while self._is_loop:
-            current_time = rospy.Time.now()
+            current_time = self.get_clock().now().to_msg()
 
             velocity_left = (
                 -(self._count_left - self._prev_left)
