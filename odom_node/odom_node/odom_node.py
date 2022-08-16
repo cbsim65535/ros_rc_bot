@@ -1,6 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-import rospy
+import rclpy
+from rclpy.node import Node
+
 import threading
 import traceback
 import time
@@ -20,9 +22,9 @@ RIGHT_WHEEL_DIAMETER = 0.127
 TOTAL_CODE = 2880
 
 
-class OdometryPublisher:
+class OdometryPublisherNode(Node):
     def __init__(self):
-        rospy.init_node("odometry_publisher", anonymous=True)
+        super().__init__("odom_node")
         self._is_loop = True
         self.x = 0.0
         self.y = 0.0
@@ -49,7 +51,6 @@ class OdometryPublisher:
             self._count_left = self.left_encoder.readCounter()
             self._count_right = -self.right_encoder.readCounter()
 
-            # rospy.loginfo("A %d, %d" % (self._count_left, self._count_right))
             r.sleep()
 
     def _loop(self):
@@ -95,20 +96,6 @@ class OdometryPublisher:
             self.y += delta_y
             self.th += delta_th
 
-            # rospy.loginfo(
-            #     "(x=%f, y=%f, th=%f, Dx=%f, Dy=%f, Dt=%f, Cl=%d, Cr=%d)"
-            #     % (
-            #         self.x,
-            #         self.y,
-            #         (self.th % math.pi),
-            #         delta_x,
-            #         delta_y,
-            #         dt,
-            #         count_left,
-            #         count_right,
-            #     )
-            # )
-
             odom_quat = tf.transformations.quaternion_from_euler(0, 0, self.th)
 
             odom = Odometry()
@@ -116,9 +103,7 @@ class OdometryPublisher:
             odom.header.stamp = current_time
             odom.pose.pose = Pose(Point(self.x, self.y, 0.0), Quaternion(*odom_quat))
             odom.child_frame_id = "base_link"
-            odom.twist.twist = Twist(Vector3(vx, vy, 0), Vector3(0, 0, vth))
-
-            # rospy.loginfo(odom)
+            odom.twist.twist = Twist(Vector3(vx, vy, 0), Vector3(0, 0, vth))            
 
             self.odom_pub.publish(odom)
 
@@ -129,13 +114,14 @@ class OdometryPublisher:
     def stop(self):
         self._is_loop = False
 
+def main(args=None):
+    rclpy.init(args=args)
+    odom = OdometryPublisherNode()
+    rclpy.spin(odom)
+    odom.stop()
+    odom.destroy_node()
+    rclpy.shutdown()
+
 
 if __name__ == "__main__":
-    try:
-        odom = OdometryPublisher()
-        rospy.spin()
-    except rospy.ROSInterruptException:
-        traceback.print_exc()
-    finally:
-        traceback.print_exc()
-        odom.stop()
+    main()
