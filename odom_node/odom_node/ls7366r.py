@@ -1,9 +1,9 @@
 #!/usr/bin/python
 
-#Python library to interface with the chip LS7366R for the Raspberry Pi
-#Written by Federico Bolanos
-#Last Edit: May 12th 2020
-#Reason: Updating to python3... better late than never eh?
+# Python library to interface with the chip LS7366R for the Raspberry Pi
+# Written by Federico Bolanos
+# Last Edit: May 12th 2020
+# Reason: Updating to python3... better late than never eh?
 
 import spidev
 from time import sleep
@@ -16,7 +16,7 @@ from time import sleep
 
 class LS7366R():
 
-    #-------------------------------------------
+    # -------------------------------------------
     # Constants
     DURATION_REST = 0.01
 
@@ -36,34 +36,36 @@ class LS7366R():
     TWOBYTE_COUNTER = 0x02
     ONEBYTE_COUNTER = 0x03
 
-    BYTE_MODE = [ONEBYTE_COUNTER, TWOBYTE_COUNTER, THREEBYTE_COUNTER, FOURBYTE_COUNTER]
+    BYTE_MODE = [ONEBYTE_COUNTER, TWOBYTE_COUNTER,
+                 THREEBYTE_COUNTER, FOURBYTE_COUNTER]
 
     #   Values
     max_val = 4294967295
-    
+
     # Global Variables
 
-    counterSize = 4 #Default 4
-    
-    #----------------------------------------------
+    counterSize = 4  # Default 4
+
+    # ----------------------------------------------
     # Constructor
 
     def __init__(self, CSX, CLK, BTMD):
-        self.counterSize = BTMD #Sets the byte mode that will be used
+        self.counterSize = BTMD  # Sets the byte mode that will be used
 
+        self.spi = spidev.SpiDev()  # Initialize object
+        self.spi.open(0, CSX)  # Which CS line will be used
+        # Speed of clk (modifies speed transaction)
+        self.spi.max_speed_hz = CLK
 
-        self.spi = spidev.SpiDev() #Initialize object
-        self.spi.open(0, CSX) #Which CS line will be used
-        self.spi.max_speed_hz = CLK #Speed of clk (modifies speed transaction) 
-
-        #Init the Encoder
-        print('Clearing Encoder CS{}\'s Count...\t{}'.format(CSX, self.clearCounter()))
+        # Init the Encoder
+        print('Clearing Encoder CS{}\'s Count...\t{}'.format(
+            CSX, self.clearCounter()))
         print('Clearing Encoder CS{}\'s Status..\t{}'.format(CSX, self.clearStatus))
 
         self.spi.xfer2([self.WRITE_MODE0, self.FOURX_COUNT])
-        
-        sleep(self.DURATION_REST) #Rest
-        
+
+        sleep(self.DURATION_REST)  # Rest
+
         self.spi.xfer2([self.WRITE_MODE1, self.BYTE_MODE[self.counterSize-1]])
 
     def close(self):
@@ -85,35 +87,33 @@ class LS7366R():
 
         for i in range(self.counterSize):
             readTransaction.append(0)
-            
+
         data = self.spi.xfer2(readTransaction)
 
         EncoderCount = 0
         for i in range(self.counterSize):
             EncoderCount = (EncoderCount << 8) + data[i+1]
 
-        if data[1] != 255:    
+        if data[1] != 255:
             return EncoderCount
         else:
-            return (EncoderCount - (self.max_val+1))  
-        
+            return (EncoderCount - (self.max_val+1))
+
     def readStatus(self):
         data = self.spi.xfer2([self.READ_STATUS, 0xFF])
-        
+
         return data[1]
 
 
 if __name__ == "__main__":
     from time import sleep
-    
+
     encoder = LS7366R(0, 1000000, 4)
     try:
         while True:
-            print("Encoder count: %d Press CTRL-C to terminate test program."%(encoder.readCounter()))
+            print("Encoder count: %d Press CTRL-C to terminate test program." %
+                  (encoder.readCounter()))
             sleep(0.02)
     except KeyboardInterrupt:
         encoder.close()
         print("Test programming ending.")
-
-    
-        

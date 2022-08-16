@@ -31,7 +31,8 @@ def generate_launch_description():
         [
             DeclareLaunchArgument(
                 "params_file0",
-                default_value=os.path.join(share_dir, "config", "ydlidar0.yaml"),
+                default_value=os.path.join(
+                    share_dir, "config", "ydlidar0.yaml"),
                 description="FPath to the ROS2 parameters file to use.",
             ),
             LifecycleNode(
@@ -49,7 +50,8 @@ def generate_launch_description():
             ),
             DeclareLaunchArgument(
                 "params_file1",
-                default_value=os.path.join(share_dir, "config", "ydlidar1.yaml"),
+                default_value=os.path.join(
+                    share_dir, "config", "ydlidar1.yaml"),
                 description="FPath to the ROS2 parameters file to use.",
             ),
             LifecycleNode(

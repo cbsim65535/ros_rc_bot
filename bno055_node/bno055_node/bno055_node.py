@@ -22,7 +22,8 @@ class Bno055Node(Node):
         self.imu_tf_broadcaster = TransformBroadcaster(self)
         self.pub_data = self.create_publisher(Imu, "/mobile/imu/data", 1)
         self.pub_raw = self.create_publisher(Imu, "/mobile/imu/raw", 1)
-        self.pub_mag = self.create_publisher(MagneticField, "/mobile/imu/mag", 1)
+        self.pub_mag = self.create_publisher(
+            MagneticField, "/mobile/imu/mag", 1)
 
         self.is_loop = True
 

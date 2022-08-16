@@ -126,21 +126,24 @@ class ManualNode(Node):
             header.stamp = self.get_clock().now().to_msg()
 
             if self.is_send_base:
-                twist_stapmed = TwistStamped(header=header, twist=self.base_twist)
+                twist_stapmed = TwistStamped(
+                    header=header, twist=self.base_twist)
                 self.pub_cmd_vel.publish(twist_stapmed)
             else:
                 twist_stapmed = TwistStamped(header=header, twist=Twist())
                 self.pub_cmd_vel.publish(twist_stapmed)
 
             if self.is_send_camera:
-                twist_stapmed = TwistStamped(header=header, twist=self.camera_twist)
+                twist_stapmed = TwistStamped(
+                    header=header, twist=self.camera_twist)
                 self.pub_camera_ctrl.publish(twist_stapmed)
             else:
                 twist_stapmed = TwistStamped(header=header, twist=Twist())
                 self.pub_camera_ctrl.publish(twist_stapmed)
 
             if self.is_send_focus:
-                twist_stapmed = TwistStamped(header=header, twist=self.focus_twist)
+                twist_stapmed = TwistStamped(
+                    header=header, twist=self.focus_twist)
                 self.pub_focus_ctrl.publish(twist_stapmed)
             else:
                 twist_stapmed = TwistStamped(header=header, twist=Twist())

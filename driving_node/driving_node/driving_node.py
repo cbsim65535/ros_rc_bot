@@ -38,7 +38,8 @@ class DrivingNode(Node):
     ACCEL_SIZE_PER_ONE = (ESC_MAX_PULSE - DRIVING_MIN_PULSE) * 1.0
     ACCEL_STEP = 20.0
 
-    REVERSE_ACCEL_SIZE_PER_ONE = (REVERSE_DRIVING_MIN_PULSE - ESC_MIN_PULSE) * 1.0
+    REVERSE_ACCEL_SIZE_PER_ONE = (
+        REVERSE_DRIVING_MIN_PULSE - ESC_MIN_PULSE) * 1.0
 
     PULSE_SPEED_ZERO = 2048
 
@@ -50,10 +51,14 @@ class DrivingNode(Node):
 
         self.rate = self.create_rate(10)
 
-        self.pub_pwm_set_0 = self.create_publisher(Int32, "/pwm_ctrl/set/a", 10)
-        self.pub_pwm_set_1 = self.create_publisher(Int32, "/pwm_ctrl/set/b", 10)
-        self.pub_pwm_set_2 = self.create_publisher(Int32, "/pwm_ctrl/set/c", 10)
-        self.pub_pwm_set_3 = self.create_publisher(Int32, "/pwm_ctrl/set/d", 10)
+        self.pub_pwm_set_0 = self.create_publisher(
+            Int32, "/pwm_ctrl/set/a", 10)
+        self.pub_pwm_set_1 = self.create_publisher(
+            Int32, "/pwm_ctrl/set/b", 10)
+        self.pub_pwm_set_2 = self.create_publisher(
+            Int32, "/pwm_ctrl/set/c", 10)
+        self.pub_pwm_set_3 = self.create_publisher(
+            Int32, "/pwm_ctrl/set/d", 10)
 
         self.sub_cmd_vel = self.create_subscription(
             TwistStamped, "/cmd_vel", self.on_cmd_vel, 10
@@ -88,7 +93,8 @@ class DrivingNode(Node):
         pulse = DrivingNode.FOCUS_CENTER_PULSE + focus
         self.set_focus_pwm(pulse)
 
-        zoom = self.__zoom - (msg.twist.angular.x * DrivingNode.ZOOM_SIZE_PER_ONE)
+        zoom = self.__zoom - (msg.twist.angular.x *
+                              DrivingNode.ZOOM_SIZE_PER_ONE)
         if zoom > DrivingNode.ZOOM_MAX_PULSE:
             zoom = DrivingNode.ZOOM_MAX_PULSE
         if zoom < DrivingNode.ZOOM_MIN_PULSE:

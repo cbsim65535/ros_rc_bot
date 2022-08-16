@@ -1,8 +1,0 @@
-<launch>
-    <arg name="enable_people_tracking_motion" default="false"/>
-    <arg name="enable_finding_motion" default="false"/>
-    <node name="head_motion" pkg="head_motion" type="head_motion_node.py" output="screen">
-        <param name="enable_people_tracking_motion" value="$(arg enable_people_tracking_motion)" />
-        <param name="enable_finding_motion" value="$(arg enable_finding_motion)" />
-    </node>
-</launch>

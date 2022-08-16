@@ -39,7 +39,8 @@ class OdometryPublisherNode(Node):
 
         self.odom_pub = self.create_publisher(Odometry, "/odom", 10)
 
-        self.read_encoder = threading.Thread(target=self.read_encoder, args=()).start()
+        self.read_encoder = threading.Thread(
+            target=self.read_encoder, args=()).start()
         self.loop = threading.Thread(target=self._loop, args=()).start()
 
     def read_encoder(self):
@@ -82,7 +83,8 @@ class OdometryPublisherNode(Node):
             count_right = self._count_right - self._prev_right
 
             velocity_linear = (velocity_right + velocity_left) / 2.0
-            velocity_angular = (velocity_right - velocity_left) / DISTANCE_WHEELS
+            velocity_angular = (
+                velocity_right - velocity_left) / DISTANCE_WHEELS
 
             vx = velocity_linear
             vy = 0
@@ -102,9 +104,10 @@ class OdometryPublisherNode(Node):
             odom = Odometry()
             odom.header.frame_id = "odom"
             odom.header.stamp = current_time
-            odom.pose.pose = Pose(Point(self.x, self.y, 0.0), Quaternion(*odom_quat))
+            odom.pose.pose = Pose(
+                Point(self.x, self.y, 0.0), Quaternion(*odom_quat))
             odom.child_frame_id = "base_link"
-            odom.twist.twist = Twist(Vector3(vx, vy, 0), Vector3(0, 0, vth))            
+            odom.twist.twist = Twist(Vector3(vx, vy, 0), Vector3(0, 0, vth))
 
             self.odom_pub.publish(odom)
 
@@ -114,6 +117,7 @@ class OdometryPublisherNode(Node):
 
     def stop(self):
         self._is_loop = False
+
 
 def main(args=None):
     rclpy.init(args=args)

@@ -1,6 +1,0 @@
-<launch>
-  <node name="joy_node" pkg="joy" type="joy_node" output="screen" />
-  <node type="manual.py" pkg="driving" name="manual" output="screen" />
-  <node type="driving.py" pkg="driving" name="driving" output="screen" />
-  <node type="pca9685.py" pkg="pca9685" name="pca9685" output="screen" />
-</launch>
