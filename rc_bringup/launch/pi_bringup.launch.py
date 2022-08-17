@@ -40,7 +40,7 @@ def generate_launch_description():
             Node(
                 package="tf2_ros",
                 executable="static_transform_publisher",
-                name="map_joint",
+                name="tf_publisher_map",
                 arguments=[
                     "0",
                     "0",
@@ -49,14 +49,14 @@ def generate_launch_description():
                     "0",
                     "0",
                     "1",
-                    "map",
                     "base_link",
+                    "map",
                 ],
             ),
             Node(
                 package="tf2_ros",
                 executable="static_transform_publisher",
-                name="odom_joint",
+                name="tf_publisher_odom",
                 arguments=[
                     "0.17",
                     "0",
@@ -72,7 +72,7 @@ def generate_launch_description():
             Node(
                 package="tf2_ros",
                 executable="static_transform_publisher",
-                name="static_tf_pub_laser0",
+                name="tf_publisher_laser0",
                 arguments=[
                     "0.16",
                     "0.08",
@@ -88,7 +88,7 @@ def generate_launch_description():
             Node(
                 package="tf2_ros",
                 executable="static_transform_publisher",
-                name="static_tf_pub_laser1",
+                name="tf_publisher_laser1",
                 arguments=[
                     "-0.165",
                     "-0.08",
@@ -104,7 +104,7 @@ def generate_launch_description():
             Node(
                 package="tf2_ros",
                 executable="static_transform_publisher",
-                name="gimbal_joint",
+                name="tf_publisher_gimbal",
                 arguments=[
                     "0.08",
                     "0.00",
@@ -120,7 +120,7 @@ def generate_launch_description():
             Node(
                 package="tf2_ros",
                 executable="static_transform_publisher",
-                name="camera_joint",
+                name="tf_publisher_camera",
                 arguments=[
                     "0.04",
                     "-0.013",
@@ -136,7 +136,7 @@ def generate_launch_description():
             Node(
                 package="tf2_ros",
                 executable="static_transform_publisher",
-                name="camera_joint",
+                name="tf_publisher_zed",
                 arguments=[
                     "0.0",
                     "0.0",
