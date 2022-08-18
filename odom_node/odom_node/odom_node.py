@@ -11,7 +11,6 @@ from ls7366r import LS7366R
 
 import math
 from math import sin, cos, pi
-import tf
 
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Point, Pose, Quaternion, Twist, Vector3
@@ -39,8 +38,7 @@ class OdometryPublisherNode(Node):
 
         self.odom_pub = self.create_publisher(Odometry, "/odom", 10)
 
-        self.read_encoder = threading.Thread(
-            target=self.read_encoder, args=()).start()
+        self.read_encoder = threading.Thread(target=self.read_encoder, args=()).start()
         self.loop = threading.Thread(target=self._loop, args=()).start()
 
     def read_encoder(self):
@@ -83,8 +81,7 @@ class OdometryPublisherNode(Node):
             count_right = self._count_right - self._prev_right
 
             velocity_linear = (velocity_right + velocity_left) / 2.0
-            velocity_angular = (
-                velocity_right - velocity_left) / DISTANCE_WHEELS
+            velocity_angular = (velocity_right - velocity_left) / DISTANCE_WHEELS
 
             vx = velocity_linear
             vy = 0
@@ -99,13 +96,12 @@ class OdometryPublisherNode(Node):
             self.y += delta_y
             self.th += delta_th
 
-            odom_quat = tf.transformations.quaternion_from_euler(0, 0, self.th)
+            odom_quat = quaternion_from_euler(0, 0, self.th)
 
             odom = Odometry()
             odom.header.frame_id = "odom"
             odom.header.stamp = current_time
-            odom.pose.pose = Pose(
-                Point(self.x, self.y, 0.0), Quaternion(*odom_quat))
+            odom.pose.pose = Pose(Point(self.x, self.y, 0.0), Quaternion(*odom_quat))
             odom.child_frame_id = "base_link"
             odom.twist.twist = Twist(Vector3(vx, vy, 0), Vector3(0, 0, vth))
 
@@ -117,6 +113,28 @@ class OdometryPublisherNode(Node):
 
     def stop(self):
         self._is_loop = False
+
+
+def quaternion_from_euler(roll, pitch, yaw):
+    """
+    Converts euler roll, pitch, yaw to quaternion (w in last place)
+    quat = [x, y, z, w]
+    Bellow should be replaced when porting for ROS 2 Python tf_conversions is done.
+    """
+    cy = math.cos(yaw * 0.5)
+    sy = math.sin(yaw * 0.5)
+    cp = math.cos(pitch * 0.5)
+    sp = math.sin(pitch * 0.5)
+    cr = math.cos(roll * 0.5)
+    sr = math.sin(roll * 0.5)
+
+    q = [0] * 4
+    q[0] = cy * cp * cr + sy * sp * sr
+    q[1] = cy * cp * sr - sy * sp * cr
+    q[2] = sy * cp * sr + cy * sp * cr
+    q[3] = sy * cp * cr - cy * sp * sr
+
+    return q
 
 
 def main(args=None):
