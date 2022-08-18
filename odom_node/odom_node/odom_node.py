@@ -86,7 +86,7 @@ class OdometryPublisherNode(Node):
             vy = 0
             vth = velocity_angular
 
-            dt = (current_time - self.last_time).seconds()
+            dt = (current_time - self.last_time).seconds
             delta_x = (vx * cos(self.th) - vy * sin(self.th)) * dt
             delta_y = (vx * sin(self.th) + vy * cos(self.th)) * dt
             delta_th = vth * dt
