@@ -11,8 +11,9 @@ from ls7366r import LS7366R
 import math
 from math import sin, cos, pi
 
+from tf2_ros import TransformBroadcaster
 from nav_msgs.msg import Odometry
-from geometry_msgs.msg import Point, Pose, Quaternion, Twist, Vector3
+from geometry_msgs.msg import TransformStamped
 
 DISTANCE_WHEELS = 0.202
 LEFT_WHEEL_DIAMETER = 0.127
@@ -36,6 +37,7 @@ class OdometryPublisherNode(Node):
         self._count_right = 0
 
         self.odom_pub = self.create_publisher(Odometry, "/odom", 10)
+        self.odom_tf_broadcaster = TransformBroadcaster(self)
 
         self.read_encoder = threading.Thread(target=self.read_encoder, args=()).start()
         self.loop = threading.Thread(target=self._loop, args=()).start()
@@ -116,6 +118,20 @@ class OdometryPublisherNode(Node):
             odom.twist.twist.angular.z = vth
 
             self.odom_pub.publish(odom)
+
+            t = TransformStamped()
+            t.header.stamp = current_time.to_msg()
+            t.header.frame_id = "odom"
+            t.child_frame_id = "base_link"
+            t.transform.translation.x = self.x
+            t.transform.translation.y = self.y
+            t.transform.translation.z = 0.0
+            t.transform.rotation.x = odom_quat[0]
+            t.transform.rotation.y = odom_quat[1]
+            t.transform.rotation.z = odom_quat[2]
+            t.transform.rotation.w = odom_quat[3]
+
+            self.odom_broadcaster.sendTransform(t)
 
             self.last_time = current_time
 
