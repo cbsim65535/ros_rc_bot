@@ -36,7 +36,7 @@ from sensor_msgs.msg import Imu
 def quaternion_from_euler(roll, pitch, yaw):
     """
     Converts euler roll, pitch, yaw to quaternion (w in last place)
-    quat = [x, y, z, w]
+    quat = [w, x, y, z]
     Bellow should be replaced when porting for ROS 2 Python tf_conversions is done.
     """
     cy = math.cos(yaw * 0.5)
@@ -723,16 +723,16 @@ class Basecam(Node):
                 roll = -r["IMU_ANGLE_ROLL"] * self.ANGLE_UNIT
                 pitch = -r["IMU_ANGLE_PITCH"] * self.ANGLE_UNIT
                 yaw = -r["IMU_ANGLE_YAW"] * self.ANGLE_UNIT
-                self._now_roll = yaw
-                self._now_pitch = roll
-                self._now_yaw = pitch
+                self._now_roll = roll
+                self._now_pitch = pitch
+                self._now_yaw = yaw
                 msg = Vector3Stamped()
                 msg.header.stamp = self.get_clock().now().to_msg()
                 msg.vector.x = self._now_roll
                 msg.vector.y = self._now_pitch
                 msg.vector.z = self._now_yaw
                 self.pub_angles_euler.publish(msg)
-                (x, y, z, w) = quaternion_from_euler(
+                (w, x, y, z) = quaternion_from_euler(
                     math.radians(self._now_roll),
                     math.radians(self._now_pitch),
                     math.radians(self._now_yaw),
