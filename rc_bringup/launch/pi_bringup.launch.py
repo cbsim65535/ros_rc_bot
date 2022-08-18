@@ -58,9 +58,9 @@ def generate_launch_description():
                 executable="static_transform_publisher",
                 name="tf_publisher_odom",
                 arguments=[
-                    "-0.17",
+                    "",
                     "0",
-                    "0.06",
+                    "0",
                     "0",
                     "0",
                     "0",
@@ -74,7 +74,7 @@ def generate_launch_description():
                 executable="static_transform_publisher",
                 name="tf_publisher_laser0",
                 arguments=[
-                    "0.16",
+                    "0.33",
                     "0.08",
                     "0.35",
                     "0",
@@ -90,7 +90,7 @@ def generate_launch_description():
                 executable="static_transform_publisher",
                 name="tf_publisher_laser1",
                 arguments=[
-                    "-0.165",
+                    "0.005",
                     "-0.08",
                     "0.35",
                     "0",
@@ -106,7 +106,7 @@ def generate_launch_description():
                 executable="static_transform_publisher",
                 name="tf_publisher_gimbal",
                 arguments=[
-                    "0.08",
+                    "0.25",
                     "0.00",
                     "0.54",
                     "0",

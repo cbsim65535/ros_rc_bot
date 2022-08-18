@@ -107,7 +107,7 @@ class OdometryPublisherNode(Node):
             odom.pose.pose.orientation.y = odom_quat[1]
             odom.pose.pose.orientation.z = odom_quat[2]
             odom.pose.pose.orientation.w = odom_quat[3]
-            odom.child_frame_id = "odom_link"
+            odom.child_frame_id = "base_link"
             odom.twist.twist.linear.x = vx
             odom.twist.twist.linear.y = vy
             odom.twist.twist.linear.z = 0.0
