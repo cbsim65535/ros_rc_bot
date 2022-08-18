@@ -18,7 +18,7 @@ from geometry_msgs.msg import TransformStamped
 DISTANCE_WHEELS = 0.202
 LEFT_WHEEL_DIAMETER = 0.127
 RIGHT_WHEEL_DIAMETER = 0.127
-TOTAL_CODE = 2880
+TOTAL_CODE = 2880.0
 
 
 class OdometryPublisherNode(Node):
@@ -61,14 +61,14 @@ class OdometryPublisherNode(Node):
             current_time = self.get_clock().now()
 
             velocity_left = (
-                -(self._count_left - self._prev_left)
+                -(float(self._count_left) - float(self._prev_left))
                 / float(TOTAL_CODE)
                 * float(RATE)
                 * math.pi
                 * LEFT_WHEEL_DIAMETER
             )
             velocity_right = (
-                -(self._count_right - self._prev_right)
+                -(float(self._count_right) - float(self._prev_right))
                 / float(TOTAL_CODE)
                 * float(RATE)
                 * math.pi
