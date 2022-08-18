@@ -13,6 +13,11 @@ def generate_launch_description():
                 output="screen",
             ),
             Node(
+                package="odom_node",
+                executable="odom_node",
+                output="screen",
+            ),
+            Node(
                 package="bno055_node",
                 executable="bno055_node",
                 output="screen",
