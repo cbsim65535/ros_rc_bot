@@ -55,7 +55,7 @@ class OdometryPublisherNode(Node):
             r.sleep()
 
     def _loop(self):
-        RATE = 10
+        RATE = 50
         r = self.create_rate(RATE)
         while self._is_loop:
             current_time = self.get_clock().now()
@@ -88,8 +88,7 @@ class OdometryPublisherNode(Node):
             vy = 0.0
             vth = velocity_angular
 
-            dt = (current_time - self.last_time).nanoseconds / 100000000
-            print(dt)
+            dt = (current_time - self.last_time).nanoseconds / 1000000000
             delta_x = (vx * cos(self.th) - vy * sin(self.th)) * dt
             delta_y = (vx * sin(self.th) + vy * cos(self.th)) * dt
             delta_th = vth * dt
