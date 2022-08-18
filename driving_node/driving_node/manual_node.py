@@ -61,13 +61,13 @@ class ManualNode(Node):
         )
         print("1-2")
         while not self.cli_ydlidar0_start_scan.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info("service not available, waiting again...")
+            self.get_logger().info("1 service not available, waiting again...")
         while not self.cli_ydlidar1_start_scan.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info("service not available, waiting again...")
+            self.get_logger().info("2 service not available, waiting again...")
         while not self.cli_ydlidar0_stop_scan.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info("service not available, waiting again...")
+            self.get_logger().info("3 service not available, waiting again...")
         while not self.cli_ydlidar1_stop_scan.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info("service not available, waiting again...")
+            self.get_logger().info("4 service not available, waiting again...")
 
         self.rate = self.create_rate(10)
 
@@ -126,24 +126,21 @@ class ManualNode(Node):
             header.stamp = self.get_clock().now().to_msg()
 
             if self.is_send_base:
-                twist_stapmed = TwistStamped(
-                    header=header, twist=self.base_twist)
+                twist_stapmed = TwistStamped(header=header, twist=self.base_twist)
                 self.pub_cmd_vel.publish(twist_stapmed)
             else:
                 twist_stapmed = TwistStamped(header=header, twist=Twist())
                 self.pub_cmd_vel.publish(twist_stapmed)
 
             if self.is_send_camera:
-                twist_stapmed = TwistStamped(
-                    header=header, twist=self.camera_twist)
+                twist_stapmed = TwistStamped(header=header, twist=self.camera_twist)
                 self.pub_camera_ctrl.publish(twist_stapmed)
             else:
                 twist_stapmed = TwistStamped(header=header, twist=Twist())
                 self.pub_camera_ctrl.publish(twist_stapmed)
 
             if self.is_send_focus:
-                twist_stapmed = TwistStamped(
-                    header=header, twist=self.focus_twist)
+                twist_stapmed = TwistStamped(header=header, twist=self.focus_twist)
                 self.pub_focus_ctrl.publish(twist_stapmed)
             else:
                 twist_stapmed = TwistStamped(header=header, twist=Twist())
