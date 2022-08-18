@@ -55,7 +55,7 @@ class OdometryPublisherNode(Node):
             r.sleep()
 
     def _loop(self):
-        RATE = 50
+        RATE = 10
         r = self.create_rate(RATE)
         while self._is_loop:
             current_time = self.get_clock().now()
