@@ -99,7 +99,7 @@ class OdometryPublisherNode(Node):
 
             odom = Odometry()
             odom.header.frame_id = "odom"
-            odom.header.stamp = current_time
+            odom.header.stamp = current_time.to_msg()
             odom.pose.pose = Pose(Point(self.x, self.y, 0.0), Quaternion(*odom_quat))
             odom.child_frame_id = "base_link"
             odom.twist.twist = Twist(Vector3(vx, vy, 0), Vector3(0, 0, vth))
