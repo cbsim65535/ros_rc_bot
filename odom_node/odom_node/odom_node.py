@@ -102,6 +102,7 @@ class OdometryPublisherNode(Node):
             odom = Odometry()
             odom.header.frame_id = "odom"
             odom.header.stamp = current_time.to_msg()
+            odom.child_frame_id = "base_link"
             odom.pose.pose.position.x = self.x
             odom.pose.pose.position.y = self.y
             odom.pose.pose.position.z = 0.0
@@ -109,7 +110,6 @@ class OdometryPublisherNode(Node):
             odom.pose.pose.orientation.y = odom_quat[1]
             odom.pose.pose.orientation.z = odom_quat[2]
             odom.pose.pose.orientation.w = odom_quat[3]
-            odom.child_frame_id = "base_link"
             odom.twist.twist.linear.x = vx
             odom.twist.twist.linear.y = vy
             odom.twist.twist.linear.z = 0.0
@@ -132,6 +132,7 @@ class OdometryPublisherNode(Node):
             t.transform.rotation.w = odom_quat[3]
 
             self.odom_tf_broadcaster.sendTransform(t)
+            print(self.x, self.y, odom_quat)
 
             self.last_time = current_time
 
