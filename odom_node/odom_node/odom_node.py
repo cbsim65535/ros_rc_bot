@@ -41,24 +41,16 @@ class OdometryPublisherNode(Node):
         self.odom_pub = self.create_publisher(Odometry, "/odom", 10)
         self.odom_tf_broadcaster = TransformBroadcaster(self)
 
-        self.read_encoder = threading.Thread(target=self.read_encoder, args=()).start()
         self.loop = threading.Thread(target=self._loop, args=()).start()
 
-    def read_encoder(self):
-        RATE = 3000
-        r = self.create_rate(RATE)
-        while True:
-
-            self._count_left = self.left_encoder.readCounter()
-            self._count_right = -self.right_encoder.readCounter()
-
-            r.sleep()
-
     def _loop(self):
-        RATE = 10
+        RATE = 50
         r = self.create_rate(RATE)
         while self._is_loop:
             current_time = self.get_clock().now()
+
+            self._count_left = self.left_encoder.readCounter()
+            self._count_right = -self.right_encoder.readCounter()
 
             velocity_left = (
                 -(float(self._count_left) - float(self._prev_left))
