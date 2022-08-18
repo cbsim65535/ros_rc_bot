@@ -138,8 +138,7 @@ class OdometryPublisherNode(Node):
             )
 
             self.last_time = current_time
-
-			self._prev_left = self._count_left
+            self._prev_left = self._count_left
             self._prev_right = self._count_right
 
             r.sleep()
