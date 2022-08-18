@@ -5,7 +5,6 @@ from rclpy.node import Node
 
 import threading
 import traceback
-import time
 
 from ls7366r import LS7366R
 
@@ -28,7 +27,7 @@ class OdometryPublisherNode(Node):
         self.x = 0.0
         self.y = 0.0
         self.th = 0.0
-        self.last_time = self.get_clock().now().to_msg()
+        self.last_time = self.get_clock().now()
 
         self.left_encoder = LS7366R(0, 1000000, 4)
         self.right_encoder = LS7366R(1, 1000000, 4)
@@ -57,7 +56,7 @@ class OdometryPublisherNode(Node):
         RATE = 10
         r = self.create_rate(RATE)
         while self._is_loop:
-            current_time = self.get_clock().now().to_msg()
+            current_time = self.get_clock().now()
 
             velocity_left = (
                 -(self._count_left - self._prev_left)
