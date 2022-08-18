@@ -498,7 +498,7 @@ class Basecam(Node):
             size = my_ord(bytes[2])
             define = self.RESP_DEF.getDefine(my_ord(bytes[1]))
             try:
-                body = bytes[4: size + 4]
+                body = bytes[4 : size + 4]
                 t0 = struct.unpack(define["_fmt"], body)
                 r = dict(zip(define["_keywords"], t0))
             except Exception as e:
@@ -733,7 +733,7 @@ class Basecam(Node):
                 msg.vector.z = yaw
                 self.pub_angles_euler.publish(msg)
                 (x, y, z, w) = quaternion_from_euler(
-                    math.radians(pitch), math.radians(yaw), math.radians(roll)
+                    math.radians(roll), math.radians(pitch), math.radians(yaw)
                 )
                 msg = QuaternionStamped()
                 msg.header.stamp = self.get_clock().now().to_msg()
@@ -785,8 +785,7 @@ class Basecam(Node):
 
             else:
                 if b is not None:
-                    self.get_logger().debug("result code : %d" %
-                                            (my_ord(b[1])))
+                    self.get_logger().debug("result code : %d" % (my_ord(b[1])))
                     self.get_logger().debug(r)
             # self.rate.sleep()
 
