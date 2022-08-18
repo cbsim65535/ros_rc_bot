@@ -724,8 +724,8 @@ class Basecam(Node):
                 pitch = -r["IMU_ANGLE_PITCH"] * self.ANGLE_UNIT
                 yaw = -r["IMU_ANGLE_YAW"] * self.ANGLE_UNIT
                 self._now_roll = pitch
-                self._now_pitch = yaw
-                self._now_yaw = roll
+                self._now_pitch = roll
+                self._now_yaw = yaw
                 msg = Vector3Stamped()
                 msg.header.stamp = self.get_clock().now().to_msg()
                 msg.vector.x = self._now_roll
