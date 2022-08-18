@@ -384,7 +384,7 @@ class Basecam(Node):
     motion_sleep = 0
 
     def __init__(self):
-        super().__init__("basecam")
+        super().__init__("basecam_node")
         self._now_roll = 0
         self._now_pitch = 0
         self._now_yaw = 0
@@ -733,7 +733,7 @@ class Basecam(Node):
                 msg.vector.z = yaw
                 self.pub_angles_euler.publish(msg)
                 (x, y, z, w) = quaternion_from_euler(
-                    math.radians(roll), math.radians(pitch), math.radians(yaw)
+                    math.radians(roll), math.radians(yaw), math.radians(pitch)
                 )
                 msg = QuaternionStamped()
                 msg.header.stamp = self.get_clock().now().to_msg()
