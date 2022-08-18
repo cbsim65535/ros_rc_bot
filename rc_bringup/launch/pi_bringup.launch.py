@@ -65,7 +65,7 @@ def generate_launch_description():
                     "0",
                     "0",
                     "1",
-                    "base_link",
+                    "odom_link",
                     "odom",
                 ],
             ),
