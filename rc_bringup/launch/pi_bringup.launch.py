@@ -58,15 +58,15 @@ def generate_launch_description():
                 executable="static_transform_publisher",
                 name="tf_publisher_odom",
                 arguments=[
-                    "0.17",
+                    "-0.17",
                     "0",
                     "0.06",
                     "0",
                     "0",
                     "0",
                     "1",
-                    "odom_link",
                     "base_link",
+                    "odom",
                 ],
             ),
             Node(
