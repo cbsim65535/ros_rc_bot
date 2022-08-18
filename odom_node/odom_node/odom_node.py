@@ -132,7 +132,16 @@ class OdometryPublisherNode(Node):
             t.transform.rotation.w = odom_quat[3]
 
             self.odom_tf_broadcaster.sendTransform(t)
-            print(self._count_left, self._count_right, self.x, self.y, odom_quat)
+            print(
+                self._count_left,
+                self._count_right,
+                dt,
+                velocity_left,
+                velocity_right,
+                self.x,
+                self.y,
+                odom_quat,
+            )
 
             self.last_time = current_time
 
