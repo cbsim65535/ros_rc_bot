@@ -53,14 +53,14 @@ class OdometryPublisherNode(Node):
             self._count_right = -self.right_encoder.readCounter()
 
             velocity_left = (
-                (float(self._count_left) - float(self._prev_left))
+                -(float(self._count_left) - float(self._prev_left))
                 / float(TOTAL_CODE)
                 * float(RATE)
                 * math.pi
                 * LEFT_WHEEL_DIAMETER
             )
             velocity_right = (
-                (float(self._count_right) - float(self._prev_right))
+                -(float(self._count_right) - float(self._prev_right))
                 / float(TOTAL_CODE)
                 * float(RATE)
                 * math.pi

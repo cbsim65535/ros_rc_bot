@@ -56,22 +56,6 @@ def generate_launch_description():
             Node(
                 package="tf2_ros",
                 executable="static_transform_publisher",
-                name="tf_publisher_odom",
-                arguments=[
-                    "",
-                    "0",
-                    "0",
-                    "0",
-                    "0",
-                    "0",
-                    "1",
-                    "base_link",
-                    "odom",
-                ],
-            ),
-            Node(
-                package="tf2_ros",
-                executable="static_transform_publisher",
                 name="tf_publisher_laser0",
                 arguments=[
                     "0.33",
