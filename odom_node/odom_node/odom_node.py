@@ -35,6 +35,8 @@ class OdometryPublisherNode(Node):
 
         self._count_left = 0
         self._count_right = 0
+        self._prev_left = 0
+        self._prev_right = 0
 
         self.odom_pub = self.create_publisher(Odometry, "/odom", 10)
         self.odom_tf_broadcaster = TransformBroadcaster(self)
@@ -46,8 +48,6 @@ class OdometryPublisherNode(Node):
         RATE = 3000
         r = self.create_rate(RATE)
         while True:
-            self._prev_left = self._count_left
-            self._prev_right = self._count_right
 
             self._count_left = self.left_encoder.readCounter()
             self._count_right = -self.right_encoder.readCounter()
@@ -74,12 +74,6 @@ class OdometryPublisherNode(Node):
                 * math.pi
                 * RIGHT_WHEEL_DIAMETER
             )
-
-            old_left = self._count_left
-            old_right = self._count_right
-
-            count_left = self._count_left - self._prev_left
-            count_right = self._count_right - self._prev_right
 
             velocity_linear = (velocity_right + velocity_left) / 2.0
             velocity_angular = (velocity_right - velocity_left) / DISTANCE_WHEELS
@@ -144,6 +138,9 @@ class OdometryPublisherNode(Node):
             )
 
             self.last_time = current_time
+
+			self._prev_left = self._count_left
+            self._prev_right = self._count_right
 
             r.sleep()
 
