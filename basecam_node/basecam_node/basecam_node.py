@@ -733,7 +733,7 @@ class Basecam(Node):
                 msg.vector.z = yaw
                 self.pub_angles_euler.publish(msg)
                 (x, y, z, w) = quaternion_from_euler(
-                    math.radians(roll), math.radians(pitch), math.radians(yaw)
+                    math.radians(pitch), math.radians(yaw), math.radians(roll)
                 )
                 msg = QuaternionStamped()
                 msg.header.stamp = self.get_clock().now().to_msg()
