@@ -502,9 +502,6 @@ class Basecam(Node):
                 t0 = struct.unpack(define["_fmt"], body)
                 r = dict(zip(define["_keywords"], t0))
             except Exception as e:
-                print(bytes)
-                print(size)
-                print(define)
                 traceback.print_exc()
                 return None
             return r
