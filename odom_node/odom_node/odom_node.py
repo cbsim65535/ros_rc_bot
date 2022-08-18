@@ -98,7 +98,7 @@ class OdometryPublisherNode(Node):
             odom_quat = quaternion_from_euler(0, 0, self.th)
 
             odom = Odometry()
-            odom.header.frame_id = "odom_link"
+            odom.header.frame_id = "odom"
             odom.header.stamp = current_time.to_msg()
             odom.pose.pose.position.x = self.x
             odom.pose.pose.position.y = self.y
@@ -107,7 +107,7 @@ class OdometryPublisherNode(Node):
             odom.pose.pose.orientation.y = odom_quat[1]
             odom.pose.pose.orientation.z = odom_quat[2]
             odom.pose.pose.orientation.w = odom_quat[3]
-            odom.child_frame_id = "odom"
+            odom.child_frame_id = "odom_link"
             odom.twist.twist.linear.x = vx
             odom.twist.twist.linear.y = vy
             odom.twist.twist.linear.z = 0.0
