@@ -83,7 +83,7 @@ class OdometryPublisherNode(Node):
             velocity_angular = (velocity_right - velocity_left) / DISTANCE_WHEELS
 
             vx = velocity_linear
-            vy = 0
+            vy = 0.0
             vth = velocity_angular
 
             dt = (current_time - self.last_time).nanoseconds / 1000000000
@@ -110,9 +110,9 @@ class OdometryPublisherNode(Node):
             odom.child_frame_id = "base_link"
             odom.twist.twist.linear.x = vx
             odom.twist.twist.linear.y = vy
-            odom.twist.twist.linear.z = 0
-            odom.twist.twist.angular.x = 0
-            odom.twist.twist.angular.y = 0
+            odom.twist.twist.linear.z = 0.0
+            odom.twist.twist.angular.x = 0.0
+            odom.twist.twist.angular.y = 0.0
             odom.twist.twist.angular.z = vth
 
             self.odom_pub.publish(odom)
