@@ -131,7 +131,7 @@ class OdometryPublisherNode(Node):
             t.transform.rotation.z = odom_quat[2]
             t.transform.rotation.w = odom_quat[3]
 
-            self.odom_broadcaster.sendTransform(t)
+            self.odom_tf_broadcaster.sendTransform(t)
 
             self.last_time = current_time
 
