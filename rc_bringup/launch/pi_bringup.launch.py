@@ -49,8 +49,8 @@ def generate_launch_description():
                     "0",
                     "0",
                     "1",
+                    "base_footprint",
                     "base_link",
-                    "map",
                 ],
             ),
             Node(
