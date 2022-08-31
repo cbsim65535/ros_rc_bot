@@ -6,7 +6,7 @@ from rclpy.node import Node
 import threading
 import traceback
 
-from ls7366r import LS7366R
+from .submodules.ls7366r import LS7366R
 
 import math
 from math import sin, cos, pi
