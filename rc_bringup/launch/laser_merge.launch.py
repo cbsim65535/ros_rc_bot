@@ -170,8 +170,8 @@ def generate_launch_description():
                 description="desc",
             ),
             launch_ros.actions.Node(
-                package="ros2_laser_scan_merger",
-                executable="ros2_laser_scan_merger",
+                package="laser_scan_merger",
+                executable="laser_scan_merger",
                 parameters=[
                     {
                         "pointCloudTopic": pointCloudTopic,
