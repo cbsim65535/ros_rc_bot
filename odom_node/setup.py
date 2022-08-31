@@ -3,7 +3,7 @@ import os
 from glob import glob
 
 package_name = "odom_node"
-submoudles = "bno055_node/submodules"
+submoudles = "odom_node/submodules"
 
 setup(
     name=package_name,
