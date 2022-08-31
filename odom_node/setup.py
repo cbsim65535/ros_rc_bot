@@ -23,6 +23,5 @@ setup(
     tests_require=["pytest"],
     entry_points={
         "console_scripts": ["odom_node = odom_node.odom_node:main"],
-        "console_scripts": ["odom_node = odom_node.ls7366r:main"],
     },
 )
