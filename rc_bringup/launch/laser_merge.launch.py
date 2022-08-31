@@ -19,7 +19,7 @@ def generate_launch_description():
 
     # parameter for the first laserscan, feel free to duplicate and rename for other laserscans
     scanTopic1 = LaunchConfiguration(
-        "scanTopic1", default="ydlidar_ros2_driver_node0/scan"
+        "scanTopic1", default="/ydlidar_ros2_driver_node0/scan"
     )
     laser1XOff = LaunchConfiguration("laser1XOff", default=0.33)
     laser1YOff = LaunchConfiguration("laser1YOff", default=0.08)
@@ -34,7 +34,7 @@ def generate_launch_description():
 
     # parameter for the second laserscan, feel free to duplicate and rename for other laserscans
     scanTopic2 = LaunchConfiguration(
-        "scanTopic2", default="ydlidar_ros2_driver_node1/scan"
+        "scanTopic2", default="/ydlidar_ros2_driver_node1/scan"
     )
     laser2XOff = LaunchConfiguration("laser2XOff", default=0.005)
     laser2YOff = LaunchConfiguration("laser2YOff", default=-0.08)
