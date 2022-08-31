@@ -24,7 +24,7 @@ class scanMerger : public rclcpp::Node
 {
     public:
     scanMerger()
-    : Node("ros2_laser_scan_merger")
+    : Node("laser_scan_merger")
     {
         
         initialize_params();
