@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 
 from launch import LaunchDescription
-from launch_ros.actions import Node
+from launch_ros.actions import Node, IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from ament_index_python.packages import get_package_share_directory
+import os
 
 
 def generate_launch_description():
@@ -42,101 +45,14 @@ def generate_launch_description():
                 executable="joystick_ros2",
                 output="screen",
             ),
-            Node(
-                package="tf2_ros",
-                executable="static_transform_publisher",
-                name="tf_publisher_map",
-                arguments=[
-                    "0",
-                    "0",
-                    "0",
-                    "0",
-                    "0",
-                    "0",
-                    "1",
-                    "base_footprint",
-                    "base_link",
-                ],
-            ),
-            Node(
-                package="tf2_ros",
-                executable="static_transform_publisher",
-                name="tf_publisher_laser0",
-                arguments=[
-                    "0.33",
-                    "0.08",
-                    "0.35",
-                    "0",
-                    "0",
-                    "0.9723",
-                    "0.2334",
-                    "base_link",
-                    "laser_frame0",
-                ],
-            ),
-            Node(
-                package="tf2_ros",
-                executable="static_transform_publisher",
-                name="tf_publisher_laser1",
-                arguments=[
-                    "0.005",
-                    "-0.08",
-                    "0.35",
-                    "0",
-                    "0",
-                    "0.8616",
-                    "0.5075",
-                    "base_link",
-                    "laser_frame1",
-                ],
-            ),
-            Node(
-                package="tf2_ros",
-                executable="static_transform_publisher",
-                name="tf_publisher_gimbal",
-                arguments=[
-                    "0.25",
-                    "0.00",
-                    "0.54",
-                    "0",
-                    "0",
-                    "0",
-                    "1",
-                    "base_link",
-                    "gimbal_camera_mount",
-                ],
-            ),
-            Node(
-                package="tf2_ros",
-                executable="static_transform_publisher",
-                name="tf_publisher_camera",
-                arguments=[
-                    "0.04",
-                    "-0.013",
-                    "0.0",
-                    "0",
-                    "0",
-                    "0",
-                    "1",
-                    "gimbal_camera_mount",
-                    "camera_base",
-                ],
-            ),
-            Node(
-                package="tf2_ros",
-                executable="static_transform_publisher",
-                name="tf_publisher_zed",
-                arguments=[
-                    "0.0",
-                    "0.0",
-                    "0.0",
-                    "0",
-                    "0",
-                    "0",
-                    "1",
-                    "camera_base",
-                    "zed_base_link",
-                ],
+            IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(
+                    os.path.join(
+                        get_package_share_directory("robot_bringup"),
+                        "launch",
+                        "tf.launch.py",
+                    )
+                )
             ),
         ]
     )
