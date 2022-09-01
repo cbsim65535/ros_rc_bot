@@ -34,6 +34,7 @@ class scanMerger : public rclcpp::Node
         auto default_qos = rclcpp::QoS(rclcpp::SystemDefaultsQoS());
 		RCLCPP_INFO(this->get_logger(), topic1_);
 		RCLCPP_INFO(this->get_logger(), topic2_);
+		
         sub1_ = this->create_subscription<sensor_msgs::msg::LaserScan>(topic1_, default_qos, std::bind(&scanMerger::scan_callback1, this, std::placeholders::_1));
         sub2_ = this->create_subscription<sensor_msgs::msg::LaserScan>(topic2_, default_qos, std::bind(&scanMerger::scan_callback2 , this, std::placeholders::_1));
         
@@ -43,15 +44,15 @@ class scanMerger : public rclcpp::Node
     }
     private:
     void scan_callback1(const sensor_msgs::msg::LaserScan::SharedPtr _msg) {
-        laser1_ = _msg;
+        RCLCPP_INFO(this->get_logger(), "scan_callback1");
+		laser1_ = _msg;
         update_point_cloud_rgb();
-		RCLCPP_INFO(this->get_logger(), "scan_callback1");
         // RCLCPP_INFO(this->get_logger(), "I heard: '%f' '%f'", _msg->ranges[0],
                 // _msg->ranges[100]);
     }
     void scan_callback2(const sensor_msgs::msg::LaserScan::SharedPtr _msg) {
-        laser2_ = _msg;
 		RCLCPP_INFO(this->get_logger(), "scan_callback2");
+        laser2_ = _msg;
         // RCLCPP_INFO(this->get_logger(), "I heard: '%f' '%f'", _msg->ranges[0],
                 // _msg->ranges[100]);
     }
