@@ -32,6 +32,8 @@ class scanMerger : public rclcpp::Node
         
         
         auto default_qos = rclcpp::QoS(rclcpp::SystemDefaultsQoS());
+		RCLCPP_INFO(this->get_logger(), topic1_);
+		RCLCPP_INFO(this->get_logger(), topic2_);
         sub1_ = this->create_subscription<sensor_msgs::msg::LaserScan>(topic1_, default_qos, std::bind(&scanMerger::scan_callback1, this, std::placeholders::_1));
         sub2_ = this->create_subscription<sensor_msgs::msg::LaserScan>(topic2_, default_qos, std::bind(&scanMerger::scan_callback2 , this, std::placeholders::_1));
         
