@@ -1,0 +1,1 @@
+cd ../.. && colcon build --packages-skip ydlidar_ros2_driver laser_scan_merger
