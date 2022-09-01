@@ -17,9 +17,9 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch_ros.actions import LifecycleNode
 from launch_ros.actions import Node
-from launch.actions import DeclareLaunchArgument
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.substitutions import LaunchConfiguration
-from launch.actions import LogInfo
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 import lifecycle_msgs.msg
 import os
@@ -64,6 +64,14 @@ def generate_launch_description():
                     ("/stop_scan", "/ydlidar_ros2_driver_node1/stop_scan"),
                     ("/scan", "/ydlidar_ros2_driver_node1/scan"),
                 ],
+            ),
+            IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(
+                    os.path.join(
+                        get_package_share_directory("rc_bringup"),
+                        "laser_merge.launch.py",
+                    )
+                )
             ),
         ]
     )
