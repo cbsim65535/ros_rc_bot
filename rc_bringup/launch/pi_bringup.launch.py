@@ -49,7 +49,7 @@ def generate_launch_description():
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
                     os.path.join(
-                        get_package_share_directory("pi_bringup"),
+                        get_package_share_directory("rc_bringup"),
                         "launch",
                         "tf.launch.py",
                     )
