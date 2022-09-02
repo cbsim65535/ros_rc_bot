@@ -52,10 +52,10 @@ class scanMerger : public rclcpp::Node
         
     }
     void scan_callback2(const sensor_msgs::msg::LaserScan::SharedPtr _msg) {
-		// RCLCPP_INFO(this->get_logger(), "scan_callback2");
+		RCLCPP_INFO(this->get_logger(), "scan_callback2");
+		RCLCPP_INFO(this->get_logger(), "I heard: '%f' '%f'", _msg->ranges[0],
+                _msg->ranges[100]);
         laser2_ = _msg;
-        // RCLCPP_INFO(this->get_logger(), "I heard: '%f' '%f'", _msg->ranges[0],
-                // _msg->ranges[100]);
     }
     
     void update_point_cloud_2(){
