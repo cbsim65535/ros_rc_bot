@@ -44,18 +44,12 @@ class scanMerger : public rclcpp::Node
     }
     private:
     void scan_callback1(const sensor_msgs::msg::LaserScan::SharedPtr _msg) {
-        RCLCPP_INFO(this->get_logger(), "scan_callback1");
-		laser1_ = _msg;
-		RCLCPP_INFO(this->get_logger(), "I heard: '%f' '%f'", _msg->ranges[0],
-                _msg->ranges[100]);
-        update_point_cloud_rgb();
+        laser1_ = _msg;
+		update_point_cloud_rgb();
         
     }
     void scan_callback2(const sensor_msgs::msg::LaserScan::SharedPtr _msg) {
-		RCLCPP_INFO(this->get_logger(), "scan_callback2");
-		RCLCPP_INFO(this->get_logger(), "I heard: '%f' '%f'", _msg->ranges[0],
-                _msg->ranges[100]);
-        laser2_ = _msg;
+		laser2_ = _msg;
     }
     
     void update_point_cloud_2(){
@@ -126,6 +120,10 @@ class scanMerger : public rclcpp::Node
 
     }
     void update_point_cloud_rgb(){
+		if(!laser1_ || !laser2_){
+			RCLCPP_INFO(this->get_logger(), "pass update_point_cloud_rgb");
+			return;
+		}
         refresh_params();
         pcl::PointCloud<pcl::PointXYZRGB> cloud_;
         //pcl::PointCloud<pcl::PointXYZ> cloud_;
