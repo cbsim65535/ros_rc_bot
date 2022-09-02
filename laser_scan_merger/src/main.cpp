@@ -44,11 +44,13 @@ class scanMerger : public rclcpp::Node
     }
     private:
     void scan_callback1(const sensor_msgs::msg::LaserScan::SharedPtr _msg) {
+		RCLCPP_INFO(this->get_logger(), "scan_callback1");
         laser1_ = _msg;
 		update_point_cloud_rgb();
         
     }
     void scan_callback2(const sensor_msgs::msg::LaserScan::SharedPtr _msg) {
+		RCLCPP_INFO(this->get_logger(), "scan_callback2");
 		laser2_ = _msg;
     }
     
