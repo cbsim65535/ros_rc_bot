@@ -65,13 +65,13 @@ def generate_launch_description():
                     ("/scan", "/ydlidar_ros2_driver_node1/scan"),
                 ],
             ),
-            IncludeLaunchDescription(
-                PythonLaunchDescriptionSource(
-                    os.path.join(
-                        get_package_share_directory("rc_bringup"),
-                        "laser_merge.launch.py",
-                    )
-                )
-            ),
+            # IncludeLaunchDescription(
+            #     PythonLaunchDescriptionSource(
+            #         os.path.join(
+            #             get_package_share_directory("rc_bringup"),
+            #             "laser_merge.launch.py",
+            #         )
+            #     )
+            # ),
         ]
     )
