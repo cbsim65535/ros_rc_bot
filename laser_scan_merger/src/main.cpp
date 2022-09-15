@@ -42,85 +42,18 @@ class scanMerger : public rclcpp::Node
         laser_scan_pub_ = this->create_publisher<sensor_msgs::msg::LaserScan>("merged_scan", rclcpp::SystemDefaultsQoS());
         RCLCPP_INFO(this->get_logger(), "Hello");
     }
-    private:
+    
+	private:
     void scan_callback1(const sensor_msgs::msg::LaserScan::SharedPtr _msg) {
-		RCLCPP_INFO(this->get_logger(), "scan_callback1");
         laser1_ = _msg;
 		update_point_cloud_rgb();
         
     }
+
     void scan_callback2(const sensor_msgs::msg::LaserScan::SharedPtr _msg) {
-		RCLCPP_INFO(this->get_logger(), "scan_callback2");
 		laser2_ = _msg;
     }
     
-    void update_point_cloud_2(){
-        refresh_params();
-        //pcl::PointCloud<pcl::PointXYZRGB> cloud_;
-        pcl::PointCloud<pcl::PointXYZ> cloud_;
-        std::vector<std::array<float,3>> scan_data;
-        int count = 0;
-        
-        std::array<float,3> push_data;
-        if(show1_){
-            for (float i = laser1_->angle_min; i <= laser1_->angle_max; i += laser1_->angle_increment){
-                float temp_x = laser1_->ranges[count] * std::cos(i) + laser1XOff_;
-                float temp_y = laser1_->ranges[count] * std::sin(i) + laser1YOff_;
-                push_data[0] = temp_x * std::cos(laser1Alpha_ * M_PI / 180) - temp_y * std::sin(laser1Alpha_ * M_PI / 180);
-                push_data[1] = temp_x * std::sin(laser1Alpha_ * M_PI / 180) + temp_y * std::cos(laser1Alpha_ * M_PI / 180);
-                push_data[2] = laser1ZOff_;
-                if (i < (laser1AngleMin_ * M_PI / 180)){
-
-                }else if(i > (laser1AngleMax_ * M_PI / 180)){
-
-                }else{
-                    scan_data.push_back(push_data);
-                }
-                count++;
-            }
-        }
-        
-        count = 0;
-        if(show2_){
-            for (float i = laser2_->angle_min; i <= laser2_->angle_max; i += laser2_->angle_increment){
-                float temp_x = laser2_->ranges[count] * std::cos(i) + laser2XOff_;
-                float temp_y = laser2_->ranges[count] * std::sin(i) + laser2YOff_;
-                push_data[0] = temp_x * std::cos(laser2Alpha_ * M_PI / 180) - temp_y * std::sin(laser2Alpha_ * M_PI / 180);
-                push_data[1] = temp_x * std::sin(laser2Alpha_ * M_PI / 180) + temp_y * std::cos(laser2Alpha_ * M_PI / 180);
-                push_data[2] = laser2ZOff_;
-                if (i < (laser2AngleMin_ * M_PI / 180)){
-
-                }else if(i > (laser2AngleMax_ * M_PI / 180)){
-
-                }else{
-                    scan_data.push_back(push_data);
-                }
-                count++;
-            }
-        }
-        sensor_msgs::msg::PointCloud2 dummy_cloud;
-        sensor_msgs::PointCloud2Modifier modifier(dummy_cloud);
-        modifier.setPointCloud2Fields(
-            3,
-            "x", 1, sensor_msgs::msg::PointField::FLOAT32,
-            "y", 1, sensor_msgs::msg::PointField::FLOAT32,
-            "z", 1, sensor_msgs::msg::PointField::FLOAT32);
-        modifier.resize(scan_data.size());
-        sensor_msgs::PointCloud2Iterator<float> it_x(dummy_cloud, "x");
-        sensor_msgs::PointCloud2Iterator<float> it_y(dummy_cloud, "y");
-        sensor_msgs::PointCloud2Iterator<float> it_z(dummy_cloud, "z");
-        unsigned long int counter_temp = 0;
-        for (; it_x != it_x.end(); ++it_x, ++it_y, ++it_z) {
-            *it_x = scan_data[counter_temp][0];
-            *it_y = scan_data[counter_temp][1];
-            *it_z = scan_data[counter_temp][2];
-            counter_temp+=1;
-        }
-        dummy_cloud.header.frame_id = cloudFrameId_;
-        dummy_cloud.header.stamp = now();
-        point_cloud_pub_->publish(dummy_cloud);
-
-    }
     void update_point_cloud_rgb(){
 		if(!laser1_ || !laser2_){
 			RCLCPP_INFO(this->get_logger(), "pass update_point_cloud_rgb");
@@ -215,7 +148,7 @@ class scanMerger : public rclcpp::Node
         pc2_msg_->header.stamp = now();
         pc2_msg_->is_dense = false;
         point_cloud_pub_->publish(*pc2_msg_);
-		RCLCPP_INFO(this->get_logger(), "pub");
+		// RCLCPP_INFO(this->get_logger(), "pub");
     }
 
     void update_point_cloud(){
