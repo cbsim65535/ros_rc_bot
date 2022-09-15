@@ -215,8 +215,7 @@ class scanMerger : public rclcpp::Node
         pc2_msg_->header.stamp = now();
         pc2_msg_->is_dense = false;
         point_cloud_pub_->publish(*pc2_msg_);
-
-        
+		RCLCPP_INFO(this->get_logger(), "pub");
     }
 
     void update_point_cloud(){
